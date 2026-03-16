@@ -5,11 +5,15 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository repository;
@@ -18,6 +22,7 @@ public class MemberService {
         this.repository = repository;
     }
 
+    @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.MEMBER_LIST, allEntries = true))
     public Member join(String email, String name) {
         return repository.save(Member.create(email, name));
@@ -34,6 +39,11 @@ public class MemberService {
         return repository.findAll();
     }
 
+    public Page<Member> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Transactional
     @Caching(
             put  = @CachePut(value = CacheNames.MEMBER, key = "#id"),
             evict = @CacheEvict(value = CacheNames.MEMBER_LIST, allEntries = true)
@@ -43,6 +53,7 @@ public class MemberService {
         return repository.update(new Member(member.id(), member.email(), name, member.role(), member.createdAt(), member.updatedAt()));
     }
 
+    @Transactional
     @Caching(evict = {
             @CacheEvict(value = CacheNames.MEMBER,      key = "#id"),
             @CacheEvict(value = CacheNames.MEMBER_LIST, allEntries = true)

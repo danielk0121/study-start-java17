@@ -5,11 +5,15 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class OrderService {
 
     private final OrderRepository repository;
@@ -18,6 +22,7 @@ public class OrderService {
         this.repository = repository;
     }
 
+    @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.ORDER_LIST, allEntries = true))
     public Order place(Long memberId, List<OrderItem> items) {
         return repository.save(Order.create(memberId, items));
@@ -34,6 +39,11 @@ public class OrderService {
         return repository.findAll();
     }
 
+    public Page<Order> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Transactional
     @Caching(
             put   = @CachePut(value = CacheNames.ORDER, key = "#id"),
             evict = @CacheEvict(value = CacheNames.ORDER_LIST, allEntries = true)
@@ -42,6 +52,7 @@ public class OrderService {
         return repository.update(findById(id).cancel());
     }
 
+    @Transactional
     @Caching(evict = {
             @CacheEvict(value = CacheNames.ORDER,      key = "#id"),
             @CacheEvict(value = CacheNames.ORDER_LIST, allEntries = true)
