@@ -15,6 +15,57 @@
 
 ---
 
+# 기술 스펙
+
+## 코어
+
+| 항목 | 버전 / 상세 |
+|---|---|
+| Java | 17 |
+| Spring Boot | 2.7.18 |
+| Gradle | 8.x |
+| 데이터베이스 | MySQL 8 |
+
+## 주요 의존성
+
+| 라이브러리 | 버전 | 용도 |
+|---|---|---|
+| Spring Data JPA | Boot 관리 | ORM, Repository |
+| Spring Data Redis | Boot 관리 | Redis Streams 연동 |
+| Spring Web | Boot 관리 | REST API |
+| MySQL Connector/J | Boot 관리 | MySQL 드라이버 |
+| Spring Cloud Sleuth | 3.1.11 | 분산 추적 (traceId/spanId MDC 자동 주입) |
+| Logstash Logback Encoder | 7.4 | JSON 로그 출력 (dev/prod 프로파일) |
+| MapStruct | 1.5.5 | 객체 매핑 코드 자동 생성 |
+| Lombok | Boot 관리 | 보일러플레이트 코드 생성 |
+
+## 테스트
+
+| 라이브러리 | 버전 | 용도 |
+|---|---|---|
+| Spring Boot Test | Boot 관리 | 통합 테스트 |
+| Spring REST Docs (MockMvc) | 2.0.8 | 테스트 코드 기반 API 문서 스니펫 생성 |
+| restdocs-api-spec (MockMvc) | 0.16.4 | REST Docs → OpenAPI 3.0 YAML 자동 생성 |
+| embedded-redis | 1.4.3 | Docker 없이 JVM 내 Redis 서버 구동 |
+
+## 문서화 / 빌드 플러그인
+
+| 플러그인 | 버전 | 용도 |
+|---|---|---|
+| org.asciidoctor.jvm.convert | 3.3.2 | REST Docs 스니펫 → HTML 변환 |
+| com.epages.restdocs-api-spec | 0.16.4 | OpenAPI 3.0 YAML 자동 생성 (`build/api-spec/openapi3.yaml`) |
+
+## 로깅 전략
+
+| 프로파일 | 포맷 | 비고 |
+|---|---|---|
+| local (기본) | Spring Boot 기본 컬러 포맷 | traceId/spanId 포함 |
+| dev / prod | JSON (Logstash 포맷) | ELK 스택 연동 목적 |
+
+설정 파일: `src/main/resources/logback-spring.xml`
+
+---
+
 # ERD
 
 DBML 형식으로 관리합니다. 아래 링크에서 다이어그램으로 확인할 수 있습니다.
