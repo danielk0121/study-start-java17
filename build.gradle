@@ -52,6 +52,10 @@ dependencies {
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 
+    // 로컬 캐시 — Caffeine (Spring Cache 추상화와 통합, Spring Boot 2.x 공식 지원)
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
