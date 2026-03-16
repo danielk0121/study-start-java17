@@ -64,7 +64,6 @@ dependencies {
 }
 
 tasks.named('test') {
-    outputs.dir snippetsDir
     useJUnitPlatform {
         // Docker Redis가 필요한 통합 테스트는 기본 test 태스크에서 제외
         // 실행하려면: ./gradlew test -Dinclude.docker-redis=true
