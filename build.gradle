@@ -28,6 +28,15 @@ ext {
     snippetsDir = file('build/generated-snippets')
 }
 
+// QueryDSL Q클래스 생성 경로
+def querydslDir = "$buildDir/generated/querydsl"
+sourceSets {
+    main.java.srcDirs += [querydslDir]
+}
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -55,6 +64,12 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.8.RELEASE'
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+
+    // QueryDSL — Spring Boot 2.7.x + Jakarta 미사용 환경은 classifier 없이 사용
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jpa'
+    annotationProcessor 'javax.annotation:javax.annotation-api:1.3.2'
+    annotationProcessor 'javax.persistence:javax.persistence-api:2.2'
 
     // 로컬 캐시 — Caffeine (Spring Cache 추상화와 통합, Spring Boot 2.x 공식 지원)
     implementation 'org.springframework.boot:spring-boot-starter-cache'
