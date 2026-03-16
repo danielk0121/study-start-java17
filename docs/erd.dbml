@@ -8,47 +8,47 @@
 // 회원 (member)
 // ─────────────────────────────────────────
 Table members {
-  id        bigint      [pk, increment, note: '회원 ID']
-  email     varchar(255) [not null, unique, note: '로그인 이메일']
-  name      varchar(100) [not null, note: '회원 이름']
-  role      varchar(20)  [not null, default: 'USER', note: 'USER | ADMIN']
-  created_at datetime    [not null, default: `now()`, note: '가입일시']
+  id         bigint   [pk, increment, note: '회원 ID']
+  email      varchar  [not null, unique, note: '로그인 이메일 (max 255)']
+  name       varchar  [not null, note: '회원 이름 (max 100)']
+  role       varchar  [not null, default: 'USER', note: 'USER | ADMIN (max 20)']
+  created_at datetime [not null, default: `now()`, note: '가입일시']
 }
 
 // ─────────────────────────────────────────
 // 상품 (product)
 // ─────────────────────────────────────────
 Table products {
-  id        bigint       [pk, increment, note: '상품 ID']
-  name      varchar(255) [not null, note: '상품명']
-  price     decimal(15,2)[not null, note: '가격 (0 이상)']
-  stock     int          [not null, default: 0, note: '재고 수량 (0 이상)']
-  category  varchar(50)  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC']
-  created_at datetime    [not null, default: `now()`, note: '등록일시']
+  id         bigint   [pk, increment, note: '상품 ID']
+  name       varchar  [not null, note: '상품명 (max 255)']
+  price      decimal  [not null, note: '가격 (0 이상, precision 15,2)']
+  stock      int      [not null, default: 0, note: '재고 수량 (0 이상)']
+  category   varchar  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC (max 50)']
+  created_at datetime [not null, default: `now()`, note: '등록일시']
 }
 
 // ─────────────────────────────────────────
 // 주문 (orders)
 // ─────────────────────────────────────────
 Table orders {
-  id         bigint      [pk, increment, note: '주문 ID']
-  member_id  bigint      [not null, note: '주문 회원']
-  product_id bigint      [not null, note: '주문 상품']
-  quantity   int         [not null, note: '주문 수량 (1 이상)']
-  status     varchar(20) [not null, default: 'PENDING', note: 'PENDING | CONFIRMED | CANCELLED']
-  created_at datetime    [not null, default: `now()`, note: '주문일시']
+  id         bigint   [pk, increment, note: '주문 ID']
+  member_id  bigint   [not null, note: '주문 회원']
+  product_id bigint   [not null, note: '주문 상품']
+  quantity   int      [not null, note: '주문 수량 (1 이상)']
+  status     varchar  [not null, default: 'PENDING', note: 'PENDING | CONFIRMED | CANCELLED (max 20)']
+  created_at datetime [not null, default: `now()`, note: '주문일시']
 }
 
 // ─────────────────────────────────────────
 // 주문 이벤트 (order_events) — Redis Stream 메시지를 RDB로 표현
 // ─────────────────────────────────────────
 Table order_events {
-  id         bigint      [pk, increment, note: 'PK']
-  order_id   varchar(36) [not null, unique, note: 'UUID — Redis Stream의 orderId']
-  member_id  bigint      [not null, note: '주문 회원']
-  product_id bigint      [not null, note: '주문 상품']
-  quantity   int         [not null, note: '주문 수량']
-  created_at datetime    [not null, default: `now()`, note: '주문일시']
+  id         bigint   [pk, increment, note: 'PK']
+  order_id   varchar  [not null, unique, note: 'UUID — Redis Stream의 orderId (max 36)']
+  member_id  bigint   [not null, note: '주문 회원']
+  product_id bigint   [not null, note: '주문 상품']
+  quantity   int      [not null, note: '주문 수량']
+  created_at datetime [not null, default: `now()`, note: '주문일시']
 
   note: 'Redis Stream(order-stream)에 발행된 주문 이벤트의 RDB 표현'
 }
