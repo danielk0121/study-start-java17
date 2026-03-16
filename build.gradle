@@ -65,7 +65,13 @@ dependencies {
 
 tasks.named('test') {
     outputs.dir snippetsDir
-    useJUnitPlatform()
+    useJUnitPlatform {
+        // Docker Redis가 필요한 통합 테스트는 기본 test 태스크에서 제외
+        // 실행하려면: ./gradlew test -Dinclude.docker-redis=true
+        if (!System.getProperty('include.docker-redis')) {
+            excludeTags 'docker-redis'
+        }
+    }
 }
 
 // REST Docs 전용 테스트 태스크 — Docker Redis 없이 실행 가능한 @WebMvcTest만 포함
@@ -97,6 +103,7 @@ openapi3 {
     outputDirectory = 'build/api-spec'
     outputFileNamePrefix = 'openapi3'
 }
+
 
 // openapi3 태스크 실행 후 docs/openapi.yaml로 자동 복사
 // → Git에 커밋되어 README 링크(Swagger Editor, ReDoc)에서 항상 최신 상태 유지

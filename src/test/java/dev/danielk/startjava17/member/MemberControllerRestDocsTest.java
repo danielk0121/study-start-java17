@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.member;
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -61,7 +61,7 @@ class MemberControllerRestDocsTest {
                                 {"email": "user@example.com", "name": "홍길동"}
                                 """))
                 .andExpect(status().isOk())
-                .andDo(document("members-join",
+                .andDo(MockMvcRestDocumentationWrapper.document("members-join",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("이메일 (로그인 ID)"),
@@ -84,7 +84,7 @@ class MemberControllerRestDocsTest {
 
         mockMvc.perform(get("/members/{id}", 1L))
                 .andExpect(status().isOk())
-                .andDo(document("members-find-by-id",
+                .andDo(MockMvcRestDocumentationWrapper.document("members-find-by-id",
                         preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("회원 ID")),
                         responseFields(
@@ -106,7 +106,7 @@ class MemberControllerRestDocsTest {
 
         mockMvc.perform(get("/members"))
                 .andExpect(status().isOk())
-                .andDo(document("members-find-all",
+                .andDo(MockMvcRestDocumentationWrapper.document("members-find-all",
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[].id").description("회원 ID"),
@@ -129,7 +129,7 @@ class MemberControllerRestDocsTest {
                                 {"name": "홍길순"}
                                 """))
                 .andExpect(status().isOk())
-                .andDo(document("members-update",
+                .andDo(MockMvcRestDocumentationWrapper.document("members-update",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("회원 ID")),
                         requestFields(
@@ -151,7 +151,7 @@ class MemberControllerRestDocsTest {
 
         mockMvc.perform(delete("/members/{id}", 1L))
                 .andExpect(status().isNoContent())
-                .andDo(document("members-delete",
+                .andDo(MockMvcRestDocumentationWrapper.document("members-delete",
                         pathParameters(parameterWithName("id").description("회원 ID"))
                 ));
     }

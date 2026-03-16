@@ -1,73 +1,679 @@
-openapi: 3.0.3
+openapi: 3.0.1
 info:
   title: Start Java 17 API
   description: Java 17 + Redis Streams 학습 프로젝트 API 명세
   version: 0.0.1
-
 servers:
-  - url: http://localhost:8080
-    description: 로컬 개발 서버
-
-tags:
-  - name: Orders
-    description: 주문 이벤트 발행 API — Redis Stream에 메시지를 적재합니다
-
+- url: http://localhost:8080
+tags: []
 paths:
-  /orders:
+  /members:
+    get:
+      tags:
+      - members
+      operationId: members-find-all
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members1610948347'
+              examples:
+                members-find-all:
+                  value: |-
+                    [ {
+                      "id" : 1,
+                      "email" : "user@example.com",
+                      "name" : "홍길동",
+                      "role" : "USER"
+                    }, {
+                      "id" : 2,
+                      "email" : "admin@example.com",
+                      "name" : "관리자",
+                      "role" : "ADMIN"
+                    } ]
     post:
       tags:
-        - Orders
-      summary: 주문 이벤트 발행
-      description: |
-        주문 정보를 Redis Stream(`order-stream`)에 발행합니다.
-
-        **내부 흐름:**
-        1. UUID로 orderId 생성
-        2. `OrderEvent` record 생성
-        3. `XADD order-stream * orderId ... product ... quantity ...` 실행
-        4. Redis가 발급한 RecordId 반환
-
-        **응답 헤더:**
-        - `X-Trace-Id`: 요청 추적용 traceId (Sleuth 자동 생성)
-      operationId: publishOrder
+      - members
+      operationId: members-join
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderRequest'
-            example:
-              product: MacBook Pro
-              quantity: 2
+              $ref: '#/components/schemas/members54192698'
+            examples:
+              members-join:
+                value: |-
+                  {
+                    "email" : "user@example.com",
+                    "name" : "홍길동"
+                  }
       responses:
-        '200':
-          description: 발행 성공 — Redis RecordId 반환
-          headers:
-            X-Trace-Id:
-              description: 요청 추적용 traceId
-              schema:
-                type: string
-                example: "a1b2c3d4e5f6g7h8"
+        "200":
+          description: "200"
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: "published: 1700000000000-0"
-
+                $ref: '#/components/schemas/members-417933837'
+              examples:
+                members-join:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "email" : "user@example.com",
+                      "name" : "홍길동",
+                      "role" : "USER"
+                    }
+  /members/{id}:
+    get:
+      tags:
+      - members
+      operationId: members-find-by-id
+      parameters:
+      - name: id
+        in: path
+        description: 회원 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members-id-1168164564'
+              examples:
+                members-find-by-id:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "email" : "user@example.com",
+                      "name" : "홍길동",
+                      "role" : "USER"
+                    }
+    put:
+      tags:
+      - members
+      operationId: members-update
+      parameters:
+      - name: id
+        in: path
+        description: 회원 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/members-id-109134508'
+            examples:
+              members-update:
+                value: |-
+                  {
+                    "name" : "홍길순"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/members-id-607744917'
+              examples:
+                members-update:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "email" : "user@example.com",
+                      "name" : "홍길순",
+                      "role" : "USER"
+                    }
+    delete:
+      tags:
+      - members
+      operationId: members-delete
+      parameters:
+      - name: id
+        in: path
+        description: 회원 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: "204"
+  /orders:
+    get:
+      tags:
+      - orders
+      operationId: orders-find-all
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders826063332'
+              examples:
+                orders-find-all:
+                  value: |-
+                    [ {
+                      "id" : 1,
+                      "memberId" : 1,
+                      "productId" : 1,
+                      "quantity" : 2,
+                      "status" : "PENDING",
+                      "createdAt" : "2026-03-16T12:00"
+                    }, {
+                      "id" : 2,
+                      "memberId" : 2,
+                      "productId" : 2,
+                      "quantity" : 1,
+                      "status" : "CONFIRMED",
+                      "createdAt" : "2026-03-16T12:00"
+                    } ]
+    post:
+      tags:
+      - orders
+      operationId: orders-place
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders-1417073637'
+            examples:
+              orders-place:
+                value: |-
+                  {
+                    "memberId" : 1,
+                    "productId" : 1,
+                    "quantity" : 2
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders639064753'
+              examples:
+                orders-place:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "memberId" : 1,
+                      "productId" : 1,
+                      "quantity" : 2,
+                      "status" : "PENDING",
+                      "createdAt" : "2026-03-16T12:00"
+                    }
+  /orders/{id}:
+    get:
+      tags:
+      - orders
+      operationId: orders-find-by-id
+      parameters:
+      - name: id
+        in: path
+        description: 주문 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders-id1438915875'
+              examples:
+                orders-find-by-id:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "memberId" : 1,
+                      "productId" : 1,
+                      "quantity" : 2,
+                      "status" : "PENDING",
+                      "createdAt" : "2026-03-16T12:00"
+                    }
+    delete:
+      tags:
+      - orders
+      operationId: orders-delete
+      parameters:
+      - name: id
+        in: path
+        description: 주문 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: "204"
+  /orders/{id}/cancel:
+    patch:
+      tags:
+      - orders
+      operationId: orders-cancel
+      parameters:
+      - name: id
+        in: path
+        description: 주문 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/orders-id-cancel273261755'
+              examples:
+                orders-cancel:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "memberId" : 1,
+                      "productId" : 1,
+                      "quantity" : 2,
+                      "status" : "CANCELLED",
+                      "createdAt" : "2026-03-16T12:00"
+                    }
+  /products:
+    get:
+      tags:
+      - products
+      operationId: products-find-all
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products1743534224'
+              examples:
+                products-find-all:
+                  value: |-
+                    [ {
+                      "id" : 1,
+                      "name" : "MacBook Pro",
+                      "price" : 2000000,
+                      "stock" : 10,
+                      "category" : "ELECTRONICS"
+                    }, {
+                      "id" : 2,
+                      "name" : "청바지",
+                      "price" : 50000,
+                      "stock" : 100,
+                      "category" : "CLOTHING"
+                    } ]
+    post:
+      tags:
+      - products
+      operationId: products-register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products1992875147'
+            examples:
+              products-register:
+                value: |-
+                  {
+                    "name" : "MacBook Pro",
+                    "price" : 2000000,
+                    "stock" : 10,
+                    "category" : "ELECTRONICS"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products-id-1995171593'
+              examples:
+                products-register:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "name" : "MacBook Pro",
+                      "price" : 2000000,
+                      "stock" : 10,
+                      "category" : "ELECTRONICS"
+                    }
+  /products/{id}:
+    get:
+      tags:
+      - products
+      operationId: products-find-by-id
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products-id-1995171593'
+              examples:
+                products-find-by-id:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "name" : "MacBook Pro",
+                      "price" : 2000000,
+                      "stock" : 10,
+                      "category" : "ELECTRONICS"
+                    }
+    put:
+      tags:
+      - products
+      operationId: products-update
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/products-id1372543473'
+            examples:
+              products-update:
+                value: |-
+                  {
+                    "name" : "MacBook Pro M3",
+                    "price" : 2500000,
+                    "stock" : 20,
+                    "category" : "ELECTRONICS"
+                  }
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products-id-1995171593'
+              examples:
+                products-update:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "name" : "MacBook Pro M3",
+                      "price" : 2500000,
+                      "stock" : 20,
+                      "category" : "ELECTRONICS"
+                    }
+    delete:
+      tags:
+      - products
+      operationId: products-delete
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: "204"
 components:
   schemas:
-    OrderRequest:
+    members54192698:
       type: object
-      required:
-        - product
-        - quantity
       properties:
-        product:
+        name:
+          type: string
+          description: 회원 이름
+        email:
+          type: string
+          description: 이메일 (로그인 ID)
+    products-id-1995171593:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 가격
+        name:
           type: string
           description: 상품명
-          example: MacBook Pro
+        id:
+          type: number
+          description: 상품 ID
+        category:
+          type: string
+          description: 카테고리
+        stock:
+          type: number
+          description: 재고 수량
+    products1992875147:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 가격
+        name:
+          type: string
+          description: 상품명
+        category:
+          type: string
+          description: 카테고리 (ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC)
+        stock:
+          type: number
+          description: 초기 재고 수량
+    members-417933837:
+      type: object
+      properties:
+        role:
+          type: string
+          description: 권한 (USER | ADMIN)
+        name:
+          type: string
+          description: 이름
+        id:
+          type: number
+          description: 회원 ID
+        email:
+          type: string
+          description: 이메일
+    orders639064753:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: 주문 일시
         quantity:
-          type: integer
-          description: 수량
-          minimum: 1
-          example: 2
+          type: number
+          description: 주문 수량
+        productId:
+          type: number
+          description: 상품 ID
+        id:
+          type: number
+          description: 주문 ID
+        status:
+          type: string
+          description: 주문 상태 (PENDING | CONFIRMED | CANCELLED)
+        memberId:
+          type: number
+          description: 회원 ID
+    orders-id1438915875:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: 주문 일시
+        quantity:
+          type: number
+          description: 주문 수량
+        productId:
+          type: number
+          description: 상품 ID
+        id:
+          type: number
+          description: 주문 ID
+        status:
+          type: string
+          description: 주문 상태
+        memberId:
+          type: number
+          description: 회원 ID
+    members-id-109134508:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 변경할 이름
+    members-id-607744917:
+      type: object
+      properties:
+        role:
+          type: string
+          description: 권한
+        name:
+          type: string
+          description: 변경된 이름
+        id:
+          type: number
+          description: 회원 ID
+        email:
+          type: string
+          description: 이메일
+    orders-1417073637:
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: 주문 수량 (1 이상)
+        productId:
+          type: number
+          description: 상품 ID
+        memberId:
+          type: number
+          description: 회원 ID
+    orders-id-cancel273261755:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: 주문 일시
+        quantity:
+          type: number
+          description: 주문 수량
+        productId:
+          type: number
+          description: 상품 ID
+        id:
+          type: number
+          description: 주문 ID
+        status:
+          type: string
+          description: 취소된 주문 상태 (CANCELLED)
+        memberId:
+          type: number
+          description: 회원 ID
+    members-id-1168164564:
+      type: object
+      properties:
+        role:
+          type: string
+          description: 권한
+        name:
+          type: string
+          description: 이름
+        id:
+          type: number
+          description: 회원 ID
+        email:
+          type: string
+          description: 이메일
+    orders826063332:
+      type: array
+      items:
+        type: object
+        properties:
+          createdAt:
+            type: string
+            description: 주문 일시
+          quantity:
+            type: number
+            description: 주문 수량
+          productId:
+            type: number
+            description: 상품 ID
+          id:
+            type: number
+            description: 주문 ID
+          status:
+            type: string
+            description: 주문 상태
+          memberId:
+            type: number
+            description: 회원 ID
+    products1743534224:
+      type: array
+      items:
+        type: object
+        properties:
+          price:
+            type: number
+            description: 가격
+          name:
+            type: string
+            description: 상품명
+          id:
+            type: number
+            description: 상품 ID
+          category:
+            type: string
+            description: 카테고리
+          stock:
+            type: number
+            description: 재고 수량
+    products-id1372543473:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 가격
+        name:
+          type: string
+          description: 상품명
+        category:
+          type: string
+          description: 카테고리
+        stock:
+          type: number
+          description: 재고 수량
+    members1610948347:
+      type: array
+      items:
+        type: object
+        properties:
+          role:
+            type: string
+            description: 권한
+          name:
+            type: string
+            description: 이름
+          id:
+            type: number
+            description: 회원 ID
+          email:
+            type: string
+            description: 이메일
