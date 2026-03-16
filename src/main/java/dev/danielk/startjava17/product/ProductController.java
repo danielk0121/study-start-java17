@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
@@ -22,7 +22,7 @@ public class ProductController {
     public record RegisterRequest(String name, BigDecimal price, int stock, String category) {}
     public record UpdateRequest(String name, BigDecimal price, int stock, String category) {}
     public record ProductResponse(Long id, String name, BigDecimal price, int stock, String category,
-                                      LocalDateTime createdAt, LocalDateTime updatedAt) {}
+                                      OffsetDateTime createdAt, OffsetDateTime updatedAt) {}
 
     @PostMapping
     public ResponseEntity<ProductResponse> register(@RequestBody RegisterRequest request) {

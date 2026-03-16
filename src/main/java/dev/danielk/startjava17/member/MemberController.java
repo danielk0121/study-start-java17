@@ -3,7 +3,7 @@ package dev.danielk.startjava17.member;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
@@ -21,7 +21,7 @@ public class MemberController {
     public record JoinRequest(String email, String name) {}
     public record UpdateRequest(String name) {}
     public record MemberResponse(Long id, String email, String name, String role,
-                                     LocalDateTime createdAt, LocalDateTime updatedAt) {}
+                                     OffsetDateTime createdAt, OffsetDateTime updatedAt) {}
 
     @PostMapping
     public ResponseEntity<MemberResponse> join(@RequestBody JoinRequest request) {
