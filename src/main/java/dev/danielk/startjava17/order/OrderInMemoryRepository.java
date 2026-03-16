@@ -1,5 +1,9 @@
 package dev.danielk.startjava17.order;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,15 @@ public class OrderInMemoryRepository implements OrderRepository {
     @Override
     public List<Order> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    @Override
+    public Page<Order> findAll(Pageable pageable) {
+        List<Order> all = new ArrayList<>(store.values());
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), all.size());
+        List<Order> content = start >= all.size() ? List.of() : all.subList(start, end);
+        return new PageImpl<>(content, pageable, all.size());
     }
 
     @Override

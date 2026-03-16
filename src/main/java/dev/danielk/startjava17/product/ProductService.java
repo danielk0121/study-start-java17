@@ -5,11 +5,15 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class ProductService {
 
     private final ProductRepository repository;
@@ -18,6 +22,7 @@ public class ProductService {
         this.repository = repository;
     }
 
+    @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.PRODUCT_LIST, allEntries = true))
     public Product register(Product product) {
         return repository.save(product);
@@ -34,6 +39,11 @@ public class ProductService {
         return repository.findAll();
     }
 
+    public Page<Product> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Transactional
     @Caching(
             put   = @CachePut(value = CacheNames.PRODUCT, key = "#id"),
             evict = @CacheEvict(value = CacheNames.PRODUCT_LIST, allEntries = true)
@@ -43,6 +53,7 @@ public class ProductService {
         return repository.update(new Product(id, product.name(), product.price(), product.stock(), product.category(), product.createdAt(), product.updatedAt()));
     }
 
+    @Transactional
     @Caching(evict = {
             @CacheEvict(value = CacheNames.PRODUCT,      key = "#id"),
             @CacheEvict(value = CacheNames.PRODUCT_LIST, allEntries = true)
@@ -52,6 +63,7 @@ public class ProductService {
         repository.deleteById(id);
     }
 
+    @Transactional
     @Caching(
             put   = @CachePut(value = CacheNames.PRODUCT, key = "#id"),
             evict = @CacheEvict(value = CacheNames.PRODUCT_LIST, allEntries = true)

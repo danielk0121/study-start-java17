@@ -1,6 +1,8 @@
 package dev.danielk.startjava17.product;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class ProductJpaRepositoryAdapter implements ProductRepository {
         return jpaRepository.findAll().stream()
                 .map(ProductEntity::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Page<Product> findAll(Pageable pageable) {
+        return jpaRepository.findAll(pageable).map(ProductEntity::toDomain);
     }
 
     @Override

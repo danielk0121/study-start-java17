@@ -1,5 +1,9 @@
 package dev.danielk.startjava17.product;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,15 @@ public class ProductInMemoryRepository implements ProductRepository {
     @Override
     public List<Product> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    @Override
+    public Page<Product> findAll(Pageable pageable) {
+        List<Product> all = new ArrayList<>(store.values());
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), all.size());
+        List<Product> content = start >= all.size() ? List.of() : all.subList(start, end);
+        return new PageImpl<>(content, pageable, all.size());
     }
 
     @Override

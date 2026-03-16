@@ -1,6 +1,8 @@
 package dev.danielk.startjava17.order;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,6 +33,11 @@ public class OrderJpaRepositoryAdapter implements OrderRepository {
         return jpaRepository.findAll().stream()
                 .map(OrderEntity::toDomain)
                 .toList();
+    }
+
+    @Override
+    public Page<Order> findAll(Pageable pageable) {
+        return jpaRepository.findAll(pageable).map(OrderEntity::toDomain);
     }
 
     @Override
