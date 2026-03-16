@@ -35,6 +35,16 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 - **빌드:** Gradle 8.2, Java 17 툴체인
 - **애노테이션 프로세서:** Lombok + MapStruct (`lombok-mapstruct-binding`으로 처리 순서 보장)
 
+## 코드 작성 규칙
+
+코드 작성이 완료된 후에는 반드시 skip test 빌드를 실행하여 컴파일 에러가 없는지 확인한다:
+
+```bash
+./gradlew build -x test
+```
+
+빌드가 실패하면 에러를 수정한 후 다시 빌드를 통과시킨 뒤 커밋한다.
+
 ## Git 브랜치 작업 규칙
 
 모든 작업은 아래 순서를 따른다:
