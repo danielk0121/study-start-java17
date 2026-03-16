@@ -2,7 +2,6 @@ package dev.danielk.startjava17.product;
 
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -14,8 +13,8 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product register(String name, BigDecimal price, int stock, ProductCategory category) {
-        return repository.save(Product.create(name, price, stock, category));
+    public Product register(Product product) {
+        return repository.save(product);
     }
 
     public Product findById(Long id) {
@@ -27,13 +26,13 @@ public class ProductService {
         return repository.findAll();
     }
 
-    public Product update(Long id, String name, BigDecimal price, int stock, ProductCategory category) {
-        Product product = findById(id);
-        return repository.update(new Product(product.id(), name, price, stock, category));
+    public Product update(Long id, Product product) {
+        findById(id); // 존재 여부 확인
+        return repository.update(new Product(id, product.name(), product.price(), product.stock(), product.category()));
     }
 
     public void delete(Long id) {
-        findById(id); // 존재 여부 확인
+        findById(id);
         repository.deleteById(id);
     }
 

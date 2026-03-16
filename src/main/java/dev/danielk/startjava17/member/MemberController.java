@@ -10,37 +10,35 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService service;
+    private final MemberMapper mapper;
 
-    public MemberController(MemberService service) {
+    public MemberController(MemberService service, MemberMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public record JoinRequest(String email, String name) {}
     public record UpdateRequest(String name) {}
-    public record MemberResponse(Long id, String email, String name, String role) {
-        static MemberResponse from(Member member) {
-            return new MemberResponse(member.id(), member.email(), member.name(), member.role().name());
-        }
-    }
+    public record MemberResponse(Long id, String email, String name, String role) {}
 
     @PostMapping
     public ResponseEntity<MemberResponse> join(@RequestBody JoinRequest request) {
-        return ResponseEntity.ok(MemberResponse.from(service.join(request.email(), request.name())));
+        return ResponseEntity.ok(mapper.toResponse(service.join(request.email(), request.name())));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(MemberResponse.from(service.findById(id)));
+        return ResponseEntity.ok(mapper.toResponse(service.findById(id)));
     }
 
     @GetMapping
     public ResponseEntity<List<MemberResponse>> findAll() {
-        return ResponseEntity.ok(service.findAll().stream().map(MemberResponse::from).toList());
+        return ResponseEntity.ok(mapper.toResponseList(service.findAll()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MemberResponse> update(@PathVariable Long id, @RequestBody UpdateRequest request) {
-        return ResponseEntity.ok(MemberResponse.from(service.update(id, request.name())));
+        return ResponseEntity.ok(mapper.toResponse(service.update(id, request.name())));
     }
 
     @DeleteMapping("/{id}")

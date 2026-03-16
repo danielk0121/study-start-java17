@@ -11,45 +11,37 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
+    private final ProductMapper mapper;
 
-    public ProductController(ProductService service) {
+    public ProductController(ProductService service, ProductMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public record RegisterRequest(String name, BigDecimal price, int stock, String category) {}
     public record UpdateRequest(String name, BigDecimal price, int stock, String category) {}
-    public record ProductResponse(Long id, String name, BigDecimal price, int stock, String category) {
-        static ProductResponse from(Product product) {
-            return new ProductResponse(
-                    product.id(), product.name(), product.price(),
-                    product.stock(), product.category().name());
-        }
-    }
+    public record ProductResponse(Long id, String name, BigDecimal price, int stock, String category) {}
 
     @PostMapping
     public ResponseEntity<ProductResponse> register(@RequestBody RegisterRequest request) {
-        Product product = service.register(
-                request.name(), request.price(), request.stock(),
-                ProductCategory.valueOf(request.category()));
-        return ResponseEntity.ok(ProductResponse.from(product));
+        Product product = service.register(mapper.toProduct(request));
+        return ResponseEntity.ok(mapper.toResponse(product));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(ProductResponse.from(service.findById(id)));
+        return ResponseEntity.ok(mapper.toResponse(service.findById(id)));
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> findAll() {
-        return ResponseEntity.ok(service.findAll().stream().map(ProductResponse::from).toList());
+        return ResponseEntity.ok(mapper.toResponseList(service.findAll()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody UpdateRequest request) {
-        Product product = service.update(
-                id, request.name(), request.price(), request.stock(),
-                ProductCategory.valueOf(request.category()));
-        return ResponseEntity.ok(ProductResponse.from(product));
+        Product product = service.update(id, mapper.toProduct(request));
+        return ResponseEntity.ok(mapper.toResponse(product));
     }
 
     @DeleteMapping("/{id}")

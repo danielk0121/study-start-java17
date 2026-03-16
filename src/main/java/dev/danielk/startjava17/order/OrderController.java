@@ -10,52 +10,37 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService service;
+    private final OrderMapper mapper;
 
-    public OrderController(OrderService service) {
+    public OrderController(OrderService service, OrderMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     public record OrderItemRequest(Long productId, int quantity) {}
     public record PlaceRequest(Long memberId, List<OrderItemRequest> items) {}
-
-    public record OrderItemResponse(Long productId, int quantity) {
-        static OrderItemResponse from(OrderItem item) {
-            return new OrderItemResponse(item.productId(), item.quantity());
-        }
-    }
-    public record OrderResponse(Long id, Long memberId, List<OrderItemResponse> items, String status, String createdAt) {
-        static OrderResponse from(Order order) {
-            return new OrderResponse(
-                    order.id(),
-                    order.memberId(),
-                    order.items().stream().map(OrderItemResponse::from).toList(),
-                    order.status().name(),
-                    order.createdAt().toString()
-            );
-        }
-    }
+    public record OrderItemResponse(Long productId, int quantity) {}
+    public record OrderResponse(Long id, Long memberId, List<OrderItemResponse> items, String status, String createdAt) {}
 
     @PostMapping
     public ResponseEntity<OrderResponse> place(@RequestBody PlaceRequest request) {
-        List<OrderItem> items = request.items().stream()
-                .map(i -> new OrderItem(i.productId(), i.quantity()))
-                .toList();
-        return ResponseEntity.ok(OrderResponse.from(service.place(request.memberId(), items)));
+        List<OrderItem> items = mapper.toOrderItems(request.items());
+        return ResponseEntity.ok(mapper.toResponse(service.place(request.memberId(), items)));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(OrderResponse.from(service.findById(id)));
+        return ResponseEntity.ok(mapper.toResponse(service.findById(id)));
     }
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> findAll() {
-        return ResponseEntity.ok(service.findAll().stream().map(OrderResponse::from).toList());
+        return ResponseEntity.ok(mapper.toResponseList(service.findAll()));
     }
 
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<OrderResponse> cancel(@PathVariable Long id) {
-        return ResponseEntity.ok(OrderResponse.from(service.cancel(id)));
+        return ResponseEntity.ok(mapper.toResponse(service.cancel(id)));
     }
 
     @DeleteMapping("/{id}")
