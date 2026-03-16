@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'idea'                                               // IntelliJ Q클래스 소스 루트 인식
     id 'org.springframework.boot' version '2.7.18' // Spring Boot 2 마지막 버전
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'       // Spring REST Docs HTML 변환
@@ -35,6 +36,12 @@ sourceSets {
 }
 tasks.withType(JavaCompile) {
     options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+// IntelliJ가 Q클래스 생성 경로를 소스 루트로 인식하도록 설정
+idea {
+    module {
+        generatedSourceDirs += file(querydslDir)
+    }
 }
 
 dependencies {
