@@ -10,7 +10,7 @@ import java.util.List;
  *
  * RegisterRequest / UpdateRequest → Product 변환 시
  * category 필드가 String → ProductCategory enum 이므로 expression으로 처리.
- * id 필드는 저장소가 부여하므로 null로 매핑.
+ * id / audit 필드는 저장소가 부여하므로 null로 매핑.
  */
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -19,12 +19,16 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", expression = "java(ProductCategory.valueOf(request.category()))")
     @Mapping(target = "decreaseStock", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Product toProduct(ProductController.RegisterRequest request);
 
     // UpdateRequest → Product (id는 호출부에서 주입, category: String→enum)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", expression = "java(ProductCategory.valueOf(request.category()))")
     @Mapping(target = "decreaseStock", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Product toProduct(ProductController.UpdateRequest request);
 
     // Product → ProductResponse (category: enum→String)

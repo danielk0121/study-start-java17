@@ -1,8 +1,5 @@
 // Start Java 17 프로젝트 ERD
 // 렌더링: https://dbdiagram.io/d (이 파일 내용을 붙여넣기)
-//
-// 현재 저장소는 인메모리 저장소(ConcurrentHashMap)를 사용하므로
-// 실제 DDL은 없으나, 향후 RDB 전환 시의 스키마 설계를 문서화합니다.
 
 // ─────────────────────────────────────────
 // 회원 (member)
@@ -12,7 +9,8 @@ Table members {
   email      varchar  [not null, unique, note: '로그인 이메일 (max 255)']
   name       varchar  [not null, note: '회원 이름 (max 100)']
   role       varchar  [not null, default: 'USER', note: 'USER | ADMIN (max 20)']
-  created_at datetime [not null, default: `now()`, note: '가입일시']
+  created_at datetime [not null, default: `now()`, note: '가입 일시 (JPA Auditing 자동 관리)']
+  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
 }
 
 // ─────────────────────────────────────────
@@ -24,7 +22,8 @@ Table products {
   price      decimal  [not null, note: '가격 (0 이상, precision 15,2)']
   stock      int      [not null, default: 0, note: '재고 수량 (0 이상)']
   category   varchar  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC (max 50)']
-  created_at datetime [not null, default: `now()`, note: '등록일시']
+  created_at datetime [not null, default: `now()`, note: '등록 일시 (JPA Auditing 자동 관리)']
+  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
 }
 
 // ─────────────────────────────────────────
@@ -34,7 +33,8 @@ Table orders {
   id         bigint   [pk, increment, note: '주문 ID']
   member_id  bigint   [not null, note: '주문 회원']
   status     varchar  [not null, default: 'PENDING', note: 'PENDING | CONFIRMED | CANCELLED (max 20)']
-  created_at datetime [not null, default: `now()`, note: '주문일시']
+  created_at datetime [not null, default: `now()`, note: '주문 일시 (JPA Auditing 자동 관리)']
+  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 — 취소 시 갱신 (JPA Auditing 자동 관리)']
 }
 
 // ─────────────────────────────────────────
@@ -56,7 +56,7 @@ Table order_events {
   member_id  bigint   [not null, note: '주문 회원']
   product_id bigint   [not null, note: '주문 상품']
   quantity   int      [not null, note: '주문 수량']
-  created_at datetime [not null, default: `now()`, note: '주문일시']
+  created_at datetime [not null, default: `now()`, note: '주문 일시']
 
   note: 'Redis Stream(order-stream)에 발행된 주문 이벤트의 RDB 표현'
 }

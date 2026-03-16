@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.order;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,8 @@ public class OrderInMemoryRepository implements OrderRepository {
     @Override
     public Order save(Order order) {
         long id = sequence.getAndIncrement();
-        Order saved = new Order(id, order.memberId(), order.items(), order.status(), order.createdAt());
+        LocalDateTime now = LocalDateTime.now();
+        Order saved = new Order(id, order.memberId(), order.items(), order.status(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -32,8 +34,12 @@ public class OrderInMemoryRepository implements OrderRepository {
 
     @Override
     public Order update(Order order) {
-        store.put(order.id(), order);
-        return order;
+        Order updated = new Order(
+                order.id(), order.memberId(), order.items(), order.status(),
+                order.createdAt(), LocalDateTime.now()
+        );
+        store.put(updated.id(), updated);
+        return updated;
     }
 
     @Override

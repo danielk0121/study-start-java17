@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -45,10 +46,12 @@ class MemberControllerRestDocsTest {
     @MockBean  MemberService memberService;
     @MockBean  MemberMapper memberMapper;
 
+    private static final LocalDateTime NOW = LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+
     private static final Member HONG =
-            new Member(1L, "user@example.com", "홍길동", MemberRole.USER);
+            new Member(1L, "user@example.com", "홍길동", MemberRole.USER, NOW, NOW);
     private static final MemberController.MemberResponse HONG_RESPONSE =
-            new MemberController.MemberResponse(1L, "user@example.com", "홍길동", "USER");
+            new MemberController.MemberResponse(1L, "user@example.com", "홍길동", "USER", NOW, NOW);
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -83,7 +86,9 @@ class MemberControllerRestDocsTest {
                                 fieldWithPath("id").description("회원 ID"),
                                 fieldWithPath("email").description("이메일"),
                                 fieldWithPath("name").description("이름"),
-                                fieldWithPath("role").description("권한 (USER | ADMIN)")
+                                fieldWithPath("role").description("권한 (USER | ADMIN)"),
+                                fieldWithPath("createdAt").description("가입 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시")
                         )
                 ));
     }
@@ -106,7 +111,9 @@ class MemberControllerRestDocsTest {
                                 fieldWithPath("id").description("회원 ID"),
                                 fieldWithPath("email").description("이메일"),
                                 fieldWithPath("name").description("이름"),
-                                fieldWithPath("role").description("권한")
+                                fieldWithPath("role").description("권한"),
+                                fieldWithPath("createdAt").description("가입 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시")
                         )
                 ));
     }
@@ -114,9 +121,9 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("GET /members — 회원 목록 조회")
     void findAll() throws Exception {
-        Member admin = new Member(2L, "admin@example.com", "관리자", MemberRole.ADMIN);
+        Member admin = new Member(2L, "admin@example.com", "관리자", MemberRole.ADMIN, NOW, NOW);
         MemberController.MemberResponse adminResponse =
-                new MemberController.MemberResponse(2L, "admin@example.com", "관리자", "ADMIN");
+                new MemberController.MemberResponse(2L, "admin@example.com", "관리자", "ADMIN", NOW, NOW);
 
         when(memberService.findAll()).thenReturn(List.of(HONG, admin));
         when(memberMapper.toResponseList(any())).thenReturn(List.of(HONG_RESPONSE, adminResponse));
@@ -132,7 +139,9 @@ class MemberControllerRestDocsTest {
                                 fieldWithPath("[].id").description("회원 ID"),
                                 fieldWithPath("[].email").description("이메일"),
                                 fieldWithPath("[].name").description("이름"),
-                                fieldWithPath("[].role").description("권한")
+                                fieldWithPath("[].role").description("권한"),
+                                fieldWithPath("[].createdAt").description("가입 일시"),
+                                fieldWithPath("[].updatedAt").description("최종 수정 일시")
                         )
                 ));
     }
@@ -140,9 +149,9 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("PUT /members/{id} — 회원 정보 수정")
     void update() throws Exception {
-        Member updated = new Member(1L, "user@example.com", "홍길순", MemberRole.USER);
+        Member updated = new Member(1L, "user@example.com", "홍길순", MemberRole.USER, NOW, NOW);
         MemberController.MemberResponse updatedResponse =
-                new MemberController.MemberResponse(1L, "user@example.com", "홍길순", "USER");
+                new MemberController.MemberResponse(1L, "user@example.com", "홍길순", "USER", NOW, NOW);
 
         when(memberService.update(eq(1L), any())).thenReturn(updated);
         when(memberMapper.toResponse(updated)).thenReturn(updatedResponse);
@@ -167,7 +176,9 @@ class MemberControllerRestDocsTest {
                                 fieldWithPath("id").description("회원 ID"),
                                 fieldWithPath("email").description("이메일"),
                                 fieldWithPath("name").description("변경된 이름"),
-                                fieldWithPath("role").description("권한")
+                                fieldWithPath("role").description("권한"),
+                                fieldWithPath("createdAt").description("가입 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시")
                         )
                 ));
     }

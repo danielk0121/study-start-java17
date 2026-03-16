@@ -85,7 +85,7 @@ class ProductInMemoryRepositoryTest {
     @DisplayName("update — 상품 정보를 수정하면 변경된 데이터가 반환된다")
     void update() {
         Product saved = repository.save(Product.create("MacBook Pro", PRICE, 10, ProductCategory.ELECTRONICS));
-        Product updated = new Product(saved.id(), "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS);
+        Product updated = new Product(saved.id(), "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS, saved.createdAt(), saved.updatedAt());
 
         Product result = repository.update(updated);
 

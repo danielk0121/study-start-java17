@@ -40,7 +40,7 @@ public class MemberService {
     )
     public Member update(Long id, String name) {
         Member member = findById(id);
-        return repository.update(new Member(member.id(), member.email(), name, member.role()));
+        return repository.update(new Member(member.id(), member.email(), name, member.role(), member.createdAt(), member.updatedAt()));
     }
 
     @Caching(evict = {

@@ -1,6 +1,7 @@
 package dev.danielk.startjava17.product;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 상품 도메인 모델 — Java 17 Record
@@ -14,7 +15,9 @@ public record Product(
         String name,
         BigDecimal price,
         int stock,
-        ProductCategory category
+        ProductCategory category,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     // Compact constructor — 유효성 검사
     public Product {
@@ -24,12 +27,12 @@ public record Product(
     }
 
     public static Product create(String name, BigDecimal price, int stock, ProductCategory category) {
-        return new Product(null, name, price, stock, category);
+        return new Product(null, name, price, stock, category, null, null);
     }
 
     // 재고 차감 후 새 record 반환 (불변 유지)
     public Product decreaseStock(int quantity) {
         if (stock < quantity) throw new IllegalStateException("재고가 부족합니다.");
-        return new Product(id, name, price, stock - quantity, category);
+        return new Product(id, name, price, stock - quantity, category, createdAt, updatedAt);
     }
 }
