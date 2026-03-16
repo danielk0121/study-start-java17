@@ -15,12 +15,21 @@ public class OrderController {
         this.service = service;
     }
 
-    public record PlaceRequest(Long memberId, Long productId, int quantity) {}
-    public record OrderResponse(Long id, Long memberId, Long productId, int quantity, String status, String createdAt) {
+    public record OrderItemRequest(Long productId, int quantity) {}
+    public record PlaceRequest(Long memberId, List<OrderItemRequest> items) {}
+
+    public record OrderItemResponse(Long productId, int quantity) {
+        static OrderItemResponse from(OrderItem item) {
+            return new OrderItemResponse(item.productId(), item.quantity());
+        }
+    }
+    public record OrderResponse(Long id, Long memberId, List<OrderItemResponse> items, String status, String createdAt) {
         static OrderResponse from(Order order) {
             return new OrderResponse(
-                    order.id(), order.memberId(), order.productId(),
-                    order.quantity(), order.status().name(),
+                    order.id(),
+                    order.memberId(),
+                    order.items().stream().map(OrderItemResponse::from).toList(),
+                    order.status().name(),
                     order.createdAt().toString()
             );
         }
@@ -28,9 +37,10 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponse> place(@RequestBody PlaceRequest request) {
-        return ResponseEntity.ok(OrderResponse.from(
-                service.place(request.memberId(), request.productId(), request.quantity())
-        ));
+        List<OrderItem> items = request.items().stream()
+                .map(i -> new OrderItem(i.productId(), i.quantity()))
+                .toList();
+        return ResponseEntity.ok(OrderResponse.from(service.place(request.memberId(), items)));
     }
 
     @GetMapping("/{id}")

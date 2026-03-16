@@ -1,6 +1,8 @@
 package dev.danielk.startjava17.member;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.epages.restdocs.apispec.Schema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +25,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -62,7 +64,11 @@ class MemberControllerRestDocsTest {
                                 """))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("members-join",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        ResourceSnippetParameters.builder()
+                                .requestSchema(Schema.schema("MemberJoinRequest"))
+                                .responseSchema(Schema.schema("MemberResponse")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("이메일 (로그인 ID)"),
                                 fieldWithPath("name").description("회원 이름")
@@ -85,6 +91,9 @@ class MemberControllerRestDocsTest {
         mockMvc.perform(get("/members/{id}", 1L))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("members-find-by-id",
+                        ResourceSnippetParameters.builder()
+                                .responseSchema(Schema.schema("MemberResponse")),
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("회원 ID")),
                         responseFields(
@@ -107,6 +116,9 @@ class MemberControllerRestDocsTest {
         mockMvc.perform(get("/members"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("members-find-all",
+                        ResourceSnippetParameters.builder()
+                                .responseSchema(Schema.schema("MemberResponse")),
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[].id").description("회원 ID"),
@@ -130,7 +142,11 @@ class MemberControllerRestDocsTest {
                                 """))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("members-update",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        ResourceSnippetParameters.builder()
+                                .requestSchema(Schema.schema("MemberUpdateRequest"))
+                                .responseSchema(Schema.schema("MemberResponse")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("회원 ID")),
                         requestFields(
                                 fieldWithPath("name").description("변경할 이름")
@@ -152,6 +168,7 @@ class MemberControllerRestDocsTest {
         mockMvc.perform(delete("/members/{id}", 1L))
                 .andExpect(status().isNoContent())
                 .andDo(MockMvcRestDocumentationWrapper.document("members-delete",
+                        ResourceSnippetParameters.builder(),
                         pathParameters(parameterWithName("id").description("회원 ID"))
                 ));
     }
