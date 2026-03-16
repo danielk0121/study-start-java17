@@ -41,6 +41,7 @@ class OrderControllerRestDocsTest {
     @Autowired WebApplicationContext context;
     @Autowired ObjectMapper objectMapper;
     @MockBean  OrderService orderService;
+    @MockBean  OrderMapper orderMapper;
 
     private static final LocalDateTime NOW = LocalDateTime.of(2026, 3, 16, 12, 0, 0);
 
@@ -48,6 +49,14 @@ class OrderControllerRestDocsTest {
             new OrderItem(1L, 2),
             new OrderItem(2L, 1)
     );
+    private static final List<OrderController.OrderItemResponse> ITEM_RESPONSES = List.of(
+            new OrderController.OrderItemResponse(1L, 2),
+            new OrderController.OrderItemResponse(2L, 1)
+    );
+    private static final Order ORDER =
+            new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW);
+    private static final OrderController.OrderResponse ORDER_RESPONSE =
+            new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "PENDING", NOW.toString());
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -59,8 +68,9 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("POST /orders — 주문 생성")
     void place() throws Exception {
-        when(orderService.place(eq(1L), any()))
-                .thenReturn(new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW));
+        when(orderMapper.toOrderItems(any())).thenReturn(ITEMS);
+        when(orderService.place(eq(1L), any())).thenReturn(ORDER);
+        when(orderMapper.toResponse(ORDER)).thenReturn(ORDER_RESPONSE);
 
         mockMvc.perform(post("/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -101,8 +111,8 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("GET /orders/{id} — 주문 단건 조회")
     void findById() throws Exception {
-        when(orderService.findById(1L))
-                .thenReturn(new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW));
+        when(orderService.findById(1L)).thenReturn(ORDER);
+        when(orderMapper.toResponse(ORDER)).thenReturn(ORDER_RESPONSE);
 
         mockMvc.perform(get("/orders/{id}", 1L))
                 .andExpect(status().isOk())
@@ -127,10 +137,12 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("GET /orders — 주문 목록 조회")
     void findAll() throws Exception {
-        when(orderService.findAll()).thenReturn(List.of(
-                new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW),
-                new Order(2L, 2L, List.of(new OrderItem(3L, 5)), OrderStatus.CONFIRMED, NOW)
-        ));
+        Order order2 = new Order(2L, 2L, List.of(new OrderItem(3L, 5)), OrderStatus.CONFIRMED, NOW);
+        OrderController.OrderResponse response2 = new OrderController.OrderResponse(
+                2L, 2L, List.of(new OrderController.OrderItemResponse(3L, 5)), "CONFIRMED", NOW.toString());
+
+        when(orderService.findAll()).thenReturn(List.of(ORDER, order2));
+        when(orderMapper.toResponseList(any())).thenReturn(List.of(ORDER_RESPONSE, response2));
 
         mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())
@@ -154,8 +166,12 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("PATCH /orders/{id}/cancel — 주문 취소")
     void cancelOrder() throws Exception {
-        when(orderService.cancel(1L))
-                .thenReturn(new Order(1L, 1L, ITEMS, OrderStatus.CANCELLED, NOW));
+        Order cancelled = new Order(1L, 1L, ITEMS, OrderStatus.CANCELLED, NOW);
+        OrderController.OrderResponse cancelledResponse =
+                new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "CANCELLED", NOW.toString());
+
+        when(orderService.cancel(1L)).thenReturn(cancelled);
+        when(orderMapper.toResponse(cancelled)).thenReturn(cancelledResponse);
 
         mockMvc.perform(patch("/orders/{id}/cancel", 1L))
                 .andExpect(status().isOk())

@@ -44,6 +44,12 @@ class ProductControllerRestDocsTest {
     @Autowired WebApplicationContext context;
     @Autowired ObjectMapper objectMapper;
     @MockBean  ProductService productService;
+    @MockBean  ProductMapper productMapper;
+
+    private static final Product MACBOOK =
+            new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS);
+    private static final ProductController.ProductResponse MACBOOK_RESPONSE =
+            new ProductController.ProductResponse(1L, "MacBook Pro", new BigDecimal("2000000"), 10, "ELECTRONICS");
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -55,8 +61,9 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("POST /products — 상품 등록")
     void register() throws Exception {
-        when(productService.register(any(), any(), eq(10), any()))
-                .thenReturn(new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS));
+        when(productMapper.toProduct(any(ProductController.RegisterRequest.class))).thenReturn(MACBOOK);
+        when(productService.register(any())).thenReturn(MACBOOK);
+        when(productMapper.toResponse(MACBOOK)).thenReturn(MACBOOK_RESPONSE);
 
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,8 +96,8 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("GET /products/{id} — 상품 단건 조회")
     void findById() throws Exception {
-        when(productService.findById(1L))
-                .thenReturn(new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS));
+        when(productService.findById(1L)).thenReturn(MACBOOK);
+        when(productMapper.toResponse(MACBOOK)).thenReturn(MACBOOK_RESPONSE);
 
         mockMvc.perform(get("/products/{id}", 1L))
                 .andExpect(status().isOk())
@@ -113,10 +120,12 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("GET /products — 상품 목록 조회")
     void findAll() throws Exception {
-        when(productService.findAll()).thenReturn(List.of(
-                new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS),
-                new Product(2L, "청바지", new BigDecimal("50000"), 100, ProductCategory.CLOTHING)
-        ));
+        Product jeans = new Product(2L, "청바지", new BigDecimal("50000"), 100, ProductCategory.CLOTHING);
+        ProductController.ProductResponse jeansResponse =
+                new ProductController.ProductResponse(2L, "청바지", new BigDecimal("50000"), 100, "CLOTHING");
+
+        when(productService.findAll()).thenReturn(List.of(MACBOOK, jeans));
+        when(productMapper.toResponseList(any())).thenReturn(List.of(MACBOOK_RESPONSE, jeansResponse));
 
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
@@ -138,8 +147,13 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("PUT /products/{id} — 상품 수정")
     void update() throws Exception {
-        when(productService.update(eq(1L), any(), any(), eq(20), any()))
-                .thenReturn(new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS));
+        Product updated = new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS);
+        ProductController.ProductResponse updatedResponse =
+                new ProductController.ProductResponse(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, "ELECTRONICS");
+
+        when(productMapper.toProduct(any(ProductController.UpdateRequest.class))).thenReturn(updated);
+        when(productService.update(eq(1L), any())).thenReturn(updated);
+        when(productMapper.toResponse(updated)).thenReturn(updatedResponse);
 
         mockMvc.perform(put("/products/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)

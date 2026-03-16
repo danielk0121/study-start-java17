@@ -43,6 +43,12 @@ class MemberControllerRestDocsTest {
     @Autowired WebApplicationContext context;
     @Autowired ObjectMapper objectMapper;
     @MockBean  MemberService memberService;
+    @MockBean  MemberMapper memberMapper;
+
+    private static final Member HONG =
+            new Member(1L, "user@example.com", "홍길동", MemberRole.USER);
+    private static final MemberController.MemberResponse HONG_RESPONSE =
+            new MemberController.MemberResponse(1L, "user@example.com", "홍길동", "USER");
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -54,8 +60,8 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("POST /members — 회원 가입")
     void join() throws Exception {
-        when(memberService.join(any(), any()))
-                .thenReturn(new Member(1L, "user@example.com", "홍길동", MemberRole.USER));
+        when(memberService.join(any(), any())).thenReturn(HONG);
+        when(memberMapper.toResponse(HONG)).thenReturn(HONG_RESPONSE);
 
         mockMvc.perform(post("/members")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -85,8 +91,8 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("GET /members/{id} — 회원 단건 조회")
     void findById() throws Exception {
-        when(memberService.findById(1L))
-                .thenReturn(new Member(1L, "user@example.com", "홍길동", MemberRole.USER));
+        when(memberService.findById(1L)).thenReturn(HONG);
+        when(memberMapper.toResponse(HONG)).thenReturn(HONG_RESPONSE);
 
         mockMvc.perform(get("/members/{id}", 1L))
                 .andExpect(status().isOk())
@@ -108,10 +114,12 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("GET /members — 회원 목록 조회")
     void findAll() throws Exception {
-        when(memberService.findAll()).thenReturn(List.of(
-                new Member(1L, "user@example.com", "홍길동", MemberRole.USER),
-                new Member(2L, "admin@example.com", "관리자", MemberRole.ADMIN)
-        ));
+        Member admin = new Member(2L, "admin@example.com", "관리자", MemberRole.ADMIN);
+        MemberController.MemberResponse adminResponse =
+                new MemberController.MemberResponse(2L, "admin@example.com", "관리자", "ADMIN");
+
+        when(memberService.findAll()).thenReturn(List.of(HONG, admin));
+        when(memberMapper.toResponseList(any())).thenReturn(List.of(HONG_RESPONSE, adminResponse));
 
         mockMvc.perform(get("/members"))
                 .andExpect(status().isOk())
@@ -132,8 +140,12 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("PUT /members/{id} — 회원 정보 수정")
     void update() throws Exception {
-        when(memberService.update(eq(1L), any()))
-                .thenReturn(new Member(1L, "user@example.com", "홍길순", MemberRole.USER));
+        Member updated = new Member(1L, "user@example.com", "홍길순", MemberRole.USER);
+        MemberController.MemberResponse updatedResponse =
+                new MemberController.MemberResponse(1L, "user@example.com", "홍길순", "USER");
+
+        when(memberService.update(eq(1L), any())).thenReturn(updated);
+        when(memberMapper.toResponse(updated)).thenReturn(updatedResponse);
 
         mockMvc.perform(put("/members/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
