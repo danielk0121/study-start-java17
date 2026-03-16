@@ -22,6 +22,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // 임베디드 Redis — Docker 없이 테스트용 Redis 서버를 JVM 안에서 실행
+    // Redis 7.x 기반이므로 Streams(XADD/XGROUP/XREADGROUP/XACK) 완전 지원
+    testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 
