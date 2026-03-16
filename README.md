@@ -23,6 +23,7 @@
 - [x] 페이지네이션 — `Pageable` + `Page<T>` 적용
 - [x] 환경별 설정 분리 — `application-local.yml` / `application-prod.yml` 분리 및 시크릿 환경변수화
 - [x] Actuator / 헬스체크 — `/actuator/health` 및 Prometheus 메트릭 엔드포인트
+- [ ] Order API 서버 분리 — Order 도메인을 독립 서비스로 분리 (멀티 모듈 또는 별도 레포지토리)
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
 - [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지
 - [ ] 테스트 커버리지 보강 — Service 단위 테스트, `@DataJpaTest`, 통합 테스트
