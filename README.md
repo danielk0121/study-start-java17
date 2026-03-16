@@ -33,6 +33,50 @@
 
 ---
 
+# 실행 방법
+
+## 인프라만 실행 (MySQL + Redis)
+
+로컬에서 앱을 직접 실행할 때 DB/Redis만 Docker로 띄웁니다.
+
+```bash
+docker compose up -d mysql redis
+```
+
+이후 앱 실행:
+
+```bash
+./gradlew bootRun
+```
+
+## 전체 실행 (MySQL + Redis + App)
+
+앱까지 컨테이너로 함께 실행합니다.
+
+```bash
+docker compose up -d
+```
+
+## 종료
+
+```bash
+# 컨테이너 중지 (볼륨 유지)
+docker compose down
+
+# 컨테이너 + 볼륨 모두 삭제
+docker compose down -v
+```
+
+## 포트 정보
+
+| 서비스 | 포트 |
+|---|---|
+| App | 8080 |
+| MySQL | 3306 |
+| Redis | 6379 |
+
+---
+
 # 기술 스펙
 
 ## 코어
