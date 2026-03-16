@@ -17,7 +17,7 @@ COPY src/ src/
 RUN ./gradlew bootJar --no-daemon -x test
 
 # ── 2단계: 실행 이미지 ────────────────────────────────────────────────────────
-FROM eclipse-temurin:17-jre-alpine
+FROM amazoncorretto:17-alpine
 
 WORKDIR /app
 
