@@ -63,13 +63,21 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// REST Docs 전용 테스트 태스크 — Docker Redis 없이 실행 가능한 @WebMvcTest만 포함
+// asciidoctor가 이 태스크에 의존하여 전체 테스트(Redis 연결 필요) 실패를 방지
+tasks.register('restDocsTest', Test) {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+    // RestDocs 테스트는 패키지 규칙: 클래스명이 RestDocsTest로 끝나는 것만 실행
+    include '**/*RestDocsTest.class'
+}
+
 // 테스트 스니펫 → HTML 문서 변환
 asciidoctor {
-    // 스니펫 디렉토리가 없으면(test skip 빌드 등) asciidoctor 태스크 자체를 건너뜀
     onlyIf { snippetsDir.exists() }
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
-    dependsOn test
+    dependsOn restDocsTest   // 전체 test 대신 restDocsTest만 의존
     attributes 'snippets': snippetsDir
 }
 

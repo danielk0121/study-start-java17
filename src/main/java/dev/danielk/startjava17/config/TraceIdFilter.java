@@ -1,6 +1,5 @@
 package dev.danielk.startjava17.config;
 
-import brave.Tracer;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,27 +23,15 @@ import java.io.IOException;
 @Component
 public class TraceIdFilter extends OncePerRequestFilter {
 
-    // Sleuth가 자동 주입하는 Tracer — 현재 Span의 traceId를 가져올 때 사용
-    private final Tracer tracer;
-
-    public TraceIdFilter(Tracer tracer) {
-        this.tracer = tracer;
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        try {
-            // MDC에서 Sleuth가 주입한 traceId를 읽어 응답 헤더에 추가
-            String traceId = MDC.get("traceId");
-            if (traceId != null) {
-                response.setHeader("X-Trace-Id", traceId);
-            }
-            filterChain.doFilter(request, response);
-        } finally {
-            // OncePerRequestFilter가 MDC 정리를 보장하지 않으므로 명시적으로 제거
-            MDC.remove("traceId");
+        // Sleuth가 MDC에 자동 주입한 traceId를 응답 헤더에 노출
+        String traceId = MDC.get("traceId");
+        if (traceId != null) {
+            response.setHeader("X-Trace-Id", traceId);
         }
+        filterChain.doFilter(request, response);
     }
 }

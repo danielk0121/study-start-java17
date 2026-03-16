@@ -3,6 +3,7 @@ package dev.danielk.startjava17.stream;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Range;
 import org.springframework.data.redis.connection.stream.*;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -101,7 +102,7 @@ class RedisStreamsIntegrationTest {
 
         // XINFO GROUPS: 그룹 생성 확인
         var groups = redisTemplate.opsForStream().groups(STREAM);
-        assertThat(groups).hasSize(1);
+        assertThat(groups.size()).isEqualTo(1);
         assertThat(groups.get(0).groupName()).isEqualTo(GROUP);
 
         System.out.println("[통합 STEP 2] 그룹명: "    + groups.get(0).groupName()
