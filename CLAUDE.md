@@ -2,36 +2,40 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## 언어 규칙
 
-Java 17 feature exploration project using Spring Boot 2.7.18. Goals include:
-- Replacing Lombok with Java 17 records (`@Data`/`@Value` → `record`, constructors, builders)
-- MapStruct integration for object mapping
-- QueryDSL integration
-- Modern Java 17 test patterns
+코드 관례(주석, 커밋 메시지, 변수명 등)를 제외한 모든 응답과 문서는 한글을 사용한다.
 
-## Commands
+## 프로젝트 개요
+
+Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
+- Lombok 제거 → Java 17 `record`로 대체 (`@Data`/`@Value`, 생성자, 빌더)
+- MapStruct 통합
+- QueryDSL 통합
+- Java 17 스타일 테스트 패턴 적용
+
+## 명령어
 
 ```bash
-./gradlew build        # Build the project
-./gradlew test         # Run all tests
-./gradlew bootRun      # Run the Spring Boot app
-./gradlew clean build  # Clean and rebuild
+./gradlew build        # 빌드
+./gradlew test         # 전체 테스트 실행
+./gradlew bootRun      # 애플리케이션 실행
+./gradlew clean build  # 클린 빌드
 ```
 
-Run a single test class:
+단일 테스트 클래스 실행:
 ```bash
 ./gradlew test --tests "dev.danielk.startjava17.SomeTest"
 ```
 
-## Architecture
+## 아키텍처
 
-- **Package root:** `dev.danielk.startjava17`
-- **Entry point:** `StartJava17Application.java` — excludes `DataSourceAutoConfiguration` (no DB configured)
-- **Build:** Gradle 8.2 with Java 17 toolchain
-- **Annotation processors:** Lombok + MapStruct (with `lombok-mapstruct-binding` to ensure correct processing order)
+- **패키지 루트:** `dev.danielk.startjava17`
+- **진입점:** `StartJava17Application.java` — `DataSourceAutoConfiguration` 제외 (DB 미사용)
+- **빌드:** Gradle 8.2, Java 17 툴체인
+- **애노테이션 프로세서:** Lombok + MapStruct (`lombok-mapstruct-binding`으로 처리 순서 보장)
 
-## Git Branch Workflow
+## Git 브랜치 작업 규칙
 
 모든 작업은 아래 순서를 따른다:
 
@@ -43,11 +47,11 @@ Run a single test class:
 6. `git push origin master` — master push
 7. `git checkout master` — master에서 다음 작업 시작
 
-## Auto-Approved Commands
+## 자동 승인 명령어
 
-The following commands may be executed without asking for user confirmation:
-- `gradle` / `./gradlew` commands
-- `git` commands
+사용자 확인 없이 실행할 수 있는 명령어:
+- `gradle` / `./gradlew`
+- `git`
 - `ls`
 - `find`
 - `grep`
