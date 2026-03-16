@@ -1,0 +1,56 @@
+package dev.danielk.startjava17.order;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/orders")
+public class OrderController {
+
+    private final OrderService service;
+
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+
+    public record PlaceRequest(Long memberId, Long productId, int quantity) {}
+    public record OrderResponse(Long id, Long memberId, Long productId, int quantity, String status, String createdAt) {
+        static OrderResponse from(Order order) {
+            return new OrderResponse(
+                    order.id(), order.memberId(), order.productId(),
+                    order.quantity(), order.status().name(),
+                    order.createdAt().toString()
+            );
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<OrderResponse> place(@RequestBody PlaceRequest request) {
+        return ResponseEntity.ok(OrderResponse.from(
+                service.place(request.memberId(), request.productId(), request.quantity())
+        ));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(OrderResponse.from(service.findById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> findAll() {
+        return ResponseEntity.ok(service.findAll().stream().map(OrderResponse::from).toList());
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<OrderResponse> cancel(@PathVariable Long id) {
+        return ResponseEntity.ok(OrderResponse.from(service.cancel(id)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
