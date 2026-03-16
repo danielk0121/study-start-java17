@@ -18,7 +18,7 @@
 - [x] Actuator / 헬스체크 — `/actuator/health` 및 Prometheus 메트릭 엔드포인트
 - [x] Global Timezone UTC 고정 — JVM `TimeZone.setDefault(UTC)` + DB `serverTimezone=UTC` (Locale 설정은 다국어 지원 시 적용)
 - [x] Flyway — DB 스키마 마이그레이션 이력 관리 (`V1__init_schema.sql`, `V2__sample_data.sql`)
-- [ ] QueryDSL — 동적 쿼리 (카테고리 필터, 날짜 범위 검색 등)
+- [x] QueryDSL — 주문/상품 월별·일별·요일별 통계 API (`/stats/**`)
 - [ ] Order API 서버 분리 — Order 도메인을 독립 서비스로 분리 (멀티 모듈 또는 별도 레포지토리)
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
 - [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지
@@ -48,6 +48,7 @@
 - 환경별 설정 분리 (`application-local.yml` / `application-prod.yml`)
 - Spring Boot Actuator + Micrometer Prometheus (`/actuator/health`, `/actuator/prometheus`)
 - Flyway DB 마이그레이션 — V1 테이블 생성 / V2~V3 샘플 데이터 (주문 100건, 날짜 분산) / V4 통계 뷰
+- QueryDSL 5.0 — 통계 API (`/stats/**`), `JPAQueryFactory` + `Projections.constructor` + record 조합
 
 ---
 

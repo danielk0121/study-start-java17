@@ -16,4 +16,8 @@ public final class CacheNames {
     public static final String PRODUCT_LIST  = "productList";
     public static final String ORDER         = "order";
     public static final String ORDER_LIST    = "orderList";
+
+    public static final String STATS_ORDER_MONTHLY   = "statsOrderMonthly";
+    public static final String STATS_ORDER_DAILY     = "statsOrderDaily";
+    public static final String STATS_PRODUCT_MONTHLY = "statsProductMonthly";
 }
