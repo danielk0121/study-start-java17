@@ -16,13 +16,13 @@
 - [x] 페이지네이션 — `Pageable` + `Page<T>` 적용
 - [x] 환경별 설정 분리 — `application-local.yml` / `application-prod.yml` 분리 및 시크릿 환경변수화
 - [x] Actuator / 헬스체크 — `/actuator/health` 및 Prometheus 메트릭 엔드포인트
+- [x] Global Timezone UTC 고정 — JVM `TimeZone.setDefault(UTC)` + DB `serverTimezone=UTC` (Locale 설정은 다국어 지원 시 적용)
 - [ ] QueryDSL — 동적 쿼리 (카테고리 필터, 날짜 범위 검색 등)
 - [ ] Flyway — DB 스키마 마이그레이션 이력 관리
 - [ ] Order API 서버 분리 — Order 도메인을 독립 서비스로 분리 (멀티 모듈 또는 별도 레포지토리)
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
 - [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지
 - [ ] Spring Security + JWT 인증/인가 적용
-- [ ] Locale / Global Timezone 설정 적용
 - [ ] OSIV(Open Session In View) 적용 테스트
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
