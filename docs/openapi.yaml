@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: Start Java 17 API
+  description: Java 17 + Redis Streams 학습 프로젝트 API 명세
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:8080
+    description: 로컬 개발 서버
+
+tags:
+  - name: Orders
+    description: 주문 이벤트 발행 API — Redis Stream에 메시지를 적재합니다
+
+paths:
+  /orders:
+    post:
+      tags:
+        - Orders
+      summary: 주문 이벤트 발행
+      description: |
+        주문 정보를 Redis Stream(`order-stream`)에 발행합니다.
+
+        **내부 흐름:**
+        1. UUID로 orderId 생성
+        2. `OrderEvent` record 생성
+        3. `XADD order-stream * orderId ... product ... quantity ...` 실행
+        4. Redis가 발급한 RecordId 반환
+
+        **응답 헤더:**
+        - `X-Trace-Id`: 요청 추적용 traceId (Sleuth 자동 생성)
+      operationId: publishOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+            example:
+              product: MacBook Pro
+              quantity: 2
+      responses:
+        '200':
+          description: 발행 성공 — Redis RecordId 반환
+          headers:
+            X-Trace-Id:
+              description: 요청 추적용 traceId
+              schema:
+                type: string
+                example: "a1b2c3d4e5f6g7h8"
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "published: 1700000000000-0"
+
+components:
+  schemas:
+    OrderRequest:
+      type: object
+      required:
+        - product
+        - quantity
+      properties:
+        product:
+          type: string
+          description: 상품명
+          example: MacBook Pro
+        quantity:
+          type: integer
+          description: 수량
+          minimum: 1
+          example: 2
