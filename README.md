@@ -15,6 +15,23 @@
 
 ---
 
+# ERD
+
+DBML 형식으로 관리합니다. 아래 링크에서 다이어그램으로 확인할 수 있습니다.
+
+- **스펙 파일**: [docs/erd.dbml](./docs/erd.dbml)
+- **다이어그램 보기**: [dbdiagram.io에서 열기](https://dbdiagram.io/d) — 링크 접속 후 `docs/erd.dbml` 내용을 붙여넣기
+
+**도메인 구성**
+
+| 테이블 | 설명 |
+|---|---|
+| `members` | 회원 (이메일, 이름, 권한) |
+| `products` | 상품 (상품명, 가격, 재고, 카테고리) |
+| `order_events` | 주문 이벤트 (Redis Stream 메시지의 RDB 표현) |
+
+---
+
 # API 문서
 
 OpenAPI 3.0 스펙으로 정의되어 있습니다. 아래 링크에서 바로 확인할 수 있습니다.
