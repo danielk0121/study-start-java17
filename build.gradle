@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.18' // Spring Boot 2 마지막 버전
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' // Spring REST Docs HTML 변환
 }
 
 group = 'dev.danielk'
@@ -17,21 +18,32 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    asciidoctorExt
+}
+
+// 스니펫 생성 경로
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    // API 문서 — springdoc-openapi (Swagger UI + OpenAPI 3.0 자동 생성)
-    implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
     // traceId — Spring Cloud Sleuth (Spring Boot 2.x 표준 분산 추적)
     // MDC에 traceId/spanId를 자동 주입, 로그와 응답 헤더에서 확인 가능
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
     // JSON 로그 출력 — logback-spring.xml에서 dev/prod 프로파일에 사용
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Spring REST Docs — MockMvc 기반 테스트로 API 문서 스니펫 자동 생성
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.8.RELEASE'
     // 임베디드 Redis — Docker 없이 테스트용 Redis 서버를 JVM 안에서 실행
-    // Redis 7.x 기반이므로 Streams(XADD/XGROUP/XREADGROUP/XACK) 완전 지원
     testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
+    // AsciiDoc 스니펫 처리 확장
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.8.RELEASE'
 
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 
@@ -47,5 +59,24 @@ dependencies {
 }
 
 tasks.named('test') {
+    outputs.dir snippetsDir
     useJUnitPlatform()
+}
+
+// 테스트 스니펫 → HTML 문서 변환
+asciidoctor {
+    // 스니펫 디렉토리가 없으면(test skip 빌드 등) asciidoctor 태스크 자체를 건너뜀
+    onlyIf { snippetsDir.exists() }
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+    attributes 'snippets': snippetsDir
+}
+
+// 빌드된 JAR에 HTML 문서 포함 → 앱 실행 중 /docs/index.html 로 접근 가능
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
