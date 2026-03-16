@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -47,12 +47,13 @@ class ProductControllerRestDocsTest {
     @MockBean  ProductService productService;
     @MockBean  ProductMapper productMapper;
 
-    private static final LocalDateTime NOW = LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+    private static final java.time.LocalDateTime LDT_NOW = java.time.LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+    private static final OffsetDateTime ODT_NOW = LDT_NOW.atZone(java.time.ZoneId.systemDefault()).toOffsetDateTime();
 
     private static final Product MACBOOK =
-            new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS, NOW, NOW);
+            new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS, LDT_NOW, LDT_NOW);
     private static final ProductController.ProductResponse MACBOOK_RESPONSE =
-            new ProductController.ProductResponse(1L, "MacBook Pro", new BigDecimal("2000000"), 10, "ELECTRONICS", NOW, NOW);
+            new ProductController.ProductResponse(1L, "MacBook Pro", new BigDecimal("2000000"), 10, "ELECTRONICS", ODT_NOW, ODT_NOW);
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -127,9 +128,9 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("GET /products — 상품 목록 조회")
     void findAll() throws Exception {
-        Product jeans = new Product(2L, "청바지", new BigDecimal("50000"), 100, ProductCategory.CLOTHING, NOW, NOW);
+        Product jeans = new Product(2L, "청바지", new BigDecimal("50000"), 100, ProductCategory.CLOTHING, LDT_NOW, LDT_NOW);
         ProductController.ProductResponse jeansResponse =
-                new ProductController.ProductResponse(2L, "청바지", new BigDecimal("50000"), 100, "CLOTHING", NOW, NOW);
+                new ProductController.ProductResponse(2L, "청바지", new BigDecimal("50000"), 100, "CLOTHING", ODT_NOW, ODT_NOW);
 
         when(productService.findAll()).thenReturn(List.of(MACBOOK, jeans));
         when(productMapper.toResponseList(any())).thenReturn(List.of(MACBOOK_RESPONSE, jeansResponse));
@@ -156,9 +157,9 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("PUT /products/{id} — 상품 수정")
     void update() throws Exception {
-        Product updated = new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS, NOW, NOW);
+        Product updated = new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS, LDT_NOW, LDT_NOW);
         ProductController.ProductResponse updatedResponse =
-                new ProductController.ProductResponse(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, "ELECTRONICS", NOW, NOW);
+                new ProductController.ProductResponse(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, "ELECTRONICS", ODT_NOW, ODT_NOW);
 
         when(productMapper.toProduct(any(ProductController.UpdateRequest.class))).thenReturn(updated);
         when(productService.update(eq(1L), any())).thenReturn(updated);

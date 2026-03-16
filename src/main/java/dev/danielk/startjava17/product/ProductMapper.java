@@ -8,31 +8,30 @@ import java.util.List;
 /**
  * MapStruct — Product 도메인 변환
  *
- * RegisterRequest / UpdateRequest → Product 변환 시
- * category 필드가 String → ProductCategory enum 이므로 expression으로 처리.
- * id / audit 필드는 저장소가 부여하므로 null로 매핑.
+ * LocalDateTime(도메인) → OffsetDateTime(DTO) 변환:
+ *   도메인/영속 레이어는 LocalDateTime을 유지하고,
+ *   API 응답 시 시스템 기본 ZoneId를 붙여 OffsetDateTime으로 노출한다.
  */
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
-    // RegisterRequest → Product (id=null, category: String→enum)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "category", expression = "java(ProductCategory.valueOf(request.category()))")
+    @Mapping(target = "id",           ignore = true)
+    @Mapping(target = "category",     expression = "java(ProductCategory.valueOf(request.category()))")
     @Mapping(target = "decreaseStock", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdAt",    ignore = true)
+    @Mapping(target = "updatedAt",    ignore = true)
     Product toProduct(ProductController.RegisterRequest request);
 
-    // UpdateRequest → Product (id는 호출부에서 주입, category: String→enum)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "category", expression = "java(ProductCategory.valueOf(request.category()))")
+    @Mapping(target = "id",           ignore = true)
+    @Mapping(target = "category",     expression = "java(ProductCategory.valueOf(request.category()))")
     @Mapping(target = "decreaseStock", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdAt",    ignore = true)
+    @Mapping(target = "updatedAt",    ignore = true)
     Product toProduct(ProductController.UpdateRequest request);
 
-    // Product → ProductResponse (category: enum→String)
-    @Mapping(target = "category", expression = "java(product.category().name())")
+    @Mapping(target = "category",  expression = "java(product.category().name())")
+    @Mapping(target = "createdAt", expression = "java(product.createdAt() != null ? product.createdAt().atZone(java.time.ZoneId.systemDefault()).toOffsetDateTime() : null)")
+    @Mapping(target = "updatedAt", expression = "java(product.updatedAt() != null ? product.updatedAt().atZone(java.time.ZoneId.systemDefault()).toOffsetDateTime() : null)")
     ProductController.ProductResponse toResponse(Product product);
 
     List<ProductController.ProductResponse> toResponseList(List<Product> products);

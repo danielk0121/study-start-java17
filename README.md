@@ -14,6 +14,7 @@
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
 - [ ] Spring Security + JWT 인증/인가 적용
+- [ ] Locale / Global Timezone 설정 적용
 
 ## 적용된 기술 요약
 

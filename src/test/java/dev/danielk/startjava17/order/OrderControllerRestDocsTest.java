@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -43,7 +43,8 @@ class OrderControllerRestDocsTest {
     @MockBean  OrderService orderService;
     @MockBean  OrderMapper orderMapper;
 
-    private static final LocalDateTime NOW = LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+    private static final java.time.LocalDateTime LDT_NOW = java.time.LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+    private static final OffsetDateTime ODT_NOW = LDT_NOW.atZone(java.time.ZoneId.systemDefault()).toOffsetDateTime();
 
     private static final List<OrderItem> ITEMS = List.of(
             new OrderItem(1L, 2),
@@ -54,9 +55,9 @@ class OrderControllerRestDocsTest {
             new OrderController.OrderItemResponse(2L, 1)
     );
     private static final Order ORDER =
-            new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW, null);
+            new Order(1L, 1L, ITEMS, OrderStatus.PENDING, LDT_NOW, null);
     private static final OrderController.OrderResponse ORDER_RESPONSE =
-            new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "PENDING", NOW, null);
+            new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "PENDING", ODT_NOW, null);
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -139,9 +140,9 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("GET /orders — 주문 목록 조회")
     void findAll() throws Exception {
-        Order order2 = new Order(2L, 2L, List.of(new OrderItem(3L, 5)), OrderStatus.CONFIRMED, NOW, NOW);
+        Order order2 = new Order(2L, 2L, List.of(new OrderItem(3L, 5)), OrderStatus.CONFIRMED, LDT_NOW, LDT_NOW);
         OrderController.OrderResponse response2 = new OrderController.OrderResponse(
-                2L, 2L, List.of(new OrderController.OrderItemResponse(3L, 5)), "CONFIRMED", NOW, NOW);
+                2L, 2L, List.of(new OrderController.OrderItemResponse(3L, 5)), "CONFIRMED", ODT_NOW, ODT_NOW);
 
         when(orderService.findAll()).thenReturn(List.of(ORDER, order2));
         when(orderMapper.toResponseList(any())).thenReturn(List.of(ORDER_RESPONSE, response2));
@@ -169,9 +170,9 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("PATCH /orders/{id}/cancel — 주문 취소")
     void cancelOrder() throws Exception {
-        Order cancelled = new Order(1L, 1L, ITEMS, OrderStatus.CANCELLED, NOW, NOW);
+        Order cancelled = new Order(1L, 1L, ITEMS, OrderStatus.CANCELLED, LDT_NOW, LDT_NOW);
         OrderController.OrderResponse cancelledResponse =
-                new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "CANCELLED", NOW, NOW);
+                new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "CANCELLED", ODT_NOW, ODT_NOW);
 
         when(orderService.cancel(1L)).thenReturn(cancelled);
         when(orderMapper.toResponse(cancelled)).thenReturn(cancelledResponse);

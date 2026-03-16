@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -46,12 +46,13 @@ class MemberControllerRestDocsTest {
     @MockBean  MemberService memberService;
     @MockBean  MemberMapper memberMapper;
 
-    private static final LocalDateTime NOW = LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+    private static final java.time.LocalDateTime LDT_NOW = java.time.LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+    private static final OffsetDateTime ODT_NOW = LDT_NOW.atZone(java.time.ZoneId.systemDefault()).toOffsetDateTime();
 
     private static final Member HONG =
-            new Member(1L, "user@example.com", "홍길동", MemberRole.USER, NOW, NOW);
+            new Member(1L, "user@example.com", "홍길동", MemberRole.USER, LDT_NOW, LDT_NOW);
     private static final MemberController.MemberResponse HONG_RESPONSE =
-            new MemberController.MemberResponse(1L, "user@example.com", "홍길동", "USER", NOW, NOW);
+            new MemberController.MemberResponse(1L, "user@example.com", "홍길동", "USER", ODT_NOW, ODT_NOW);
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -121,9 +122,9 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("GET /members — 회원 목록 조회")
     void findAll() throws Exception {
-        Member admin = new Member(2L, "admin@example.com", "관리자", MemberRole.ADMIN, NOW, NOW);
+        Member admin = new Member(2L, "admin@example.com", "관리자", MemberRole.ADMIN, LDT_NOW, LDT_NOW);
         MemberController.MemberResponse adminResponse =
-                new MemberController.MemberResponse(2L, "admin@example.com", "관리자", "ADMIN", NOW, NOW);
+                new MemberController.MemberResponse(2L, "admin@example.com", "관리자", "ADMIN", ODT_NOW, ODT_NOW);
 
         when(memberService.findAll()).thenReturn(List.of(HONG, admin));
         when(memberMapper.toResponseList(any())).thenReturn(List.of(HONG_RESPONSE, adminResponse));
@@ -149,9 +150,9 @@ class MemberControllerRestDocsTest {
     @Test
     @DisplayName("PUT /members/{id} — 회원 정보 수정")
     void update() throws Exception {
-        Member updated = new Member(1L, "user@example.com", "홍길순", MemberRole.USER, NOW, NOW);
+        Member updated = new Member(1L, "user@example.com", "홍길순", MemberRole.USER, LDT_NOW, LDT_NOW);
         MemberController.MemberResponse updatedResponse =
-                new MemberController.MemberResponse(1L, "user@example.com", "홍길순", "USER", NOW, NOW);
+                new MemberController.MemberResponse(1L, "user@example.com", "홍길순", "USER", ODT_NOW, ODT_NOW);
 
         when(memberService.update(eq(1L), any())).thenReturn(updated);
         when(memberMapper.toResponse(updated)).thenReturn(updatedResponse);
