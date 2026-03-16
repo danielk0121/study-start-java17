@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/start_java17?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useUnicode=true&connectionCollation=utf8mb4_unicode_ci
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  redis:
+    host: localhost
+    port: 6379
+
+# Redis Streams 설정
+redis:
+  stream:
+    key: order-stream
+    consumer-group: order-group
+    consumer-name: consumer-1
+
+# 로그 설정은 logback-spring.xml에서 프로파일별로 관리
+# - local/default : Spring Boot 기본 포맷 + traceId/spanId
+# - dev/prod      : JSON 출력 (logstash-logback-encoder)
