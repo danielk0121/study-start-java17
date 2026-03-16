@@ -9,23 +9,23 @@
   - [x] 생성자
   - [x] 빌더
 - [x] MapStruct
-- [ ] QueryDSL — 동적 쿼리 (카테고리 필터, 날짜 범위 검색 등)
 - [x] Redis Streams (프로듀서/컨슈머/컨슈머 그룹)
-- [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
-- [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
-- [ ] Spring Security + JWT 인증/인가 적용
-- [ ] Locale / Global Timezone 설정 적용
-- [ ] OSIV(Open Session In View) 적용 테스트
 - [x] 글로벌 예외 처리 — `@RestControllerAdvice` + 표준 에러 응답 형식
 - [x] Bean Validation — `@Valid` / `@NotBlank` 등 Controller 진입 시점 입력값 검증
-- [ ] Flyway — DB 스키마 마이그레이션 이력 관리
 - [x] `@Transactional` 전략 적용 — 쓰기/읽기 분리 (`readOnly = true`)
 - [x] 페이지네이션 — `Pageable` + `Page<T>` 적용
 - [x] 환경별 설정 분리 — `application-local.yml` / `application-prod.yml` 분리 및 시크릿 환경변수화
 - [x] Actuator / 헬스체크 — `/actuator/health` 및 Prometheus 메트릭 엔드포인트
+- [ ] QueryDSL — 동적 쿼리 (카테고리 필터, 날짜 범위 검색 등)
+- [ ] Flyway — DB 스키마 마이그레이션 이력 관리
 - [ ] Order API 서버 분리 — Order 도메인을 독립 서비스로 분리 (멀티 모듈 또는 별도 레포지토리)
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
 - [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지
+- [ ] Spring Security + JWT 인증/인가 적용
+- [ ] Locale / Global Timezone 설정 적용
+- [ ] OSIV(Open Session In View) 적용 테스트
+- [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
+- [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
 - [ ] 테스트 커버리지 보강 — Service 단위 테스트, `@DataJpaTest`, 통합 테스트
 
 ## 적용된 기술 요약
