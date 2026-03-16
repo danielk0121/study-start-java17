@@ -1,6 +1,8 @@
 package dev.danielk.startjava17.product;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.epages.restdocs.apispec.Schema;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,10 +26,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -63,7 +65,11 @@ class ProductControllerRestDocsTest {
                                 """))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("products-register",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        ResourceSnippetParameters.builder()
+                                .requestSchema(Schema.schema("ProductRegisterRequest"))
+                                .responseSchema(Schema.schema("ProductResponse")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").description("상품명"),
                                 fieldWithPath("price").description("가격"),
@@ -89,6 +95,9 @@ class ProductControllerRestDocsTest {
         mockMvc.perform(get("/products/{id}", 1L))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("products-find-by-id",
+                        ResourceSnippetParameters.builder()
+                                .responseSchema(Schema.schema("ProductResponse")),
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("상품 ID")),
                         responseFields(
@@ -112,6 +121,9 @@ class ProductControllerRestDocsTest {
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("products-find-all",
+                        ResourceSnippetParameters.builder()
+                                .responseSchema(Schema.schema("ProductResponse")),
+                        preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[].id").description("상품 ID"),
@@ -136,7 +148,11 @@ class ProductControllerRestDocsTest {
                                 """))
                 .andExpect(status().isOk())
                 .andDo(MockMvcRestDocumentationWrapper.document("products-update",
-                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        ResourceSnippetParameters.builder()
+                                .requestSchema(Schema.schema("ProductUpdateRequest"))
+                                .responseSchema(Schema.schema("ProductResponse")),
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("상품 ID")),
                         requestFields(
                                 fieldWithPath("name").description("상품명"),
@@ -162,6 +178,7 @@ class ProductControllerRestDocsTest {
         mockMvc.perform(delete("/products/{id}", 1L))
                 .andExpect(status().isNoContent())
                 .andDo(MockMvcRestDocumentationWrapper.document("products-delete",
+                        ResourceSnippetParameters.builder(),
                         pathParameters(parameterWithName("id").description("상품 ID"))
                 ));
     }

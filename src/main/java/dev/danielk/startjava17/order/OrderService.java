@@ -13,8 +13,8 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public Order place(Long memberId, Long productId, int quantity) {
-        return repository.save(Order.create(memberId, productId, quantity));
+    public Order place(Long memberId, List<OrderItem> items) {
+        return repository.save(Order.create(memberId, items));
     }
 
     public Order findById(Long id) {

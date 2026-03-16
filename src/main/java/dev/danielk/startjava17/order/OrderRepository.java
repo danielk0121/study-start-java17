@@ -17,8 +17,7 @@ public class OrderRepository {
 
     public Order save(Order order) {
         long id = sequence.getAndIncrement();
-        Order saved = new Order(id, order.memberId(), order.productId(),
-                order.quantity(), order.status(), order.createdAt());
+        Order saved = new Order(id, order.memberId(), order.items(), order.status(), order.createdAt());
         store.put(id, saved);
         return saved;
     }
