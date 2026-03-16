@@ -2,7 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.18' // Spring Boot 2 마지막 버전
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2' // Spring REST Docs HTML 변환
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'       // Spring REST Docs HTML 변환
+    id 'com.epages.restdocs-api-spec' version '0.16.4'     // REST Docs → OpenAPI 스펙 자동 생성
 }
 
 group = 'dev.danielk'
@@ -31,6 +32,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.mysql:mysql-connector-j'
     // traceId — Spring Cloud Sleuth (Spring Boot 2.x 표준 분산 추적)
     // MDC에 traceId/spanId를 자동 주입, 로그와 응답 헤더에서 확인 가능
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
@@ -40,6 +43,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // Spring REST Docs — MockMvc 기반 테스트로 API 문서 스니펫 자동 생성
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.8.RELEASE'
+    // restdocs-api-spec — REST Docs 테스트 실행 시 OpenAPI 3.0 스펙 자동 생성
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.16.4'
     // 임베디드 Redis — Docker 없이 테스트용 Redis 서버를 JVM 안에서 실행
     testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
     // AsciiDoc 스니펫 처리 확장
@@ -79,6 +84,27 @@ asciidoctor {
     configurations 'asciidoctorExt'
     dependsOn restDocsTest   // 전체 test 대신 restDocsTest만 의존
     attributes 'snippets': snippetsDir
+}
+
+// REST Docs 테스트 스니펫 → OpenAPI 3.0 YAML 자동 생성
+// 생성 위치: build/api-spec/openapi3.yaml
+openapi3 {
+    server = 'http://localhost:8080'
+    title = 'Start Java 17 API'
+    description = 'Java 17 + Redis Streams 학습 프로젝트 API 명세'
+    version = '0.0.1'
+    format = 'yaml'
+    outputDirectory = 'build/api-spec'
+    outputFileNamePrefix = 'openapi3'
+}
+
+// openapi3 태스크 실행 후 docs/openapi.yaml로 자동 복사
+// → Git에 커밋되어 README 링크(Swagger Editor, ReDoc)에서 항상 최신 상태 유지
+tasks.register('copyOpenApiSpec', Copy) {
+    dependsOn 'openapi3'
+    from 'build/api-spec/openapi3.yaml'
+    into 'docs'
+    rename { 'openapi.yaml' }
 }
 
 // 빌드된 JAR에 HTML 문서 포함 → 앱 실행 중 /docs/index.html 로 접근 가능
