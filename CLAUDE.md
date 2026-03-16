@@ -31,6 +31,18 @@ Run a single test class:
 - **Build:** Gradle 8.2 with Java 17 toolchain
 - **Annotation processors:** Lombok + MapStruct (with `lombok-mapstruct-binding` to ensure correct processing order)
 
+## Git Branch Workflow
+
+모든 작업은 아래 순서를 따른다:
+
+1. `git fetch origin` — 작업 시작 전 항상 origin 최신 상태를 로컬에 반영
+2. `git checkout -b feature/<작업명>` — 새 feature 브랜치 생성
+3. 작업 완료 후 커밋
+4. `git push -u origin feature/<작업명>` — feature 브랜치 push
+5. `git checkout master && git merge --no-ff feature/<작업명>` — master에 머지 (fast-forward 금지)
+6. `git push origin master` — master push
+7. `git checkout master` — master에서 다음 작업 시작
+
 ## Auto-Approved Commands
 
 The following commands may be executed without asking for user confirmation:
