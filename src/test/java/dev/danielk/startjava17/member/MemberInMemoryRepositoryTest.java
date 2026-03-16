@@ -81,7 +81,7 @@ class MemberInMemoryRepositoryTest {
     @DisplayName("update — 회원 정보를 수정하면 변경된 데이터가 반환된다")
     void update() {
         Member saved = repository.save(Member.create("hong@example.com", "홍길동"));
-        Member updated = new Member(saved.id(), saved.email(), "홍길순", saved.role());
+        Member updated = new Member(saved.id(), saved.email(), "홍길순", saved.role(), saved.createdAt(), saved.updatedAt());
 
         Member result = repository.update(updated);
 

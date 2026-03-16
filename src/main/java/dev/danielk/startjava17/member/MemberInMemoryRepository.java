@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.member;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,8 @@ public class MemberInMemoryRepository implements MemberRepository {
     @Override
     public Member save(Member member) {
         long id = sequence.getAndIncrement();
-        Member saved = new Member(id, member.email(), member.name(), member.role());
+        LocalDateTime now = LocalDateTime.now();
+        Member saved = new Member(id, member.email(), member.name(), member.role(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -32,8 +34,12 @@ public class MemberInMemoryRepository implements MemberRepository {
 
     @Override
     public Member update(Member member) {
-        store.put(member.id(), member);
-        return member;
+        Member updated = new Member(
+                member.id(), member.email(), member.name(), member.role(),
+                member.createdAt(), LocalDateTime.now()
+        );
+        store.put(updated.id(), updated);
+        return updated;
     }
 
     @Override

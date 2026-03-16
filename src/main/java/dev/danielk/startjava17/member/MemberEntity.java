@@ -1,6 +1,11 @@
 package dev.danielk.startjava17.member;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * JPA 영속성 전용 엔티티 — 도메인 record(Member)와 분리
@@ -10,6 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "members")
+@EntityListeners(AuditingEntityListener.class)
 public class MemberEntity {
 
     @Id
@@ -26,6 +32,14 @@ public class MemberEntity {
     @Column(nullable = false)
     private MemberRole role;
 
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
     protected MemberEntity() {}
 
     public MemberEntity(Long id, String email, String name, MemberRole role) {
@@ -40,11 +54,13 @@ public class MemberEntity {
     }
 
     public Member toDomain() {
-        return new Member(id, email, name, role);
+        return new Member(id, email, name, role, createdAt, updatedAt);
     }
 
-    public Long getId()       { return id; }
-    public String getEmail()  { return email; }
-    public String getName()   { return name; }
-    public MemberRole getRole() { return role; }
+    public Long getId()              { return id; }
+    public String getEmail()         { return email; }
+    public String getName()          { return name; }
+    public MemberRole getRole()      { return role; }
+    public LocalDateTime getCreatedAt()  { return createdAt; }
+    public LocalDateTime getUpdatedAt()  { return updatedAt; }
 }

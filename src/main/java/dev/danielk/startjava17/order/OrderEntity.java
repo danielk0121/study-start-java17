@@ -1,7 +1,10 @@
 package dev.danielk.startjava17.order;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "orders")
+@EntityListeners(AuditingEntityListener.class)
 public class OrderEntity {
 
     @Id
@@ -24,8 +28,13 @@ public class OrderEntity {
     @Column(nullable = false)
     private OrderStatus status;
 
-    @Column(name = "created_at", nullable = false)
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemEntity> items = new ArrayList<>();
@@ -51,12 +60,13 @@ public class OrderEntity {
         List<OrderItem> domainItems = items.stream()
                 .map(OrderItemEntity::toDomain)
                 .toList();
-        return new Order(id, memberId, domainItems, status, createdAt);
+        return new Order(id, memberId, domainItems, status, createdAt, updatedAt);
     }
 
     public Long getId()                     { return id; }
     public Long getMemberId()               { return memberId; }
     public OrderStatus getStatus()          { return status; }
     public LocalDateTime getCreatedAt()     { return createdAt; }
+    public LocalDateTime getUpdatedAt()     { return updatedAt; }
     public List<OrderItemEntity> getItems() { return items; }
 }

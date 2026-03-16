@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.product;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,8 @@ public class ProductInMemoryRepository implements ProductRepository {
     @Override
     public Product save(Product product) {
         long id = sequence.getAndIncrement();
-        Product saved = new Product(id, product.name(), product.price(), product.stock(), product.category());
+        LocalDateTime now = LocalDateTime.now();
+        Product saved = new Product(id, product.name(), product.price(), product.stock(), product.category(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -32,8 +34,12 @@ public class ProductInMemoryRepository implements ProductRepository {
 
     @Override
     public Product update(Product product) {
-        store.put(product.id(), product);
-        return product;
+        Product updated = new Product(
+                product.id(), product.name(), product.price(), product.stock(), product.category(),
+                product.createdAt(), LocalDateTime.now()
+        );
+        store.put(updated.id(), updated);
+        return updated;
     }
 
     @Override

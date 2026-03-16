@@ -54,9 +54,9 @@ class OrderControllerRestDocsTest {
             new OrderController.OrderItemResponse(2L, 1)
     );
     private static final Order ORDER =
-            new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW);
+            new Order(1L, 1L, ITEMS, OrderStatus.PENDING, NOW, null);
     private static final OrderController.OrderResponse ORDER_RESPONSE =
-            new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "PENDING", NOW.toString());
+            new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "PENDING", NOW, null);
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -103,7 +103,8 @@ class OrderControllerRestDocsTest {
                                 fieldWithPath("items[].productId").description("상품 ID"),
                                 fieldWithPath("items[].quantity").description("주문 수량"),
                                 fieldWithPath("status").description("주문 상태 (PENDING | CONFIRMED | CANCELLED)"),
-                                fieldWithPath("createdAt").description("주문 일시")
+                                fieldWithPath("createdAt").description("주문 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시").optional()
                         )
                 ));
     }
@@ -129,7 +130,8 @@ class OrderControllerRestDocsTest {
                                 fieldWithPath("items[].productId").description("상품 ID"),
                                 fieldWithPath("items[].quantity").description("주문 수량"),
                                 fieldWithPath("status").description("주문 상태"),
-                                fieldWithPath("createdAt").description("주문 일시")
+                                fieldWithPath("createdAt").description("주문 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시").optional()
                         )
                 ));
     }
@@ -137,9 +139,9 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("GET /orders — 주문 목록 조회")
     void findAll() throws Exception {
-        Order order2 = new Order(2L, 2L, List.of(new OrderItem(3L, 5)), OrderStatus.CONFIRMED, NOW);
+        Order order2 = new Order(2L, 2L, List.of(new OrderItem(3L, 5)), OrderStatus.CONFIRMED, NOW, NOW);
         OrderController.OrderResponse response2 = new OrderController.OrderResponse(
-                2L, 2L, List.of(new OrderController.OrderItemResponse(3L, 5)), "CONFIRMED", NOW.toString());
+                2L, 2L, List.of(new OrderController.OrderItemResponse(3L, 5)), "CONFIRMED", NOW, NOW);
 
         when(orderService.findAll()).thenReturn(List.of(ORDER, order2));
         when(orderMapper.toResponseList(any())).thenReturn(List.of(ORDER_RESPONSE, response2));
@@ -158,7 +160,8 @@ class OrderControllerRestDocsTest {
                                 fieldWithPath("[].items[].productId").description("상품 ID"),
                                 fieldWithPath("[].items[].quantity").description("주문 수량"),
                                 fieldWithPath("[].status").description("주문 상태"),
-                                fieldWithPath("[].createdAt").description("주문 일시")
+                                fieldWithPath("[].createdAt").description("주문 일시"),
+                                fieldWithPath("[].updatedAt").description("최종 수정 일시").optional()
                         )
                 ));
     }
@@ -166,9 +169,9 @@ class OrderControllerRestDocsTest {
     @Test
     @DisplayName("PATCH /orders/{id}/cancel — 주문 취소")
     void cancelOrder() throws Exception {
-        Order cancelled = new Order(1L, 1L, ITEMS, OrderStatus.CANCELLED, NOW);
+        Order cancelled = new Order(1L, 1L, ITEMS, OrderStatus.CANCELLED, NOW, NOW);
         OrderController.OrderResponse cancelledResponse =
-                new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "CANCELLED", NOW.toString());
+                new OrderController.OrderResponse(1L, 1L, ITEM_RESPONSES, "CANCELLED", NOW, NOW);
 
         when(orderService.cancel(1L)).thenReturn(cancelled);
         when(orderMapper.toResponse(cancelled)).thenReturn(cancelledResponse);
@@ -188,7 +191,8 @@ class OrderControllerRestDocsTest {
                                 fieldWithPath("items[].productId").description("상품 ID"),
                                 fieldWithPath("items[].quantity").description("주문 수량"),
                                 fieldWithPath("status").description("취소된 주문 상태 (CANCELLED)"),
-                                fieldWithPath("createdAt").description("주문 일시")
+                                fieldWithPath("createdAt").description("주문 일시"),
+                                fieldWithPath("updatedAt").description("취소 처리 일시")
                         )
                 ));
     }

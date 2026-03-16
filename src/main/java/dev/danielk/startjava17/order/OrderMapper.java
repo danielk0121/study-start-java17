@@ -19,9 +19,8 @@ public interface OrderMapper {
     // OrderItem → OrderItemResponse
     OrderController.OrderItemResponse toItemResponse(OrderItem item);
 
-    // Order → OrderResponse (status: enum→String, createdAt: LocalDateTime→String)
+    // Order → OrderResponse (status: enum→String)
     @Mapping(target = "status", expression = "java(order.status().name())")
-    @Mapping(target = "createdAt", expression = "java(order.createdAt().toString())")
     OrderController.OrderResponse toResponse(Order order);
 
     List<OrderController.OrderResponse> toResponseList(List<Order> orders);

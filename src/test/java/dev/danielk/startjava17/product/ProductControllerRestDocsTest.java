@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -46,10 +47,12 @@ class ProductControllerRestDocsTest {
     @MockBean  ProductService productService;
     @MockBean  ProductMapper productMapper;
 
+    private static final LocalDateTime NOW = LocalDateTime.of(2026, 3, 16, 12, 0, 0);
+
     private static final Product MACBOOK =
-            new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS);
+            new Product(1L, "MacBook Pro", new BigDecimal("2000000"), 10, ProductCategory.ELECTRONICS, NOW, NOW);
     private static final ProductController.ProductResponse MACBOOK_RESPONSE =
-            new ProductController.ProductResponse(1L, "MacBook Pro", new BigDecimal("2000000"), 10, "ELECTRONICS");
+            new ProductController.ProductResponse(1L, "MacBook Pro", new BigDecimal("2000000"), 10, "ELECTRONICS", NOW, NOW);
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -88,7 +91,9 @@ class ProductControllerRestDocsTest {
                                 fieldWithPath("name").description("상품명"),
                                 fieldWithPath("price").description("가격"),
                                 fieldWithPath("stock").description("재고 수량"),
-                                fieldWithPath("category").description("카테고리")
+                                fieldWithPath("category").description("카테고리"),
+                                fieldWithPath("createdAt").description("등록 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시")
                         )
                 ));
     }
@@ -112,7 +117,9 @@ class ProductControllerRestDocsTest {
                                 fieldWithPath("name").description("상품명"),
                                 fieldWithPath("price").description("가격"),
                                 fieldWithPath("stock").description("재고 수량"),
-                                fieldWithPath("category").description("카테고리")
+                                fieldWithPath("category").description("카테고리"),
+                                fieldWithPath("createdAt").description("등록 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시")
                         )
                 ));
     }
@@ -120,9 +127,9 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("GET /products — 상품 목록 조회")
     void findAll() throws Exception {
-        Product jeans = new Product(2L, "청바지", new BigDecimal("50000"), 100, ProductCategory.CLOTHING);
+        Product jeans = new Product(2L, "청바지", new BigDecimal("50000"), 100, ProductCategory.CLOTHING, NOW, NOW);
         ProductController.ProductResponse jeansResponse =
-                new ProductController.ProductResponse(2L, "청바지", new BigDecimal("50000"), 100, "CLOTHING");
+                new ProductController.ProductResponse(2L, "청바지", new BigDecimal("50000"), 100, "CLOTHING", NOW, NOW);
 
         when(productService.findAll()).thenReturn(List.of(MACBOOK, jeans));
         when(productMapper.toResponseList(any())).thenReturn(List.of(MACBOOK_RESPONSE, jeansResponse));
@@ -139,7 +146,9 @@ class ProductControllerRestDocsTest {
                                 fieldWithPath("[].name").description("상품명"),
                                 fieldWithPath("[].price").description("가격"),
                                 fieldWithPath("[].stock").description("재고 수량"),
-                                fieldWithPath("[].category").description("카테고리")
+                                fieldWithPath("[].category").description("카테고리"),
+                                fieldWithPath("[].createdAt").description("등록 일시"),
+                                fieldWithPath("[].updatedAt").description("최종 수정 일시")
                         )
                 ));
     }
@@ -147,9 +156,9 @@ class ProductControllerRestDocsTest {
     @Test
     @DisplayName("PUT /products/{id} — 상품 수정")
     void update() throws Exception {
-        Product updated = new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS);
+        Product updated = new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS, NOW, NOW);
         ProductController.ProductResponse updatedResponse =
-                new ProductController.ProductResponse(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, "ELECTRONICS");
+                new ProductController.ProductResponse(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, "ELECTRONICS", NOW, NOW);
 
         when(productMapper.toProduct(any(ProductController.UpdateRequest.class))).thenReturn(updated);
         when(productService.update(eq(1L), any())).thenReturn(updated);
@@ -179,7 +188,9 @@ class ProductControllerRestDocsTest {
                                 fieldWithPath("name").description("상품명"),
                                 fieldWithPath("price").description("가격"),
                                 fieldWithPath("stock").description("재고 수량"),
-                                fieldWithPath("category").description("카테고리")
+                                fieldWithPath("category").description("카테고리"),
+                                fieldWithPath("createdAt").description("등록 일시"),
+                                fieldWithPath("updatedAt").description("최종 수정 일시")
                         )
                 ));
     }

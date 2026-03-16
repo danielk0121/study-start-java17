@@ -40,7 +40,7 @@ public class ProductService {
     )
     public Product update(Long id, Product product) {
         findById(id);
-        return repository.update(new Product(id, product.name(), product.price(), product.stock(), product.category()));
+        return repository.update(new Product(id, product.name(), product.price(), product.stock(), product.category(), product.createdAt(), product.updatedAt()));
     }
 
     @Caching(evict = {

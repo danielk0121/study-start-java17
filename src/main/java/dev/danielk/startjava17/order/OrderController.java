@@ -3,6 +3,7 @@ package dev.danielk.startjava17.order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,8 @@ public class OrderController {
     public record OrderItemRequest(Long productId, int quantity) {}
     public record PlaceRequest(Long memberId, List<OrderItemRequest> items) {}
     public record OrderItemResponse(Long productId, int quantity) {}
-    public record OrderResponse(Long id, Long memberId, List<OrderItemResponse> items, String status, String createdAt) {}
+    public record OrderResponse(Long id, Long memberId, List<OrderItemResponse> items, String status,
+                                    LocalDateTime createdAt, LocalDateTime updatedAt) {}
 
     @PostMapping
     public ResponseEntity<OrderResponse> place(@RequestBody PlaceRequest request) {

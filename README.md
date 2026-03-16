@@ -13,6 +13,21 @@
 - [x] Redis Streams (프로듀서/컨슈머/컨슈머 그룹)
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
+- [ ] Spring Security + JWT 인증/인가 적용
+
+## 적용된 기술 요약
+
+- Java 17 record (도메인 모델, DTO, 이벤트)
+- Spring Boot 2.7.18
+- Spring Data JPA + JPA Auditing (createdAt / updatedAt 자동 관리)
+- Spring Data Redis + Redis Streams (프로듀서 / 컨슈머 / 컨슈머 그룹)
+- Spring Cache 추상화 + Caffeine 로컬 캐시
+- MapStruct 객체 매핑 코드 자동 생성
+- Repository 인터페이스 + InMemory / JPA 이중 구현체 (@Primary)
+- Spring REST Docs + restdocs-api-spec → OpenAPI 3.0 YAML 자동 생성
+- Spring Cloud Sleuth (traceId / spanId MDC 자동 주입)
+- Logstash Logback Encoder (dev/prod JSON 로그)
+- MySQL 8 / HikariCP
 
 ---
 
@@ -35,6 +50,8 @@
 | Spring Data Redis | Boot 관리 | Redis Streams 연동 |
 | Spring Web | Boot 관리 | REST API |
 | MySQL Connector/J | Boot 관리 | MySQL 드라이버 |
+| HikariCP | Boot 관리 | JDBC 커넥션 풀 (maximum-pool-size=5) |
+| Spring Cache + Caffeine | Boot 관리 / Boot 관리 | 로컬 캐시 추상화 |
 | Spring Cloud Sleuth | 3.1.11 | 분산 추적 (traceId/spanId MDC 자동 주입) |
 | Logstash Logback Encoder | 7.4 | JSON 로그 출력 (dev/prod 프로파일) |
 | MapStruct | 1.5.5 | 객체 매핑 코드 자동 생성 |
