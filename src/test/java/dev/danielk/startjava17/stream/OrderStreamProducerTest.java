@@ -1,6 +1,7 @@
 package dev.danielk.startjava17.stream;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Redis Streams 통합 테스트
  * 실제 Redis가 localhost:6379에 실행 중이어야 함
  */
+@Tag("docker-redis")
 @SpringBootTest
 class OrderStreamProducerTest {
 

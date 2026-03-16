@@ -1,6 +1,7 @@
 package dev.danielk.startjava17.stream;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Range;
@@ -37,6 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   XLEN       → opsForStream().size()
  *   XPENDING   → opsForStream().pending()
  */
+@Tag("docker-redis")
 @SpringBootTest
 class RedisStreamsIntegrationTest {
 

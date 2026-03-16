@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.order;
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,6 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -60,7 +60,7 @@ class OrderControllerRestDocsTest {
                                 {"memberId": 1, "productId": 1, "quantity": 2}
                                 """))
                 .andExpect(status().isOk())
-                .andDo(document("orders-place",
+                .andDo(MockMvcRestDocumentationWrapper.document("orders-place",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("memberId").description("회원 ID"),
@@ -86,7 +86,7 @@ class OrderControllerRestDocsTest {
 
         mockMvc.perform(get("/orders/{id}", 1L))
                 .andExpect(status().isOk())
-                .andDo(document("orders-find-by-id",
+                .andDo(MockMvcRestDocumentationWrapper.document("orders-find-by-id",
                         preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("주문 ID")),
                         responseFields(
@@ -110,7 +110,7 @@ class OrderControllerRestDocsTest {
 
         mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())
-                .andDo(document("orders-find-all",
+                .andDo(MockMvcRestDocumentationWrapper.document("orders-find-all",
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[].id").description("주문 ID"),
@@ -131,7 +131,7 @@ class OrderControllerRestDocsTest {
 
         mockMvc.perform(patch("/orders/{id}/cancel", 1L))
                 .andExpect(status().isOk())
-                .andDo(document("orders-cancel",
+                .andDo(MockMvcRestDocumentationWrapper.document("orders-cancel",
                         preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("주문 ID")),
                         responseFields(
@@ -152,7 +152,7 @@ class OrderControllerRestDocsTest {
 
         mockMvc.perform(delete("/orders/{id}", 1L))
                 .andExpect(status().isNoContent())
-                .andDo(document("orders-delete",
+                .andDo(MockMvcRestDocumentationWrapper.document("orders-delete",
                         pathParameters(parameterWithName("id").description("주문 ID"))
                 ));
     }

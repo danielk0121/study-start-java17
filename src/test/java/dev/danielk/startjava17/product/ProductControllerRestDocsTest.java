@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.product;
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -62,7 +62,7 @@ class ProductControllerRestDocsTest {
                                 {"name":"MacBook Pro","price":2000000,"stock":10,"category":"ELECTRONICS"}
                                 """))
                 .andExpect(status().isOk())
-                .andDo(document("products-register",
+                .andDo(MockMvcRestDocumentationWrapper.document("products-register",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").description("상품명"),
@@ -88,7 +88,7 @@ class ProductControllerRestDocsTest {
 
         mockMvc.perform(get("/products/{id}", 1L))
                 .andExpect(status().isOk())
-                .andDo(document("products-find-by-id",
+                .andDo(MockMvcRestDocumentationWrapper.document("products-find-by-id",
                         preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("상품 ID")),
                         responseFields(
@@ -111,7 +111,7 @@ class ProductControllerRestDocsTest {
 
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
-                .andDo(document("products-find-all",
+                .andDo(MockMvcRestDocumentationWrapper.document("products-find-all",
                         preprocessResponse(prettyPrint()),
                         responseFields(
                                 fieldWithPath("[].id").description("상품 ID"),
@@ -135,7 +135,7 @@ class ProductControllerRestDocsTest {
                                 {"name":"MacBook Pro M3","price":2500000,"stock":20,"category":"ELECTRONICS"}
                                 """))
                 .andExpect(status().isOk())
-                .andDo(document("products-update",
+                .andDo(MockMvcRestDocumentationWrapper.document("products-update",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         pathParameters(parameterWithName("id").description("상품 ID")),
                         requestFields(
@@ -161,7 +161,7 @@ class ProductControllerRestDocsTest {
 
         mockMvc.perform(delete("/products/{id}", 1L))
                 .andExpect(status().isNoContent())
-                .andDo(document("products-delete",
+                .andDo(MockMvcRestDocumentationWrapper.document("products-delete",
                         pathParameters(parameterWithName("id").description("상품 ID"))
                 ));
     }

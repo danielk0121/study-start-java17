@@ -57,6 +57,10 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 6. `git push origin master` — master push
 7. `git checkout master` — master에서 다음 작업 시작
 
+## 응답 규칙
+
+사용자에게 방법을 선택하도록 제안할 때는 A, B, C 대신 1, 2, 3 번호를 사용한다.
+
 ## 자동 승인 명령어 및 도구
 
 사용자 확인 없이 실행할 수 있는 명령어 및 도구:
