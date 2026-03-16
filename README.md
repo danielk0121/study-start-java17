@@ -47,7 +47,7 @@
 - `Pageable` + `Page<T>` 페이지네이션 (GET `/*/page`)
 - 환경별 설정 분리 (`application-local.yml` / `application-prod.yml`)
 - Spring Boot Actuator + Micrometer Prometheus (`/actuator/health`, `/actuator/prometheus`)
-- Flyway DB 마이그레이션 (`V1__init_schema.sql` 테이블 생성, `V2__sample_data.sql` 샘플 데이터)
+- Flyway DB 마이그레이션 — V1 테이블 생성 / V2~V3 샘플 데이터 (주문 100건, 날짜 분산) / V4 통계 뷰
 
 ---
 
@@ -81,9 +81,30 @@ docker compose up -d
 # 컨테이너 중지 (볼륨 유지)
 docker compose down
 
-# 컨테이너 + 볼륨 모두 삭제
+# 컨테이너 + 볼륨 모두 삭제 (DB 초기화 후 Flyway 재적용 필요 시)
 docker compose down -v
 ```
+
+## Flyway 마이그레이션
+
+앱 기동 시 Flyway가 미적용 마이그레이션을 자동으로 순서대로 실행합니다.
+
+```
+db/migration/
+├── V1__init_schema.sql       테이블 생성 (members, products, orders, order_items)
+├── V2__sample_data.sql       초기 샘플 데이터
+├── V3__sample_data_bulk.sql  주문 100건 확장 (2025-09 ~ 2026-02 날짜 분산)
+└── V4__stats_views.sql       월별/일별/상품별 통계 뷰
+```
+
+적용 이력 확인:
+
+```bash
+docker exec -it start-java17-mysql mysql -uroot -proot start_java17 \
+  -e "SELECT version, description, installed_on, success FROM flyway_schema_history ORDER BY installed_rank;"
+```
+
+볼륨 삭제 후 재기동하면 V1부터 전체 재적용됩니다. 자세한 내용은 [docs/flyway.md](./docs/flyway.md)를 참고하세요.
 
 ## 포트 정보
 
