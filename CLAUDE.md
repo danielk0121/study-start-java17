@@ -69,4 +69,8 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 - `ls`
 - `find`
 - `grep`
+- `head`
+- `tail`
+- `jar`
+- `xargs`
 - `WebFetch` (웹사이트 자료 조회)
