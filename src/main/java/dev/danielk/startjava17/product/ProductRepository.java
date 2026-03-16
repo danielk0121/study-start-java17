@@ -34,4 +34,8 @@ public class ProductRepository {
         store.put(product.id(), product);
         return product;
     }
+
+    public void deleteById(Long id) {
+        store.remove(id);
+    }
 }

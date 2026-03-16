@@ -17,6 +17,7 @@ public class ProductController {
     }
 
     public record RegisterRequest(String name, BigDecimal price, int stock, String category) {}
+    public record UpdateRequest(String name, BigDecimal price, int stock, String category) {}
     public record ProductResponse(Long id, String name, BigDecimal price, int stock, String category) {
         static ProductResponse from(Product product) {
             return new ProductResponse(
@@ -28,11 +29,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponse> register(@RequestBody RegisterRequest request) {
         Product product = service.register(
-                request.name(),
-                request.price(),
-                request.stock(),
-                ProductCategory.valueOf(request.category())
-        );
+                request.name(), request.price(), request.stock(),
+                ProductCategory.valueOf(request.category()));
         return ResponseEntity.ok(ProductResponse.from(product));
     }
 
@@ -43,9 +41,20 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> findAll() {
-        List<ProductResponse> responses = service.findAll().stream()
-                .map(ProductResponse::from)
-                .toList();
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.ok(service.findAll().stream().map(ProductResponse::from).toList());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody UpdateRequest request) {
+        Product product = service.update(
+                id, request.name(), request.price(), request.stock(),
+                ProductCategory.valueOf(request.category()));
+        return ResponseEntity.ok(ProductResponse.from(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

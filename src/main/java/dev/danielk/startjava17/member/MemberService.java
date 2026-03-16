@@ -25,4 +25,15 @@ public class MemberService {
     public List<Member> findAll() {
         return repository.findAll();
     }
+
+    public Member update(Long id, String name) {
+        Member member = findById(id);
+        Member updated = new Member(member.id(), member.email(), name, member.role());
+        return repository.update(updated);
+    }
+
+    public void delete(Long id) {
+        findById(id); // 존재 여부 확인
+        repository.deleteById(id);
+    }
 }

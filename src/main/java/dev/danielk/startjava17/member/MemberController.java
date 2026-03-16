@@ -15,8 +15,8 @@ public class MemberController {
         this.service = service;
     }
 
-    // Java 17 Record를 요청/응답 DTO로 활용
     public record JoinRequest(String email, String name) {}
+    public record UpdateRequest(String name) {}
     public record MemberResponse(Long id, String email, String name, String role) {
         static MemberResponse from(Member member) {
             return new MemberResponse(member.id(), member.email(), member.name(), member.role().name());
@@ -25,8 +25,7 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<MemberResponse> join(@RequestBody JoinRequest request) {
-        Member member = service.join(request.email(), request.name());
-        return ResponseEntity.ok(MemberResponse.from(member));
+        return ResponseEntity.ok(MemberResponse.from(service.join(request.email(), request.name())));
     }
 
     @GetMapping("/{id}")
@@ -36,9 +35,17 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<List<MemberResponse>> findAll() {
-        List<MemberResponse> responses = service.findAll().stream()
-                .map(MemberResponse::from)
-                .toList(); // Java 16+ stream().toList()
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.ok(service.findAll().stream().map(MemberResponse::from).toList());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberResponse> update(@PathVariable Long id, @RequestBody UpdateRequest request) {
+        return ResponseEntity.ok(MemberResponse.from(service.update(id, request.name())));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

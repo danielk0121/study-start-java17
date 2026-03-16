@@ -1,0 +1,48 @@
+// Start Java 17 프로젝트 ERD
+// 렌더링: https://dbdiagram.io/d (이 파일 내용을 붙여넣기)
+//
+// 현재 저장소는 인메모리 저장소(ConcurrentHashMap)를 사용하므로
+// 실제 DDL은 없으나, 향후 RDB 전환 시의 스키마 설계를 문서화합니다.
+
+// ─────────────────────────────────────────
+// 회원 (member)
+// ─────────────────────────────────────────
+Table members {
+  id        bigint      [pk, increment, note: '회원 ID']
+  email     varchar(255) [not null, unique, note: '로그인 이메일']
+  name      varchar(100) [not null, note: '회원 이름']
+  role      varchar(20)  [not null, default: 'USER', note: 'USER | ADMIN']
+  created_at datetime    [not null, default: `now()`, note: '가입일시']
+}
+
+// ─────────────────────────────────────────
+// 상품 (product)
+// ─────────────────────────────────────────
+Table products {
+  id        bigint       [pk, increment, note: '상품 ID']
+  name      varchar(255) [not null, note: '상품명']
+  price     decimal(15,2)[not null, note: '가격 (0 이상)']
+  stock     int          [not null, default: 0, note: '재고 수량 (0 이상)']
+  category  varchar(50)  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC']
+  created_at datetime    [not null, default: `now()`, note: '등록일시']
+}
+
+// ─────────────────────────────────────────
+// 주문 이벤트 (order_events) — Redis Stream 메시지를 RDB로 표현
+// ─────────────────────────────────────────
+Table order_events {
+  id         bigint      [pk, increment, note: 'PK']
+  order_id   varchar(36) [not null, unique, note: 'UUID — Redis Stream의 orderId']
+  member_id  bigint      [not null, ref: > members.id, note: '주문 회원']
+  product_id bigint      [not null, ref: > products.id, note: '주문 상품']
+  quantity   int         [not null, note: '주문 수량']
+  created_at datetime    [not null, default: `now()`, note: '주문일시']
+
+  note: 'Redis Stream(order-stream)에 발행된 주문 이벤트의 RDB 표현'
+}
+
+// ─────────────────────────────────────────
+// 관계 정의
+// ─────────────────────────────────────────
+Ref: order_events.member_id  > members.id   // 회원 : 주문 = 1 : N
+Ref: order_events.product_id > products.id  // 상품 : 주문 = 1 : N
