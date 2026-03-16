@@ -28,6 +28,7 @@ public class CacheConfig {
                 Caffeine.newBuilder()
                         .maximumSize(1000)          // 캐시 항목 최대 개수
                         .expireAfterWrite(10, TimeUnit.MINUTES)  // 쓰기 후 10분 TTL
+                        .recordStats()              // Micrometer hit/miss/eviction 메트릭 수집 활성화
         );
         return manager;
     }
