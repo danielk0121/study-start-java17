@@ -15,6 +15,22 @@
 
 ---
 
+# API 문서
+
+OpenAPI 3.0 스펙으로 정의되어 있습니다. 아래 링크에서 바로 확인할 수 있습니다.
+
+| 방법 | 링크 | 설명 |
+|---|---|---|
+| **Swagger Editor** | [editor.swagger.io/?url=...](https://editor.swagger.io/?url=https://raw.githubusercontent.com/danielk0121/study-start-java17/master/docs/openapi.yaml) | 편집 가능, 직접 API 호출 |
+| **ReDoc** | [redocly.github.io/redoc/?url=...](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/danielk0121/study-start-java17/master/docs/openapi.yaml) | 읽기 전용, 깔끔한 UI |
+| **스펙 파일** | [docs/openapi.yaml](./docs/openapi.yaml) | 원본 YAML 파일 |
+
+로컬 실행 중일 때:
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI JSON: http://localhost:8080/v3/api-docs
+
+---
+
 # Redis Streams 예제
 
 카프카와 유사한 이벤트 스트리밍을 Redis 하나로 구성하는 예제.

@@ -1,0 +1,50 @@
+package dev.danielk.startjava17.config;
+
+import brave.Tracer;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * 모든 HTTP 응답 헤더에 X-Trace-Id를 추가하는 필터.
+ *
+ * Sleuth가 MDC에 자동으로 traceId를 주입하므로, 이 필터는
+ * MDC에서 값을 읽어 클라이언트가 볼 수 있도록 응답 헤더에 실어줌.
+ *
+ * 활용 예:
+ *   - 클라이언트가 에러 발생 시 X-Trace-Id 값을 지원팀에 전달
+ *   - 서버 로그에서 동일한 traceId로 요청 전체 흐름 추적
+ */
+@Component
+public class TraceIdFilter extends OncePerRequestFilter {
+
+    // Sleuth가 자동 주입하는 Tracer — 현재 Span의 traceId를 가져올 때 사용
+    private final Tracer tracer;
+
+    public TraceIdFilter(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // MDC에서 Sleuth가 주입한 traceId를 읽어 응답 헤더에 추가
+            String traceId = MDC.get("traceId");
+            if (traceId != null) {
+                response.setHeader("X-Trace-Id", traceId);
+            }
+            filterChain.doFilter(request, response);
+        } finally {
+            // OncePerRequestFilter가 MDC 정리를 보장하지 않으므로 명시적으로 제거
+            MDC.remove("traceId");
+        }
+    }
+}
