@@ -57,11 +57,12 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 6. `git push origin master` — master push
 7. `git checkout master` — master에서 다음 작업 시작
 
-## 자동 승인 명령어
+## 자동 승인 명령어 및 도구
 
-사용자 확인 없이 실행할 수 있는 명령어:
+사용자 확인 없이 실행할 수 있는 명령어 및 도구:
 - `gradle` / `./gradlew`
 - `git`
 - `ls`
 - `find`
 - `grep`
+- `WebFetch` (웹사이트 자료 조회)
