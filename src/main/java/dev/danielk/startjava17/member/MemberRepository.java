@@ -33,6 +33,11 @@ public class MemberRepository {
         return new ArrayList<>(store.values());
     }
 
+    public Member update(Member member) {
+        store.put(member.id(), member);
+        return member;
+    }
+
     public void deleteById(Long id) {
         store.remove(id);
     }

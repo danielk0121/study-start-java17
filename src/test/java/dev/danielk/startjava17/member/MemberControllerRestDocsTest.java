@@ -18,12 +18,14 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -57,8 +59,7 @@ class MemberControllerRestDocsTest {
                                 """))
                 .andExpect(status().isOk())
                 .andDo(document("members-join",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("email").description("이메일 (로그인 ID)"),
                                 fieldWithPath("name").description("회원 이름")
@@ -82,9 +83,7 @@ class MemberControllerRestDocsTest {
                 .andExpect(status().isOk())
                 .andDo(document("members-find-by-id",
                         preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("회원 ID")
-                        ),
+                        pathParameters(parameterWithName("id").description("회원 ID")),
                         responseFields(
                                 fieldWithPath("id").description("회원 ID"),
                                 fieldWithPath("email").description("이메일"),
@@ -112,6 +111,45 @@ class MemberControllerRestDocsTest {
                                 fieldWithPath("[].name").description("이름"),
                                 fieldWithPath("[].role").description("권한")
                         )
+                ));
+    }
+
+    @Test
+    @DisplayName("PUT /members/{id} — 회원 정보 수정")
+    void update() throws Exception {
+        when(memberService.update(eq(1L), any()))
+                .thenReturn(new Member(1L, "user@example.com", "홍길순", MemberRole.USER));
+
+        mockMvc.perform(put("/members/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"name": "홍길순"}
+                                """))
+                .andExpect(status().isOk())
+                .andDo(document("members-update",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("id").description("회원 ID")),
+                        requestFields(
+                                fieldWithPath("name").description("변경할 이름")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("회원 ID"),
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("name").description("변경된 이름"),
+                                fieldWithPath("role").description("권한")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("DELETE /members/{id} — 회원 삭제")
+    void delete() throws Exception {
+        doNothing().when(memberService).delete(1L);
+
+        mockMvc.perform(delete("/members/{id}", 1L))
+                .andExpect(status().isNoContent())
+                .andDo(document("members-delete",
+                        pathParameters(parameterWithName("id").description("회원 ID"))
                 ));
     }
 }

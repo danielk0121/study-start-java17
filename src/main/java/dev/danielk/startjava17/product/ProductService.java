@@ -27,6 +27,16 @@ public class ProductService {
         return repository.findAll();
     }
 
+    public Product update(Long id, String name, BigDecimal price, int stock, ProductCategory category) {
+        Product product = findById(id);
+        return repository.update(new Product(product.id(), name, price, stock, category));
+    }
+
+    public void delete(Long id) {
+        findById(id); // 존재 여부 확인
+        repository.deleteById(id);
+    }
+
     public Product decreaseStock(Long id, int quantity) {
         Product product = findById(id);
         return repository.update(product.decreaseStock(quantity));

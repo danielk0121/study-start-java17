@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -55,17 +56,11 @@ class ProductControllerRestDocsTest {
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {
-                                    "name": "MacBook Pro",
-                                    "price": 2000000,
-                                    "stock": 10,
-                                    "category": "ELECTRONICS"
-                                }
+                                {"name":"MacBook Pro","price":2000000,"stock":10,"category":"ELECTRONICS"}
                                 """))
                 .andExpect(status().isOk())
                 .andDo(document("products-register",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").description("상품명"),
                                 fieldWithPath("price").description("가격"),
@@ -92,9 +87,7 @@ class ProductControllerRestDocsTest {
                 .andExpect(status().isOk())
                 .andDo(document("products-find-by-id",
                         preprocessResponse(prettyPrint()),
-                        pathParameters(
-                                parameterWithName("id").description("상품 ID")
-                        ),
+                        pathParameters(parameterWithName("id").description("상품 ID")),
                         responseFields(
                                 fieldWithPath("id").description("상품 ID"),
                                 fieldWithPath("name").description("상품명"),
@@ -124,6 +117,49 @@ class ProductControllerRestDocsTest {
                                 fieldWithPath("[].stock").description("재고 수량"),
                                 fieldWithPath("[].category").description("카테고리")
                         )
+                ));
+    }
+
+    @Test
+    @DisplayName("PUT /products/{id} — 상품 수정")
+    void update() throws Exception {
+        when(productService.update(eq(1L), any(), any(), eq(20), any()))
+                .thenReturn(new Product(1L, "MacBook Pro M3", new BigDecimal("2500000"), 20, ProductCategory.ELECTRONICS));
+
+        mockMvc.perform(put("/products/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"name":"MacBook Pro M3","price":2500000,"stock":20,"category":"ELECTRONICS"}
+                                """))
+                .andExpect(status().isOk())
+                .andDo(document("products-update",
+                        preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                        pathParameters(parameterWithName("id").description("상품 ID")),
+                        requestFields(
+                                fieldWithPath("name").description("상품명"),
+                                fieldWithPath("price").description("가격"),
+                                fieldWithPath("stock").description("재고 수량"),
+                                fieldWithPath("category").description("카테고리")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("상품 ID"),
+                                fieldWithPath("name").description("상품명"),
+                                fieldWithPath("price").description("가격"),
+                                fieldWithPath("stock").description("재고 수량"),
+                                fieldWithPath("category").description("카테고리")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("DELETE /products/{id} — 상품 삭제")
+    void delete() throws Exception {
+        doNothing().when(productService).delete(1L);
+
+        mockMvc.perform(delete("/products/{id}", 1L))
+                .andExpect(status().isNoContent())
+                .andDo(document("products-delete",
+                        pathParameters(parameterWithName("id").description("상품 ID"))
                 ));
     }
 }
