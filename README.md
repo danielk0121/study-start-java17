@@ -11,6 +11,7 @@
 - [x] MapStruct
 - [ ] QueryDSL
 - [x] Redis Streams (프로듀서/컨슈머/컨슈머 그룹)
+- [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 
 ---
 
