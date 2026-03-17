@@ -1,4 +1,4 @@
-# 조사: Circuit Breaker (Resilience4j)
+# 연구조사: Circuit Breaker (Resilience4j)
 
 > MSA 환경에서 서비스 간 동기 호출 시 발생하는 연쇄 장애를 차단하는 패턴을 조사한다.
 > 이 프로젝트의 멀티 모듈 구조(`proposal-multimodule-architecture.md`) 기준으로 적용 지점을 파악한다.

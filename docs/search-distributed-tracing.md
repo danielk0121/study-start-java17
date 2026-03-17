@@ -1,4 +1,4 @@
-# 조사: 분산 추적 (Spring Cloud Sleuth + Zipkin)
+# 연구조사: 분산 추적 (Spring Cloud Sleuth + Zipkin)
 
 > MSA 환경에서 서비스 간 요청 흐름을 단일 식별자로 추적하는 방법을 조사한다.
 > 이 프로젝트는 이미 단일 모듈에서 Sleuth를 적용하고 있으며, 멀티 모듈 전환 후 traceId 전파 동작을 검증하는 것이 목표다.
