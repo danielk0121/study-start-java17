@@ -263,3 +263,32 @@ Retry (3회 시도)
 | 적용 방식 | FeignClient fallback 또는 `@CircuitBreaker` 어노테이션 |
 | 모니터링 | Micrometer → Prometheus → Grafana |
 | 이 프로젝트 적용 대상 | order-service, bff, auth-service의 FeignClient 호출 구간 |
+
+---
+
+## 11. Q&A
+
+**Q. Circuit Breaker가 그냥 Retry 규칙과 실패 시 어떻게 할건지 로직을 추가하는 거네?**
+
+맞다. 핵심은 그거다. 다만 단순 Retry와 Circuit Breaker 사이에 결정적인 차이가 하나 있다.
+
+**단순 Retry**
+```
+실패 → 재시도 → 실패 → 재시도 → 실패 → 포기
+```
+매번 실패해도 계속 호출을 시도한다. 대상 서비스가 다운된 상태라면 재시도마다 스레드가 타임아웃까지 대기하므로 오히려 부하를 가중시킨다.
+
+**Circuit Breaker**
+```
+실패 → 실패 → 실패 → (임계치 초과) → 회로 OPEN
+                                          ↓
+                               이후 호출은 즉시 차단 (대상 서비스에 아예 안 붙음)
+                               fallback 즉시 반환
+```
+대상 서비스가 이미 죽어있다는 걸 판단하고 호출 자체를 막아버린다. 스레드 점유가 없고 응답이 빠르다. 일정 시간 후 HALF-OPEN으로 자동 복구 시도도 한다.
+
+정리:
+- Retry → "한 번 더 해볼게"
+- Circuit Breaker → "지금 걔 죽었으니까 잠깐 호출 자체를 끊자, fallback 줄게"
+
+두 개를 함께 쓰는 게 일반적이다. Retry로 일시적 오류를 처리하고, 그래도 계속 실패하면 Circuit Breaker가 열리는 구조다.
