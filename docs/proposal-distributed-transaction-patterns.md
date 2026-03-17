@@ -139,7 +139,190 @@ order-service 트랜잭션:
 
 ---
 
-## 6. 현재 프로젝트와의 관계
+## 6. Outbox 폴링 인프라: Debezium
+
+### 동작 원리
+
+Debezium은 **CDC(Change Data Capture)** 도구다. DB의 변경 로그(binlog)를 실시간으로 읽어서 Kafka로 발행한다.
+직접 테이블을 폴링하는 게 아니라 **MySQL binlog를 구독**한다.
+
+```
+MySQL binlog
+    ↓ (Debezium이 구독)
+Debezium (Kafka Connect 플러그인으로 실행)
+    ↓
+Kafka 토픽으로 변경 이벤트 발행
+    ↓
+inventory-service, payment-service 등 구독
+```
+
+MySQL은 모든 INSERT/UPDATE/DELETE를 binlog에 기록한다. Debezium은 이 binlog를 읽어서 Kafka 메시지로 변환한다.
+outbox 테이블에 행이 INSERT되는 순간 Debezium이 감지하고 즉시 Kafka로 발행한다.
+
+### 필요한 인프라 구성 요소
+
+```
+Zookeeper      ← Kafka 클러스터 조율 (Kafka 구버전 필수, 신버전 선택)
+Kafka          ← 메시지 브로커
+Kafka Connect  ← Debezium 플러그인 실행 컨테이너
+Debezium       ← Kafka Connect 위에서 동작하는 커넥터 플러그인
+```
+
+docker-compose 기준으로 4개 컨테이너가 추가된다.
+
+### Debezium 없이 직접 폴링하는 방법
+
+Debezium 대신 애플리케이션 내에서 스케줄러로 outbox 테이블을 주기적으로 읽어 Kafka에 발행하는 방식도 있다.
+
+```java
+@Scheduled(fixedDelay = 1000)
+public void publishOutboxEvents() {
+    var events = outboxRepository.findUnpublished();
+    for (var event : events) {
+        kafkaTemplate.send(event.getTopic(), event.getPayload());
+        outboxRepository.markPublished(event.getId());
+    }
+}
+```
+
+**장점:** Debezium/Kafka Connect 인프라 없이 구현 가능
+**단점:** 폴링 주기만큼 지연 발생, 발행 직후 서버 크래시 시 중복 발행 가능성 존재 (멱등성 처리 필요)
+
+### 비교 정리
+
+| | Debezium (binlog CDC) | 직접 폴링 (스케줄러) |
+|---|---|---|
+| 인프라 추가 | Zookeeper + Kafka + Kafka Connect | 없음 |
+| 실시간성 | binlog 변경 즉시 감지 | 폴링 주기만큼 지연 |
+| 중복 발행 | Debezium이 exactly-once 보장 | 멱등성 직접 구현 필요 |
+| 복잡도 | 인프라 복잡, 코드 단순 | 인프라 단순, 코드 복잡 |
+| 적합한 규모 | 대규모, 실시간성 중요 | 소규모, 초기 단계 |
+
+### 현재 프로젝트 관점
+
+현 단계에서는 Debezium까지 도입할 필요는 없다. 결제/재고 기능이 추가되어 Outbox + Saga가 필요해지는 시점에
+**직접 폴링 방식으로 먼저 구현하고**, 트래픽이 늘어나면 Debezium으로 전환하는 단계적 접근이 현실적이다.
+
+---
+
+## 7. 멱등성 직접 구현
+
+### 문제 상황
+
+직접 폴링 방식에서 아래 순간에 서버가 크래시되면 같은 이벤트가 중복 발행된다.
+
+```
+스케줄러:
+  outbox에서 이벤트 읽음
+  Kafka 발행 성공
+  DB에 published 처리 시작 ← 이 순간 서버 크래시
+```
+
+재시작 후 스케줄러가 다시 실행되면 같은 이벤트를 또 읽어서 **Kafka에 중복 발행**한다.
+소비자(inventory-service 등)가 같은 이벤트를 두 번 받으면 재고가 두 번 차감된다.
+
+### 해결 방법
+
+**소비자 쪽에서 처리 이력을 기록**한다.
+
+```java
+// inventory-service (이벤트 소비자)
+@KafkaListener(topics = "order-created")
+public void handle(OrderCreatedEvent event) {
+    // 이미 처리한 이벤트면 무시
+    if (processedEventRepository.existsById(event.getEventId())) {
+        return;
+    }
+
+    // 재고 차감 + 처리 이력 저장을 같은 트랜잭션으로
+    inventoryRepository.decrease(event.getProductId(), event.getQuantity());
+    processedEventRepository.save(new ProcessedEvent(event.getEventId()));
+}
+```
+
+```sql
+-- 처리 이력 테이블
+CREATE TABLE processed_events (
+    event_id   VARCHAR(36) PRIMARY KEY,  -- outbox의 이벤트 UUID
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+`event_id`가 PRIMARY KEY이므로 중복 INSERT 시 예외가 발생해 재고 차감도 롤백된다.
+
+### 핵심
+
+멱등성은 **발행자(outbox)**가 아니라 **소비자** 쪽에서 구현한다. 발행이 중복되더라도 소비자가 한 번만 처리하면 결과적으로 안전하다.
+이 보장을 **at-least-once + 멱등 소비자** 조합이라고 한다.
+
+---
+
+## 8. Q. 이벤트를 구독하는 모든 서비스는 processed_events 테이블을 가지고 이벤트 구독 함수를 작성해야 하는가?
+
+**맞다.** 다만 몇 가지 현실적인 고려사항이 있다.
+
+### 모든 소비자가 가져야 하는 것
+
+```
+inventory-service
+  └── processed_events 테이블
+  └── @KafkaListener + 멱등성 체크 로직
+
+payment-service
+  └── processed_events 테이블
+  └── @KafkaListener + 멱등성 체크 로직
+```
+
+각 서비스가 독립적으로 자신의 DB에 `processed_events`를 가진다. 공유하지 않는다.
+
+### 중복 코드 문제
+
+모든 소비자가 동일한 패턴을 반복하므로 `common` 모듈에 추상화할 수 있다.
+
+```java
+// common 모듈
+public abstract class IdempotentEventHandler<T> {
+
+    private final ProcessedEventRepository processedEventRepository;
+
+    @Transactional
+    public void handle(T event, String eventId) {
+        if (processedEventRepository.existsById(eventId)) {
+            return;  // 중복 무시
+        }
+        doHandle(event);
+        processedEventRepository.save(new ProcessedEvent(eventId));
+    }
+
+    protected abstract void doHandle(T event);
+}
+```
+
+```java
+// inventory-service
+@KafkaListener(topics = "order-created")
+public class OrderCreatedHandler extends IdempotentEventHandler<OrderCreatedEvent> {
+
+    @Override
+    protected void doHandle(OrderCreatedEvent event) {
+        inventoryRepository.decrease(event.getProductId(), event.getQuantity());
+    }
+}
+```
+
+각 서비스는 `doHandle`만 구현하면 멱등성 체크는 자동으로 처리된다.
+
+### 정리
+
+| | 내용 |
+|---|---|
+| `processed_events` 테이블 | 소비자 서비스마다 각자 보유 |
+| 멱등성 체크 로직 | `common` 모듈에 추상화하여 재사용 |
+| 각 서비스 구현 | 비즈니스 로직(`doHandle`)만 작성 |
+
+---
+
+## 9. 현재 프로젝트와의 관계
 
 현재 구조에서 `order-service → FeignClient → member-service` 호출은 **조회/검증** 목적이다.
 검증 실패 시 주문 자체를 안 만들면 되므로 롤백 문제가 없다.
