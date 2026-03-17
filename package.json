@@ -7,6 +7,6 @@
     "validate-dbml": "bash scripts/validate-dbml.sh"
   },
   "devDependencies": {
-    "@dbml/cli": "^3.10.0"
+    "@dbml/cli": "^3.14.1"
   }
 }
