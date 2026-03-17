@@ -1,4 +1,4 @@
-# 제안: 보통의 MSA 서비스 — 패턴과 고려사항
+# 조사: 보통의 MSA 서비스 — 패턴과 고려사항
 
 > 이 문서는 일반적인 MSA(마이크로서비스 아키텍처) 서비스가 갖춰야 하는 요소들을 정리한다.
 > 이 프로젝트(`study-start-java17`)의 멀티 모듈 설계(`proposal-multimodule-architecture.md`)를 기준으로 설명한다.
