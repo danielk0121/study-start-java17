@@ -205,6 +205,17 @@ DBML 형식으로 관리합니다. 아래 링크에서 다이어그램으로 확
 - **스펙 파일**: [docs/erd.dbml](./docs/erd.dbml)
 - **다이어그램 보기**: [dbdiagram.io에서 열기](https://dbdiagram.io/d) — 링크 접속 후 `docs/erd.dbml` 내용을 붙여넣기
 
+**DBML 검증**
+
+`docs/erd.dbml` 수정 후 반드시 아래 명령어로 문법 오류를 확인한다.
+
+```bash
+npm run validate-dbml                        # docs/ 전체 .dbml 검증
+bash scripts/validate-dbml.sh docs/erd.dbml  # 특정 파일만 검증
+```
+
+> 최초 실행 전 `npm install`로 `@dbml/cli`를 설치해야 한다.
+
 **도메인 구성**
 
 | 테이블 | 설명 |
