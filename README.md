@@ -32,6 +32,7 @@
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
 - [ ] Prometheus + Grafana 메트릭 모니터링 — `/actuator/prometheus` 수집 및 대시보드 구성 테스트
 - [ ] CQRS + Event Sourcing — Read/Write 모델 분리 및 이벤트 이력 저장 ([연구조사 문서](./docs/search-cqrs-event-sourcing.md))
+- [ ] Rate Limiting / Throttling — API Gateway 레벨에서 클라이언트별 요청 수 제한 ([연구조사 문서](./docs/search-rate-limiting.md))
 - [ ] 테스트 커버리지 보강 — Service 단위 테스트, `@DataJpaTest`, 통합 테스트
 
 ## 적용된 기술 요약
