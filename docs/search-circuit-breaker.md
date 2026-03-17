@@ -292,3 +292,37 @@ Retry (3회 시도)
 - Circuit Breaker → "지금 걔 죽었으니까 잠깐 호출 자체를 끊자, fallback 줄게"
 
 두 개를 함께 쓰는 게 일반적이다. Retry로 일시적 오류를 처리하고, 그래도 계속 실패하면 Circuit Breaker가 열리는 구조다.
+
+---
+
+**Q. 일부 서비스가 다운되면 유저 입장에서는 어차피 시스템 전체가 다운된 걸로 인식되지 않나? Circuit Breaker가 의미가 있나?**
+
+맞다. 완전히 다운된 경우 그 기능을 못 쓰는 건 Circuit Breaker가 있든 없든 동일하다.
+
+Circuit Breaker가 실제로 유효한 상황은 **서비스가 완전히 다운된 경우가 아니라 부분적으로 느려지거나 간헐적으로 실패하는 경우**다.
+
+```
+member-service가 DB 과부하로 응답이 5초씩 걸림 (다운은 아님)
+
+Circuit Breaker 없으면:
+  order-service 스레드 전부 5초씩 대기 → order-service도 다운 → 장애 전파
+
+Circuit Breaker 있으면:
+  order-service는 즉시 차단 + fallback → order-service는 정상 동작
+```
+
+즉 **한 서비스의 성능 저하가 다른 서비스로 전파되는 연쇄 장애를 막는 것**이 핵심이다. 완전히 다운된 경우도 마찬가지다.
+
+```
+member-service 완전 다운
+
+Circuit Breaker 없으면:
+  order-service도 스레드 고갈로 같이 다운 → 주문 조회/취소도 불가
+
+Circuit Breaker 있으면:
+  order-service는 살아있음 → 기존 주문 조회/취소는 정상
+  (member 관련 기능만 장애, 장애 범위가 격리됨)
+```
+
+결국 Circuit Breaker의 가치는 **장애를 없애는 게 아니라 장애 범위를 격리하는 것**이다.
+서비스가 촘촘하게 얽혀있지 않은 단순한 구조라면 효용이 크지 않다. 이 프로젝트 규모에서는 오버엔지니어링이 맞다.
