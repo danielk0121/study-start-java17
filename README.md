@@ -30,6 +30,7 @@
 - [ ] OSIV(Open Session In View) 적용 테스트
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
+- [ ] Prometheus + Grafana 메트릭 모니터링 — `/actuator/prometheus` 수집 및 대시보드 구성 테스트
 - [ ] 테스트 커버리지 보강 — Service 단위 테스트, `@DataJpaTest`, 통합 테스트
 
 ## 적용된 기술 요약
