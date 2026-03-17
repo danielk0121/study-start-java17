@@ -5,9 +5,7 @@
 # TODO
 - [x] 롬복 제거
   - [x] 데이터 클래스 (@Data, @Value, java17 record 등)
-  - [x] ToString
-  - [x] 생성자
-  - [x] 빌더
+  - [x] ToString, 생성자, 빌더
 - [x] MapStruct
 - [x] Redis Streams (프로듀서/컨슈머/컨슈머 그룹)
 - [x] 글로벌 예외 처리 — `@RestControllerAdvice` + 표준 에러 응답 형식
@@ -23,6 +21,10 @@
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
 - [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지
 - [ ] Spring Security + JWT 인증/인가 적용
+  - [ ] 회원가입 시 비밀번호 저장 (BCrypt 해싱)
+  - [ ] JWT 발급 / 검증 (로그인 → AccessToken 반환)
+  - [ ] JWT 기반 회원 정보 조회 (`Authorization: Bearer <token>`)
+  - [ ] Spring Security 통합 테스트 (`@SpringBootTest` + MockMvc SecurityContext)
 - [ ] OSIV(Open Session In View) 적용 테스트
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
