@@ -1,0 +1,12 @@
+{
+  "name": "study-start-java17-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DBML validation tooling for study-start-java17",
+  "scripts": {
+    "validate-dbml": "bash scripts/validate-dbml.sh"
+  },
+  "devDependencies": {
+    "@dbml/cli": "^3.10.0"
+  }
+}

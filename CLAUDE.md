@@ -35,6 +35,26 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 - **빌드:** Gradle 8.2, Java 17 툴체인
 - **애노테이션 프로세서:** Lombok + MapStruct (`lombok-mapstruct-binding`으로 처리 순서 보장)
 
+## DBML 문서 관리
+
+ERD는 `docs/erd.dbml`에서 관리한다.
+
+### 초기 설정 (최초 1회)
+
+```bash
+npm install    # @dbml/cli 설치
+```
+
+### DBML 작성 규칙
+
+**`.dbml` 파일을 수정한 후에는 반드시 아래 검증 명령어를 실행하여 문법 오류가 없는지 확인한다.**
+검증을 통과한 뒤에만 커밋한다.
+
+```bash
+npm run validate-dbml                        # docs/ 하위 전체 .dbml 검증
+bash scripts/validate-dbml.sh docs/erd.dbml  # 특정 파일만 검증
+```
+
 ## 코드 작성 규칙
 
 코드 작성이 완료된 후에는 반드시 skip test 빌드를 실행하여 컴파일 에러가 없는지 확인한다:
@@ -73,4 +93,5 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 - `tail`
 - `jar`
 - `xargs`
+- `npm`
 - `WebFetch` (웹사이트 자료 조회)
