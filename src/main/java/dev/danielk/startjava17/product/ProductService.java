@@ -1,6 +1,7 @@
 package dev.danielk.startjava17.product;
 
 import dev.danielk.startjava17.config.CacheNames;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,15 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class ProductService {
 
     private final ProductRepository repository;
-
-    public ProductService(ProductRepository repository) {
-        this.repository = repository;
-    }
 
     @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.PRODUCT_LIST, allEntries = true))
@@ -50,7 +48,8 @@ public class ProductService {
     )
     public Product update(Long id, Product product) {
         findById(id);
-        return repository.update(new Product(id, product.name(), product.price(), product.stock(), product.category(), product.createdAt(), product.updatedAt()));
+        var updated = new Product(id, product.name(), product.price(), product.stock(), product.category(), product.createdAt(), product.updatedAt());
+        return repository.update(updated);
     }
 
     @Transactional

@@ -19,9 +19,9 @@ public class ProductInMemoryRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        long id = sequence.getAndIncrement();
-        LocalDateTime now = LocalDateTime.now();
-        Product saved = new Product(id, product.name(), product.price(), product.stock(), product.category(), now, now);
+        var id = sequence.getAndIncrement();
+        var now = LocalDateTime.now();
+        var saved = new Product(id, product.name(), product.price(), product.stock(), product.category(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -33,21 +33,22 @@ public class ProductInMemoryRepository implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-        return new ArrayList<>(store.values());
+        var all = new ArrayList<>(store.values());
+        return all;
     }
 
     @Override
     public Page<Product> findAll(Pageable pageable) {
-        List<Product> all = new ArrayList<>(store.values());
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), all.size());
-        List<Product> content = start >= all.size() ? List.of() : all.subList(start, end);
+        var all = new ArrayList<>(store.values());
+        var start = (int) pageable.getOffset();
+        var end = Math.min(start + pageable.getPageSize(), all.size());
+        var content = start >= all.size() ? List.<Product>of() : all.subList(start, end);
         return new PageImpl<>(content, pageable, all.size());
     }
 
     @Override
     public Product update(Product product) {
-        Product updated = new Product(
+        var updated = new Product(
                 product.id(), product.name(), product.price(), product.stock(), product.category(),
                 product.createdAt(), LocalDateTime.now()
         );

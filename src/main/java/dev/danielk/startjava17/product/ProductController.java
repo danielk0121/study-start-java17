@@ -1,5 +1,7 @@
 package dev.danielk.startjava17.product;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -15,17 +17,13 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
     private final ProductService service;
     private final ProductMapper mapper;
-
-    public ProductController(ProductService service, ProductMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
-    }
 
     public record RegisterRequest(@NotBlank(message = "상품명은 필수입니다.") String name,
                                   @NotNull(message = "가격은 필수입니다.") @Positive(message = "가격은 0보다 커야 합니다.") BigDecimal price,
@@ -46,17 +44,22 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(mapper.toResponse(service.findById(id)));
+        var product = service.findById(id);
+        var response = mapper.toResponse(product);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> findAll() {
-        return ResponseEntity.ok(mapper.toResponseList(service.findAll()));
+        var products = service.findAll();
+        var response = mapper.toResponseList(products);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/page")
     public ResponseEntity<Page<ProductResponse>> findAllPaged(@PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable).map(mapper::toResponse));
+        var page = service.findAll(pageable).map(mapper::toResponse);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping("/{id}")

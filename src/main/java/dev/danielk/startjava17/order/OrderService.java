@@ -1,6 +1,7 @@
 package dev.danielk.startjava17.order;
 
 import dev.danielk.startjava17.config.CacheNames;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,15 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class OrderService {
 
     private final OrderRepository repository;
-
-    public OrderService(OrderRepository repository) {
-        this.repository = repository;
-    }
 
     @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.ORDER_LIST, allEntries = true))
@@ -49,7 +47,8 @@ public class OrderService {
             evict = @CacheEvict(value = CacheNames.ORDER_LIST, allEntries = true)
     )
     public Order cancel(Long id) {
-        return repository.update(findById(id).cancel());
+        var found = findById(id);
+        return repository.update(found.cancel());
     }
 
     @Transactional

@@ -38,12 +38,9 @@ public class OrderStreamConsumer implements StreamListener<String, MapRecord<Str
 
         // Java 17 sealed class / switch expression 활용 포인트
         // 여기서는 단순 Map 파싱 후 record 변환
-        OrderEvent event = new OrderEvent(
-                payload.get("orderId"),
-                payload.get("product"),
-                Integer.parseInt(payload.get("quantity")),
-                java.time.LocalDateTime.parse(payload.get("createdAt"))
-        );
+        var quantity = Integer.parseInt(payload.get("quantity"));
+        var createdAt = java.time.LocalDateTime.parse(payload.get("createdAt"));
+        var event = new OrderEvent(payload.get("orderId"), payload.get("product"), quantity, createdAt);
 
         System.out.printf("[Consumer] 수신 | id=%s | %s%n", record.getId(), event);
 

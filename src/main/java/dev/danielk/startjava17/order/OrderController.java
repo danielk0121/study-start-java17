@@ -1,5 +1,7 @@
 package dev.danielk.startjava17.order;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -13,17 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService service;
     private final OrderMapper mapper;
-
-    public OrderController(OrderService service, OrderMapper mapper) {
-        this.service = service;
-        this.mapper = mapper;
-    }
 
     public record OrderItemRequest(@NotNull(message = "상품 ID는 필수입니다.") Long productId,
                                    @Min(value = 1, message = "수량은 1 이상이어야 합니다.") int quantity) {}
@@ -35,28 +33,37 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponse> place(@RequestBody @Valid PlaceRequest request) {
-        List<OrderItem> items = mapper.toOrderItems(request.items());
-        return ResponseEntity.ok(mapper.toResponse(service.place(request.memberId(), items)));
+        var items = mapper.toOrderItems(request.items());
+        var order = service.place(request.memberId(), items);
+        var response = mapper.toResponse(order);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(mapper.toResponse(service.findById(id)));
+        var order = service.findById(id);
+        var response = mapper.toResponse(order);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
     public ResponseEntity<List<OrderResponse>> findAll() {
-        return ResponseEntity.ok(mapper.toResponseList(service.findAll()));
+        var orders = service.findAll();
+        var response = mapper.toResponseList(orders);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/page")
     public ResponseEntity<Page<OrderResponse>> findAllPaged(@PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable).map(mapper::toResponse));
+        var page = service.findAll(pageable).map(mapper::toResponse);
+        return ResponseEntity.ok(page);
     }
 
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<OrderResponse> cancel(@PathVariable Long id) {
-        return ResponseEntity.ok(mapper.toResponse(service.cancel(id)));
+        var order = service.cancel(id);
+        var response = mapper.toResponse(order);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")

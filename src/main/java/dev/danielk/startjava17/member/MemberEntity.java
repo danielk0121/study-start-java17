@@ -1,5 +1,8 @@
 package dev.danielk.startjava17.member;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,6 +16,8 @@ import java.time.LocalDateTime;
  * record는 final 필드 + setter 없음 → JPA 프록시 생성 불가.
  * 별도 @Entity 클래스로 분리하고, JPA 구현체 안에서만 사용한다.
  */
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "members")
 @EntityListeners(AuditingEntityListener.class)
@@ -40,8 +45,6 @@ public class MemberEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    protected MemberEntity() {}
-
     public MemberEntity(Long id, String email, String name, MemberRole role) {
         this.id = id;
         this.email = email;
@@ -56,11 +59,4 @@ public class MemberEntity {
     public Member toDomain() {
         return new Member(id, email, name, role, createdAt, updatedAt);
     }
-
-    public Long getId()              { return id; }
-    public String getEmail()         { return email; }
-    public String getName()          { return name; }
-    public MemberRole getRole()      { return role; }
-    public LocalDateTime getCreatedAt()  { return createdAt; }
-    public LocalDateTime getUpdatedAt()  { return updatedAt; }
 }

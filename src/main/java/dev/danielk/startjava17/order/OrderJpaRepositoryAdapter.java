@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.order;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,19 +9,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Primary
 @Repository
 public class OrderJpaRepositoryAdapter implements OrderRepository {
 
     private final OrderJpaRepository jpaRepository;
 
-    public OrderJpaRepositoryAdapter(OrderJpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
-    }
-
     @Override
     public Order save(Order order) {
-        return jpaRepository.save(OrderEntity.from(order)).toDomain();
+        var entity = OrderEntity.from(order);
+        var saved = jpaRepository.save(entity);
+        return saved.toDomain();
     }
 
     @Override
@@ -42,7 +42,9 @@ public class OrderJpaRepositoryAdapter implements OrderRepository {
 
     @Override
     public Order update(Order order) {
-        return jpaRepository.save(OrderEntity.from(order)).toDomain();
+        var entity = OrderEntity.from(order);
+        var saved = jpaRepository.save(entity);
+        return saved.toDomain();
     }
 
     @Override
