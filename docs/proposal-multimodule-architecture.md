@@ -717,7 +717,7 @@ server {
 
 ```dockerfile
 # ── 빌드 스테이지 ──────────────────────────────────────
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM amazoncorretto:17-alpine AS builder
 WORKDIR /workspace
 
 # 루트 Gradle 파일 복사 (멀티 모듈 의존 해결에 필요)
@@ -738,7 +738,7 @@ COPY member-service/src member-service/src
 RUN ./gradlew :member-service:bootJar -x test --no-daemon
 
 # ── 실행 스테이지 ──────────────────────────────────────
-FROM eclipse-temurin:17-jre-alpine
+FROM amazoncorretto:17-alpine
 WORKDIR /app
 
 COPY --from=builder /workspace/member-service/build/libs/*.jar app.jar
