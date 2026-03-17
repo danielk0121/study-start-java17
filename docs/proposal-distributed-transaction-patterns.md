@@ -329,3 +329,59 @@ public class OrderCreatedHandler extends IdempotentEventHandler<OrderCreatedEven
 
 결제나 재고 차감처럼 **양쪽 서비스에 상태 변경이 동시에 발생**해야 할 때 비로소 Outbox + Saga가 필요하다.
 현 단계에서는 고려 불필요하다.
+
+---
+
+## 10. Q. 이 문서의 내용을 Redis Streams 기준으로도 적용할 수 있는가?
+
+**적용 가능하다.** 다만 Kafka 대비 몇 가지 차이점이 있다.
+
+### Redis Streams로 대체 가능한 것
+
+현재 프로젝트에 이미 Redis가 있으므로 Kafka 없이 Redis Streams만으로 동일한 패턴을 구현할 수 있다.
+
+**Outbox 패턴 → Redis Streams 적용**
+
+```
+order-service 트랜잭션:
+  orders INSERT + outbox INSERT (같은 DB 트랜잭션)
+           ↓ (스케줄러 직접 폴링 — Debezium 불필요)
+  Redis Streams XADD
+           ↓
+  inventory-service XREADGROUP → 재고 차감
+  payment-service   XREADGROUP → 결제 처리
+```
+
+**멱등성 → Redis Streams의 메시지 ID 활용**
+
+Redis Streams는 각 메시지에 `1714000000000-0` 형태의 고유 ID를 자동 부여한다.
+이 ID를 `processed_events.event_id`로 사용하면 별도 UUID 생성 없이 멱등성 체크가 가능하다.
+
+**Saga Choreography → Consumer Group**
+
+```
+Redis Streams Consumer Group
+  stream: order-events
+  group: inventory-group → inventory-service 소비
+  group: payment-group   → payment-service 소비
+```
+
+Consumer Group을 사용하면 같은 이벤트를 각 서비스가 독립적으로 소비한다.
+
+### Kafka 대비 Redis Streams의 한계
+
+| | Kafka | Redis Streams |
+|---|---|---|
+| 메시지 보존 | 디스크에 영구 저장 (설정에 따라) | 메모리 기반, 크기 제한 (`MAXLEN`) |
+| 처리량 | 초당 수백만 건 | 초당 수만~수십만 건 |
+| 재처리 | 오프셋으로 과거 어느 시점이나 재처리 | `MAXLEN` 초과 시 오래된 메시지 삭제 |
+| Debezium 연동 | 공식 지원 | 없음 (직접 폴링만 가능) |
+| 운영 복잡도 | 높음 (Zookeeper, Kafka Connect 등) | 낮음 (Redis 하나로 해결) |
+
+### 현재 프로젝트 관점
+
+현재 프로젝트에 Redis가 이미 있고, Spring Cloud Stream + Redis Streams 연동도 지원된다.
+결제/재고 기능이 추가되는 초기 단계에서는 **Redis Streams로 먼저 구현**하고, 메시지 유실이나 처리량 한계에 부딪히면 Kafka로 전환하는 접근이 현실적이다.
+
+단, 한 가지 중요한 제약이 있다. Redis가 다운되면 이벤트 자체가 소실될 수 있으므로,
+**Redis AOF(Append Only File) 영속성 설정**을 반드시 활성화해야 Outbox 패턴의 신뢰성이 보장된다.
