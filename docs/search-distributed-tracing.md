@@ -275,3 +275,23 @@ Spring Boot 3.x 마이그레이션 시 Micrometer Tracing으로 전환이 필요
 | 전파 방식 | B3 헤더 (`X-B3-TraceId` 등), FeignClient 자동 주입 |
 | 샘플링 | 개발 100%, 운영 10% 권장 |
 | 현재 상태 | 단일 모듈 적용 완료. 멀티 모듈 전환 후 전파 동작 검증 필요 |
+
+---
+
+## 11. Zipkin vs APM
+
+Zipkin은 분산 추적 시각화만 하는 단일 목적 도구다.
+APM(Pinpoint, Datadog, Elastic APM 등)은 분산 추적을 포함해 메트릭, 로그, 에러 분석, JVM 상태, DB 쿼리 분석까지 한 화면에서 제공한다.
+
+| 항목 | Zipkin | APM (Pinpoint 등) |
+|---|---|---|
+| 분산 추적 | O | O (포함) |
+| 메트릭 (JVM, CPU 등) | X | O |
+| DB 쿼리 분석 | X | O |
+| 에러 분석 | X | O |
+| 로그 연동 | X | O |
+| 운영 비용 | 낮음 | 높음 |
+
+**결론:** APM을 도입하면 Zipkin을 별도로 구성할 이유가 없다.
+이 프로젝트는 README TODO에 네이버 Pinpoint APM 연동 항목이 있으므로, Pinpoint를 도입하면 Zipkin은 대체된다.
+Sleuth의 traceId 전파 자체는 APM과 무관하게 동작하므로 Sleuth는 그대로 유지한다.
