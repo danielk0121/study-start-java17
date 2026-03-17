@@ -103,6 +103,7 @@ order_events 테이블:
 Event Sourcing만 쓰면 읽기가 느리다. 이벤트를 모두 재생해야 현재 상태를 알 수 있기 때문이다.
 
 CQRS의 Read Model을 함께 쓰면 이 문제를 해결한다.
+**이벤트로 쓰고, 읽기 전용 뷰(orders_view)를 별도로 만들어 조회 성능을 보완하는 것이 핵심이다.**
 
 ```
 [쓰기]
@@ -114,10 +115,12 @@ CQRS의 Read Model을 함께 쓰면 이 문제를 해결한다.
 
 [읽기]
 주문 조회 요청
-  → orders_view에서 바로 조회 (빠름)
+  → orders_view에서 바로 조회 (빠름, 이벤트 replay 불필요)
 ```
 
 즉 **Event Sourcing이 Write 모델이고, CQRS Read Model이 Query 모델**이다.
+
+Event Sourcing 단독으로는 읽기가 느려서 실용적이지 않다. CQRS Read Model(읽기 전용 뷰)이 없으면 주문 1건 조회할 때마다 이벤트 전체를 처음부터 재생해야 한다. 두 패턴을 함께 쓰는 이유가 바로 이것이다.
 
 ---
 
