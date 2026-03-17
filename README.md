@@ -25,6 +25,8 @@
   - [ ] JWT 발급 / 검증 (로그인 → AccessToken + RefreshToken 반환)
   - [ ] JWT 기반 회원 정보 조회 (`Authorization: Bearer <token>`)
   - [ ] Spring Security 통합 테스트 (`@SpringBootTest` + MockMvc SecurityContext)
+- [ ] Circuit Breaker (Resilience4j) — FeignClient 호출 장애 시 연쇄 장애 방지
+- [ ] 분산 추적 — 멀티 모듈 전환 후 서비스 간 Sleuth traceId 전파 동작 확인
 - [ ] OSIV(Open Session In View) 적용 테스트
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
