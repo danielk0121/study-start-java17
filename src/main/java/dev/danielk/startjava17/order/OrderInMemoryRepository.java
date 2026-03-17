@@ -19,9 +19,9 @@ public class OrderInMemoryRepository implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        long id = sequence.getAndIncrement();
-        LocalDateTime now = LocalDateTime.now();
-        Order saved = new Order(id, order.memberId(), order.items(), order.status(), now, now);
+        var id = sequence.getAndIncrement();
+        var now = LocalDateTime.now();
+        var saved = new Order(id, order.memberId(), order.items(), order.status(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -33,21 +33,22 @@ public class OrderInMemoryRepository implements OrderRepository {
 
     @Override
     public List<Order> findAll() {
-        return new ArrayList<>(store.values());
+        var all = new ArrayList<>(store.values());
+        return all;
     }
 
     @Override
     public Page<Order> findAll(Pageable pageable) {
-        List<Order> all = new ArrayList<>(store.values());
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), all.size());
-        List<Order> content = start >= all.size() ? List.of() : all.subList(start, end);
+        var all = new ArrayList<>(store.values());
+        var start = (int) pageable.getOffset();
+        var end = Math.min(start + pageable.getPageSize(), all.size());
+        var content = start >= all.size() ? List.<Order>of() : all.subList(start, end);
         return new PageImpl<>(content, pageable, all.size());
     }
 
     @Override
     public Order update(Order order) {
-        Order updated = new Order(
+        var updated = new Order(
                 order.id(), order.memberId(), order.items(), order.status(),
                 order.createdAt(), LocalDateTime.now()
         );

@@ -19,9 +19,9 @@ public class MemberInMemoryRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
-        long id = sequence.getAndIncrement();
-        LocalDateTime now = LocalDateTime.now();
-        Member saved = new Member(id, member.email(), member.name(), member.role(), now, now);
+        var id = sequence.getAndIncrement();
+        var now = LocalDateTime.now();
+        var saved = new Member(id, member.email(), member.name(), member.role(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -33,21 +33,22 @@ public class MemberInMemoryRepository implements MemberRepository {
 
     @Override
     public List<Member> findAll() {
-        return new ArrayList<>(store.values());
+        var all = new ArrayList<>(store.values());
+        return all;
     }
 
     @Override
     public Page<Member> findAll(Pageable pageable) {
-        List<Member> all = new ArrayList<>(store.values());
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), all.size());
-        List<Member> content = start >= all.size() ? List.of() : all.subList(start, end);
+        var all = new ArrayList<>(store.values());
+        var start = (int) pageable.getOffset();
+        var end = Math.min(start + pageable.getPageSize(), all.size());
+        var content = start >= all.size() ? List.<Member>of() : all.subList(start, end);
         return new PageImpl<>(content, pageable, all.size());
     }
 
     @Override
     public Member update(Member member) {
-        Member updated = new Member(
+        var updated = new Member(
                 member.id(), member.email(), member.name(), member.role(),
                 member.createdAt(), LocalDateTime.now()
         );

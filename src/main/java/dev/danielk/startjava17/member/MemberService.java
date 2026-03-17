@@ -1,6 +1,7 @@
 package dev.danielk.startjava17.member;
 
 import dev.danielk.startjava17.config.CacheNames;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,15 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository repository;
-
-    public MemberService(MemberRepository repository) {
-        this.repository = repository;
-    }
 
     @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.MEMBER_LIST, allEntries = true))
@@ -49,8 +47,9 @@ public class MemberService {
             evict = @CacheEvict(value = CacheNames.MEMBER_LIST, allEntries = true)
     )
     public Member update(Long id, String name) {
-        Member member = findById(id);
-        return repository.update(new Member(member.id(), member.email(), name, member.role(), member.createdAt(), member.updatedAt()));
+        var member = findById(id);
+        var updated = new Member(member.id(), member.email(), name, member.role(), member.createdAt(), member.updatedAt());
+        return repository.update(updated);
     }
 
     @Transactional

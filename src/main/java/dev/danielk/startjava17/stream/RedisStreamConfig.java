@@ -48,7 +48,7 @@ public class RedisStreamConfig {
         var container = StreamMessageListenerContainer.create(connectionFactory, options);
 
         // 컨슈머 그룹 기반 구독: 카프카의 @KafkaListener(groupId=...) 에 대응
-        Subscription subscription = container.receive(
+        var subscription = container.receive(
                 Consumer.from(consumerGroup, consumerName),
                 StreamOffset.create(streamKey, ReadOffset.lastConsumed()),
                 consumer

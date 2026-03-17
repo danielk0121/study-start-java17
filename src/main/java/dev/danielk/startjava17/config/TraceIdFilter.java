@@ -28,7 +28,7 @@ public class TraceIdFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         // Sleuth가 MDC에 자동 주입한 traceId를 응답 헤더에 노출
-        String traceId = MDC.get("traceId");
+        var traceId = MDC.get("traceId");
         if (traceId != null) {
             response.setHeader("X-Trace-Id", traceId);
         }

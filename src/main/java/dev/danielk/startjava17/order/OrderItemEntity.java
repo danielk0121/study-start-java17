@@ -1,10 +1,16 @@
 package dev.danielk.startjava17.order;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 /**
  * JPA 영속성 전용 엔티티 — 도메인 record(OrderItem)와 분리
  */
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "order_items")
 public class OrderItemEntity {
@@ -23,8 +29,6 @@ public class OrderItemEntity {
     @Column(nullable = false)
     private int quantity;
 
-    protected OrderItemEntity() {}
-
     public OrderItemEntity(OrderEntity order, Long productId, int quantity) {
         this.order = order;
         this.productId = productId;
@@ -34,9 +38,4 @@ public class OrderItemEntity {
     public OrderItem toDomain() {
         return new OrderItem(productId, quantity);
     }
-
-    public Long getId()          { return id; }
-    public OrderEntity getOrder() { return order; }
-    public Long getProductId()   { return productId; }
-    public int getQuantity()     { return quantity; }
 }

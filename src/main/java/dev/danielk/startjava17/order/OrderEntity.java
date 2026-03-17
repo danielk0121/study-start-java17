@@ -1,5 +1,8 @@
 package dev.danielk.startjava17.order;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -12,6 +15,8 @@ import java.util.List;
 /**
  * JPA 영속성 전용 엔티티 — 도메인 record(Order)와 분리
  */
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "orders")
 @EntityListeners(AuditingEntityListener.class)
@@ -39,8 +44,6 @@ public class OrderEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemEntity> items = new ArrayList<>();
 
-    protected OrderEntity() {}
-
     public OrderEntity(Long id, Long memberId, OrderStatus status, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = memberId;
@@ -49,24 +52,17 @@ public class OrderEntity {
     }
 
     public static OrderEntity from(Order order) {
-        OrderEntity entity = new OrderEntity(order.id(), order.memberId(), order.status(), order.createdAt());
-        for (OrderItem item : order.items()) {
+        var entity = new OrderEntity(order.id(), order.memberId(), order.status(), order.createdAt());
+        for (var item : order.items()) {
             entity.items.add(new OrderItemEntity(entity, item.productId(), item.quantity()));
         }
         return entity;
     }
 
     public Order toDomain() {
-        List<OrderItem> domainItems = items.stream()
+        var domainItems = items.stream()
                 .map(OrderItemEntity::toDomain)
                 .toList();
         return new Order(id, memberId, domainItems, status, createdAt, updatedAt);
     }
-
-    public Long getId()                     { return id; }
-    public Long getMemberId()               { return memberId; }
-    public OrderStatus getStatus()          { return status; }
-    public LocalDateTime getCreatedAt()     { return createdAt; }
-    public LocalDateTime getUpdatedAt()     { return updatedAt; }
-    public List<OrderItemEntity> getItems() { return items; }
 }

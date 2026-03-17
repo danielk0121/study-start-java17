@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.member;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,19 +9,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Primary
 @Repository
 public class MemberJpaRepositoryAdapter implements MemberRepository {
 
     private final MemberJpaRepository jpaRepository;
 
-    public MemberJpaRepositoryAdapter(MemberJpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
-    }
-
     @Override
     public Member save(Member member) {
-        return jpaRepository.save(MemberEntity.from(member)).toDomain();
+        var entity = MemberEntity.from(member);
+        var saved = jpaRepository.save(entity);
+        return saved.toDomain();
     }
 
     @Override
@@ -42,7 +42,9 @@ public class MemberJpaRepositoryAdapter implements MemberRepository {
 
     @Override
     public Member update(Member member) {
-        return jpaRepository.save(MemberEntity.from(member)).toDomain();
+        var entity = MemberEntity.from(member);
+        var saved = jpaRepository.save(entity);
+        return saved.toDomain();
     }
 
     @Override

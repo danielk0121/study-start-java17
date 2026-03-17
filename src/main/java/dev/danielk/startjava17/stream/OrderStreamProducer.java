@@ -34,14 +34,14 @@ public class OrderStreamProducer {
     public RecordId publish(OrderEvent event) {
         // MapRecord: 카프카 ProducerRecord에 대응
         // Redis Streams는 스키마 없이 Map<String, String>으로 직렬화
-        MapRecord<String, String, String> record = MapRecord.create(streamKey, Map.of(
+        var payload = Map.of(
                 "orderId",   event.orderId(),
                 "product",   event.product(),
                 "quantity",  String.valueOf(event.quantity()),
                 "createdAt", event.createdAt().toString()
-        ));
-
-        RecordId recordId = redisTemplate.opsForStream().add(record);
+        );
+        var record = MapRecord.create(streamKey, payload);
+        var recordId = redisTemplate.opsForStream().add(record);
         System.out.printf("[Producer] 발행 완료 | id=%s | %s%n", recordId, event);
         return recordId;
     }

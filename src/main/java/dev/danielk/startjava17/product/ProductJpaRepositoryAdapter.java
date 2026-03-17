@@ -1,5 +1,6 @@
 package dev.danielk.startjava17.product;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,19 +9,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Primary
 @Repository
 public class ProductJpaRepositoryAdapter implements ProductRepository {
 
     private final ProductJpaRepository jpaRepository;
 
-    public ProductJpaRepositoryAdapter(ProductJpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
-    }
-
     @Override
     public Product save(Product product) {
-        return jpaRepository.save(ProductEntity.from(product)).toDomain();
+        var entity = ProductEntity.from(product);
+        var saved = jpaRepository.save(entity);
+        return saved.toDomain();
     }
 
     @Override
@@ -42,7 +42,9 @@ public class ProductJpaRepositoryAdapter implements ProductRepository {
 
     @Override
     public Product update(Product product) {
-        return jpaRepository.save(ProductEntity.from(product)).toDomain();
+        var entity = ProductEntity.from(product);
+        var saved = jpaRepository.save(entity);
+        return saved.toDomain();
     }
 
     @Override

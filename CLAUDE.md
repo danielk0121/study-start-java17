@@ -55,6 +55,15 @@ npm run validate-dbml                        # docs/ 하위 전체 .dbml 검증
 bash scripts/validate-dbml.sh docs/erd.dbml  # 특정 파일만 검증
 ```
 
+## 코드 스타일 규칙
+
+- **타입 추론 활용:** 지역 변수는 타입을 명시하지 않고 `var` 키워드로 선언한다.
+- **보일러플레이트 제거:** 생성자, getter/setter 등 반복적인 코드는 Lombok 애노테이션으로 대체한다.
+  - 의존성 주입 생성자: `@RequiredArgsConstructor`
+  - JPA 엔티티 getter: `@Getter`
+  - JPA 엔티티 기본 생성자: `@NoArgsConstructor(access = AccessLevel.PROTECTED)`
+- **중첩 함수 호출 지양:** `f(g(h(x)))` 형태의 중첩 호출 대신 중간 결과를 변수에 담아 단계적으로 표현한다.
+
 ## 코드 작성 규칙
 
 코드 작성이 완료된 후에는 반드시 skip test 빌드를 실행하여 컴파일 에러가 없는지 확인한다:
