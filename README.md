@@ -17,12 +17,12 @@
 - [x] Global Timezone UTC 고정 — JVM `TimeZone.setDefault(UTC)` + DB `serverTimezone=UTC` (Locale 설정은 다국어 지원 시 적용)
 - [x] Flyway — DB 스키마 마이그레이션 이력 관리 (`V1__init_schema.sql`, `V2__sample_data.sql`)
 - [x] QueryDSL — 주문/상품 월별·일별·요일별 통계 API (`/stats/**`)
-- [ ] Order API 서버 분리 — Order 도메인을 독립 서비스로 분리 (멀티 모듈 또는 별도 레포지토리)
+- [ ] 멀티 모듈 아키텍처 전환 — member-service / order-service / auth-service / bff 분리 ([설계 문서](./docs/proposal-multimodule-architecture.md))
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
-- [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지
-- [ ] Spring Security + JWT 인증/인가 적용
+- [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지 ([설계 문서](./docs/proposal-distributed-transaction-patterns.md))
+- [ ] Spring Security + JWT 인증/인가 적용 — auth-service 전담, 서비스 간 내부 통신 인증 없음 ([설계 문서](./docs/proposal-spring-security-jwt.md))
   - [ ] 회원가입 시 비밀번호 저장 (BCrypt 해싱)
-  - [ ] JWT 발급 / 검증 (로그인 → AccessToken 반환)
+  - [ ] JWT 발급 / 검증 (로그인 → AccessToken + RefreshToken 반환)
   - [ ] JWT 기반 회원 정보 조회 (`Authorization: Bearer <token>`)
   - [ ] Spring Security 통합 테스트 (`@SpringBootTest` + MockMvc SecurityContext)
 - [ ] OSIV(Open Session In View) 적용 테스트
