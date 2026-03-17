@@ -4,7 +4,7 @@
   "private": true,
   "description": "DBML validation tooling for study-start-java17",
   "scripts": {
-    "validate-dbml": "bash scripts/validate-dbml.sh"
+    "validate-dbml": "bash validate.sh"
   },
   "devDependencies": {
     "@dbml/cli": "^3.14.1"

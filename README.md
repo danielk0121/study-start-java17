@@ -210,11 +210,11 @@ DBML 형식으로 관리합니다. 아래 링크에서 다이어그램으로 확
 `docs/erd.dbml` 수정 후 반드시 아래 명령어로 문법 오류를 확인한다.
 
 ```bash
-npm run validate-dbml                        # docs/ 전체 .dbml 검증
-bash scripts/validate-dbml.sh docs/erd.dbml  # 특정 파일만 검증
+bash tools/dbml/validate.sh                   # docs/ 전체 .dbml 검증
+bash tools/dbml/validate.sh docs/erd.dbml     # 특정 파일만 검증
 ```
 
-> 최초 실행 전 `npm install`로 `@dbml/cli`를 설치해야 한다.
+> 최초 실행 전 `cd tools/dbml && npm install`로 `@dbml/cli`를 설치해야 한다.
 
 **도메인 구성**
 

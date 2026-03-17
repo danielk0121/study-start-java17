@@ -43,5 +43,6 @@ bin/
 /.idea/
 
 ### Node.js ###
-node_modules/
+tools/dbml/node_modules/
+tools/dbml/dbml-error.log
 dbml-error.log

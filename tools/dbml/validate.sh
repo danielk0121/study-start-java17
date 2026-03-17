@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # DBML 문법 검증 스크립트
-# 사용법: bash scripts/validate-dbml.sh [파일...]
+# 사용법: bash tools/dbml/validate.sh [파일...]
 #   인수 없이 실행하면 docs/ 하위 모든 .dbml 파일 검증
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DBML_CLI="$REPO_ROOT/node_modules/.bin/dbml2sql"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+DBML_CLI="$SCRIPT_DIR/node_modules/.bin/dbml2sql"
 
 # @dbml/cli 설치 여부 확인
 if [[ ! -x "$DBML_CLI" ]]; then
-  echo "[validate-dbml] @dbml/cli not found. Run: npm install"
+  echo "[validate-dbml] @dbml/cli not found. Run: cd tools/dbml && npm install"
   exit 1
 fi
 
