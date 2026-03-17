@@ -35,6 +35,13 @@ Spring Boot 2.7.18 기반 Java 17 기능 탐구 프로젝트. 주요 목표:
 - **빌드:** Gradle 8.2, Java 17 툴체인
 - **애노테이션 프로세서:** Lombok + MapStruct (`lombok-mapstruct-binding`으로 처리 순서 보장)
 
+## 문서 관리
+
+### docs/backup 폴더
+
+`docs/backup/` 폴더의 문서는 프로젝트에 이미 반영되었거나 무시하는 제안 문서다.
+참고 목적으로 보관하며, 작업 대상에서 제외한다.
+
 ## DBML 문서 관리
 
 ERD는 `docs/erd.dbml`에서 관리한다.
