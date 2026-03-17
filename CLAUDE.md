@@ -42,7 +42,7 @@ ERD는 `docs/erd.dbml`에서 관리한다.
 ### 초기 설정 (최초 1회)
 
 ```bash
-npm install    # @dbml/cli 설치
+cd tools/dbml && npm install    # @dbml/cli 설치
 ```
 
 ### DBML 작성 규칙
@@ -51,8 +51,8 @@ npm install    # @dbml/cli 설치
 검증을 통과한 뒤에만 커밋한다.
 
 ```bash
-npm run validate-dbml                        # docs/ 하위 전체 .dbml 검증
-bash scripts/validate-dbml.sh docs/erd.dbml  # 특정 파일만 검증
+bash tools/dbml/validate.sh                   # docs/ 하위 전체 .dbml 검증
+bash tools/dbml/validate.sh docs/erd.dbml     # 특정 파일만 검증
 ```
 
 ## 코드 스타일 규칙
