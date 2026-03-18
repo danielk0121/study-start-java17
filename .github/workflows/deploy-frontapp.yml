@@ -5,8 +5,8 @@ on:
     branches:
       - master
     paths:
-      - 'frontapp/**'
-      - 'prototype-app/**'
+      - 'front-app/**'
+      - 'frontbeta-app/**'
       - '.github/workflows/deploy-frontapp.yml'
 
 permissions:
@@ -28,21 +28,21 @@ jobs:
 
       - name: Install and Build FrontApp 🏗️
         run: |
-          cd frontapp
+          cd front-app
           npm install
           npm run build -- --outDir dist/front
 
-      - name: Install and Build PrototypeApp 🎨
+      - name: Install and Build FrontBetaApp 🎨
         run: |
-          cd prototype-app
+          cd frontbeta-app
           npm install
-          npm run build -- --outDir dist/prototype
+          npm run build -- --outDir dist/frontbeta
 
       - name: Combine Artifacts 📦
         run: |
           mkdir -p build-dist
-          cp -r frontapp/dist/front build-dist/
-          cp -r prototype-app/dist/prototype build-dist/
+          cp -r front-app/dist/front build-dist/
+          cp -r frontbeta-app/dist/frontbeta build-dist/
           # 루트 접속 시 front로 리다이렉트하는 간단한 index.html 추가
           echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=./front/"></head></html>' > build-dist/index.html
 
