@@ -59,8 +59,6 @@ function App() {
           <div style={{ display: 'flex', gap: '1rem' }}>
             <Link to="/login" style={{ textDecoration: 'none', color: '#333' }}>로그인</Link>
             <Link to="/register" style={{ textDecoration: 'none', color: '#333' }}>회원가입</Link>
-            <button onClick={() => mockLogin('BUYER')} style={{ fontSize: '0.7rem' }}>T:BUYER</button>
-            <button onClick={() => mockLogin('MANAGER')} style={{ fontSize: '0.7rem' }}>T:MANAGER</button>
           </div>
         )}
       </nav>
