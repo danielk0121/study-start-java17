@@ -1,0 +1,38 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'idea'
+
+// QueryDSL Q클래스 생성 경로
+def querydslDir = "$buildDir/generated/querydsl"
+sourceSets {
+    main.java.srcDirs += [querydslDir]
+}
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+idea {
+    module {
+        generatedSourceDirs += file(querydslDir)
+    }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jpa'
+    annotationProcessor 'javax.annotation:javax.annotation-api:1.3.2'
+    annotationProcessor 'javax.persistence:javax.persistence-api:2.2'
+}
