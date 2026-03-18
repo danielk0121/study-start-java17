@@ -1,61 +1,63 @@
-import { useState, useEffect } from 'react';
-import type { Address } from '../types';
+import { Link } from 'react-router-dom';
 
 /**
- * 마이페이지 및 배송지 관리
- * PRD 2.5 요구사항 반영
+ * 마이페이지 (내 정보 화면)
+ * PRD 2.6 요구사항 반영
  */
 function MyPage() {
-  const [addresses, setAddresses] = useState<Address[]>([]);
-
-  useEffect(() => {
-    // 임시 데이터
-    const mockAddresses: Address[] = [
-      { id: 1, nickname: '우리집', address: '서울시 강남구...', zipCode: '12345' },
-      { id: 2, nickname: '회사', address: '서울시 서초구...', zipCode: '54321' }
-    ];
-    setAddresses(mockAddresses);
-  }, []);
+  // TODO: 실제 API 연동 (GET /members/me)
+  const user = {
+    name: '홍길동',
+    email: 'user@example.com',
+    role: 'BUYER'
+  };
 
   return (
     <div>
       <h1>마이페이지</h1>
       
-      <section>
+      <section style={{ border: '1px solid #000', padding: '1.5rem', marginBottom: '2rem' }}>
         <h2>내 정보</h2>
-        <p>이름: 홍길동</p>
-        <p>이메일: user@example.com</p>
-        <p>권한: BUYER</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '0.5rem' }}>
+          <span style={{ fontWeight: 'bold' }}>이름:</span>
+          <span>{user.name}</span>
+          <span style={{ fontWeight: 'bold' }}>이메일:</span>
+          <span>{user.email}</span>
+          <span style={{ fontWeight: 'bold' }}>권한:</span>
+          <span>{user.role}</span>
+        </div>
       </section>
 
-      <hr />
+      <section style={{ display: 'flex', gap: '1rem' }}>
+        <Link 
+          to="/orders" 
+          style={{ 
+            flex: 1, 
+            padding: '1.5rem', 
+            border: '1px solid #000', 
+            textDecoration: 'none', 
+            color: '#000',
+            textAlign: 'center'
+          }}
+        >
+          <h3>주문 내역 조회</h3>
+          <p>내 주문 목록을 확인합니다.</p>
+        </Link>
 
-      <section>
-        <h2>배송지 관리</h2>
-        <button style={{ marginBottom: '1rem' }}>새 배송지 등록</button>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '2px solid #eee' }}>
-              <th style={{ textAlign: 'left', padding: '0.5rem' }}>별명</th>
-              <th style={{ textAlign: 'left', padding: '0.5rem' }}>주소</th>
-              <th style={{ textAlign: 'left', padding: '0.5rem' }}>우편번호</th>
-              <th style={{ textAlign: 'left', padding: '0.5rem' }}>관리</th>
-            </tr>
-          </thead>
-          <tbody>
-            {addresses.map(addr => (
-              <tr key={addr.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: '0.5rem' }}>{addr.nickname}</td>
-                <td style={{ padding: '0.5rem' }}>{addr.address}</td>
-                <td style={{ padding: '0.5rem' }}>{addr.zipCode}</td>
-                <td style={{ padding: '0.5rem' }}>
-                  <button>수정</button>
-                  <button style={{ marginLeft: '0.5rem', color: 'red' }}>삭제</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Link 
+          to="/addresses" 
+          style={{ 
+            flex: 1, 
+            padding: '1.5rem', 
+            border: '1px solid #000', 
+            textDecoration: 'none', 
+            color: '#000',
+            textAlign: 'center'
+          }}
+        >
+          <h3>배송지 관리</h3>
+          <p>등록된 배송지를 관리합니다.</p>
+        </Link>
       </section>
     </div>
   );
