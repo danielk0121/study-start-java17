@@ -1,4 +1,4 @@
-name: Deploy Frontapp to GitHub Pages
+name: Deploy Multi-App to GitHub Pages
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - 'frontapp/**'
+      - 'prototype-app/**'
       - '.github/workflows/deploy-frontapp.yml'
 
 permissions:
@@ -24,14 +25,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-          cache-dependency-path: 'frontapp/package-lock.json'
 
-      - name: Install and Build 🏗️
+      - name: Install and Build FrontApp 🏗️
         run: |
           cd frontapp
           npm install
-          npm run build
+          npm run build -- --outDir dist/front
+
+      - name: Install and Build PrototypeApp 🎨
+        run: |
+          cd prototype-app
+          npm install
+          npm run build -- --outDir dist/prototype
+
+      - name: Combine Artifacts 📦
+        run: |
+          mkdir -p build-dist
+          cp -r frontapp/dist/front build-dist/
+          cp -r prototype-app/dist/prototype build-dist/
+          # 루트 접속 시 front로 리다이렉트하는 간단한 index.html 추가
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=./front/"></head></html>' > build-dist/index.html
 
       - name: Setup Pages 🌐
         uses: actions/configure-pages@v4
@@ -39,7 +52,7 @@ jobs:
       - name: Upload artifact 📦
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './frontapp/dist'
+          path: './build-dist'
 
       - name: Deploy to GitHub Pages 🚀
         id: deployment

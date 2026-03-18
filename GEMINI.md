@@ -57,6 +57,15 @@ Java 17과 Spring Boot 2.7.18을 기반으로 한 MSA(Microservices Architecture
 5. `git checkout master && git merge --no-ff feature/<작업명>` (병합)
 6. `git push origin master`
 
-## 7. 응답 가이드
-- 질문 시 선택지는 A, B, C 대신 1, 2, 3 번호를 사용한다.
-- "ㅇㅇㅇ 을 할까요?"와 같은 불필요한 재질문보다는 자율적으로 판단하여 완결성 있게 작업을 수행한다.
+## 8. 프로토타이핑 주도 개발 전략 (PDD)
+기획, 프론트엔드, 백엔드를 3단계로 나누어 관리한다.
+
+1.  **기획 (Planning/Prototyping)**: `prototype-app`
+    *   Flyway 샘플 데이터를 활용한 UI/UX 조기 검증.
+    *   피그마(Figma) 등 디자인 도구와 병행하여 유스케이스 확정.
+2.  **프론트엔드 (Frontend)**: `frontapp`
+    *   검증된 프로토타입 UI를 이관하고 실제 백엔드 API와 연동.
+3.  **백엔드 (Backend)**: 각 마이크로서비스
+    *   확정된 API 규격에 따라 비즈니스 로직 및 DB 처리 구현.
+
+**작업 순서**: 샘플 화면 구성(기획) -> 유스케이스 확정 및 PRD 반영 -> API 규격 정의 -> 실 서비스 구현(프론트/백엔드 병렬 진행)
