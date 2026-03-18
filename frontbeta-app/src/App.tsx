@@ -11,6 +11,7 @@ import OrderList from './pages/OrderList';
 import AddressManagement from './pages/AddressManagement';
 import ProductSalesList from './pages/ProductSalesList';
 import BrandList from './pages/BrandList';
+import ProductDetail from './pages/ProductDetail';
 import type { Member } from './types';
 
 /**
@@ -75,6 +76,7 @@ function App() {
       <main style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/brands" element={<BrandList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />

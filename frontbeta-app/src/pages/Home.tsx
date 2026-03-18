@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import type { Product } from '../types';
 
 /**
@@ -66,7 +67,9 @@ function Home() {
         {products.map(product => (
           <div key={product.id} style={{ border: '1px solid #ddd', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
             <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>{product.brandName} | {product.category}</div>
-            <h3 style={{ margin: '0 0 1rem 0' }}>{product.name}</h3>
+            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
+              <h3 style={{ margin: '0 0 1rem 0', cursor: 'pointer' }}>{product.name}</h3>
+            </Link>
             <p style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{product.price.toLocaleString()}원</p>
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
               <button 
