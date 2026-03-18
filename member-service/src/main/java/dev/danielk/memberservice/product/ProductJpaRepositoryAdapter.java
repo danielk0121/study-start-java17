@@ -15,10 +15,13 @@ import java.util.Optional;
 public class ProductJpaRepositoryAdapter implements ProductRepository {
 
     private final ProductJpaRepository jpaRepository;
+    private final BrandJpaRepository brandJpaRepository;
 
     @Override
-    public Product save(Product product) {
-        var entity = ProductEntity.from(product);
+    public Product save(Long brandId, Product product) {
+        var brand = brandJpaRepository.findById(brandId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 브랜드입니다. id=" + brandId));
+        var entity = ProductEntity.from(product, brand);
         var saved = jpaRepository.save(entity);
         return saved.toDomain();
     }
@@ -41,8 +44,10 @@ public class ProductJpaRepositoryAdapter implements ProductRepository {
     }
 
     @Override
-    public Product update(Product product) {
-        var entity = ProductEntity.from(product);
+    public Product update(Long brandId, Product product) {
+        var brand = brandJpaRepository.findById(brandId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 브랜드입니다. id=" + brandId));
+        var entity = ProductEntity.from(product, brand);
         var saved = jpaRepository.save(entity);
         return saved.toDomain();
     }

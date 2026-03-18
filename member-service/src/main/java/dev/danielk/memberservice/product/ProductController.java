@@ -28,17 +28,20 @@ public class ProductController {
     public record RegisterRequest(@NotBlank(message = "상품명은 필수입니다.") String name,
                                   @NotNull(message = "가격은 필수입니다.") @Positive(message = "가격은 0보다 커야 합니다.") BigDecimal price,
                                   @Min(value = 0, message = "재고는 0 이상이어야 합니다.") int stock,
-                                  @NotBlank(message = "카테고리는 필수입니다.") String category) {}
+                                  @NotBlank(message = "카테고리는 필수입니다.") String category,
+                                  @NotNull(message = "브랜드는 필수입니다.") Long brandId) {}
     public record UpdateRequest(@NotBlank(message = "상품명은 필수입니다.") String name,
                                 @NotNull(message = "가격은 필수입니다.") @Positive(message = "가격은 0보다 커야 합니다.") BigDecimal price,
                                 @Min(value = 0, message = "재고는 0 이상이어야 합니다.") int stock,
-                                @NotBlank(message = "카테고리는 필수입니다.") String category) {}
+                                @NotBlank(message = "카테고리는 필수입니다.") String category,
+                                @NotNull(message = "브랜드는 필수입니다.") Long brandId) {}
     public record ProductResponse(Long id, String name, BigDecimal price, int stock, String category,
+                                      String brandName,
                                       OffsetDateTime createdAt, OffsetDateTime updatedAt) {}
 
     @PostMapping
     public ResponseEntity<ProductResponse> register(@RequestBody @Valid RegisterRequest request) {
-        Product product = service.register(mapper.toProduct(request));
+        Product product = service.register(request.brandId(), mapper.toProduct(request));
         return ResponseEntity.ok(mapper.toResponse(product));
     }
 
@@ -64,7 +67,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody @Valid UpdateRequest request) {
-        Product product = service.update(id, mapper.toProduct(request));
+        Product product = service.update(id, request.brandId(), mapper.toProduct(request));
         return ResponseEntity.ok(mapper.toResponse(product));
     }
 

@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
   title: Member Service API
-  description: 회원 관리 및 상품 관리 API 명세
-  version: 0.0.1
+  description: 회원 관리 및 상품 관리 API 명세 (브랜드 포함)
+  version: 0.0.2
 servers:
 - url: http://localhost:8080
 paths:
@@ -223,6 +223,9 @@ components:
         stock:
           type: number
           description: 재고 수량
+        brandId:
+          type: number
+          description: 브랜드 ID
     ProductRegisterRequest:
       type: object
       properties:
@@ -238,6 +241,9 @@ components:
         stock:
           type: number
           description: 초기 재고 수량
+        brandId:
+          type: number
+          description: 브랜드 ID
     ProductResponse:
       type: object
       properties:
@@ -256,3 +262,6 @@ components:
         stock:
           type: number
           description: 재고 수량
+        brandName:
+          type: string
+          description: 브랜드명

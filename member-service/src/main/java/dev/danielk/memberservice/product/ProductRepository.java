@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository {
-    Product save(Product product);
+    Product save(Long brandId, Product product);
     Optional<Product> findById(Long id);
     List<Product> findAll();
     Page<Product> findAll(Pageable pageable);
-    Product update(Product product);
+    Product update(Long brandId, Product product);
     void deleteById(Long id);
 }

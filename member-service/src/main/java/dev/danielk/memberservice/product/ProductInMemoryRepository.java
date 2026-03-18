@@ -18,10 +18,10 @@ public class ProductInMemoryRepository implements ProductRepository {
     private final AtomicLong sequence = new AtomicLong(1);
 
     @Override
-    public Product save(Product product) {
+    public Product save(Long brandId, Product product) {
         var id = sequence.getAndIncrement();
         var now = LocalDateTime.now();
-        var saved = new Product(id, product.name(), product.price(), product.stock(), product.category(), now, now);
+        var saved = new Product(id, product.name(), product.price(), product.stock(), product.category(), "Dummy Brand", now, now);
         store.put(id, saved);
         return saved;
     }
@@ -47,10 +47,10 @@ public class ProductInMemoryRepository implements ProductRepository {
     }
 
     @Override
-    public Product update(Product product) {
+    public Product update(Long brandId, Product product) {
         var updated = new Product(
                 product.id(), product.name(), product.price(), product.stock(), product.category(),
-                product.createdAt(), LocalDateTime.now()
+                "Dummy Brand", product.createdAt(), LocalDateTime.now()
         );
         store.put(updated.id(), updated);
         return updated;
