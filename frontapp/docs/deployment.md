@@ -24,7 +24,7 @@ export default defineConfig({
 - **Build and deployment > Source**를 `GitHub Actions`로 설정하세요.
 
 ## 3. 자동 배포 설정 (CI/CD)
-`.github/workflows/deploy.yml` 파일이 배포를 담당합니다. 이 파일은 다음 과정을 수행합니다:
+`.github/workflows/deploy-frontapp.yml` 파일이 배포를 담당합니다. 이 파일은 다음 과정을 수행합니다:
 1. 소스코드 체크아웃
 2. Node.js 환경 구축
 3. 의존성 설치 (`npm install`)

@@ -6,7 +6,7 @@ on:
       - master
     paths:
       - 'frontapp/**'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/deploy-frontapp.yml'
 
 permissions:
   contents: read
