@@ -1,0 +1,258 @@
+openapi: 3.0.1
+info:
+  title: Member Service API
+  description: 회원 관리 및 상품 관리 API 명세
+  version: 0.0.1
+servers:
+- url: http://localhost:8080
+paths:
+  /members:
+    get:
+      tags:
+      - members
+      operationId: members-find-all
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberResponse'
+    post:
+      tags:
+      - members
+      operationId: members-join
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberJoinRequest'
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberResponse'
+  /members/{id}:
+    get:
+      tags:
+      - members
+      operationId: members-find-by-id
+      parameters:
+      - name: id
+        in: path
+        description: 회원 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberResponse'
+    put:
+      tags:
+      - members
+      operationId: members-update
+      parameters:
+      - name: id
+        in: path
+        description: 회원 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberUpdateRequest'
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberResponse'
+    delete:
+      tags:
+      - members
+      operationId: members-delete
+      parameters:
+      - name: id
+        in: path
+        description: 회원 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: "204"
+  /products:
+    get:
+      tags:
+      - products
+      operationId: products-find-all
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    post:
+      tags:
+      - products
+      operationId: products-register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRegisterRequest'
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+  /products/{id}:
+    get:
+      tags:
+      - products
+      operationId: products-find-by-id
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    put:
+      tags:
+      - products
+      operationId: products-update
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductUpdateRequest'
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    delete:
+      tags:
+      - products
+      operationId: products-delete
+      parameters:
+      - name: id
+        in: path
+        description: 상품 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: "204"
+components:
+  schemas:
+    MemberUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 변경할 이름
+    MemberResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          role:
+            type: string
+            description: 권한
+          name:
+            type: string
+            description: 이름
+          id:
+            type: number
+            description: 회원 ID
+          email:
+            type: string
+            description: 이메일
+    MemberJoinRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 회원 이름
+        email:
+          type: string
+          description: 이메일 (로그인 ID)
+    ProductUpdateRequest:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 가격
+        name:
+          type: string
+          description: 상품명
+        category:
+          type: string
+          description: 카테고리
+        stock:
+          type: number
+          description: 재고 수량
+    ProductRegisterRequest:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 가격
+        name:
+          type: string
+          description: 상품명
+        category:
+          type: string
+          description: 카테고리 (ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC)
+        stock:
+          type: number
+          description: 초기 재고 수량
+    ProductResponse:
+      type: object
+      properties:
+        price:
+          type: number
+          description: 가격
+        name:
+          type: string
+          description: 상품명
+        id:
+          type: number
+          description: 상품 ID
+        category:
+          type: string
+          description: 카테고리
+        stock:
+          type: number
+          description: 재고 수량

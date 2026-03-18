@@ -1,0 +1,27 @@
+openapi: 3.0.1
+info:
+  title: BFF (Backend For Frontend) API
+  description: 프론트엔드 대응을 위한 통합/조합 API 명세
+  version: 0.0.1
+servers:
+- url: http://localhost:8000
+paths:
+  /api/v1/dashboard:
+    get:
+      tags:
+      - dashboard
+      summary: 사용자 대시보드 정보 통합 조회
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  member:
+                    type: object
+                  recentOrders:
+                    type: array
+                    items:
+                      type: object

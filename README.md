@@ -13,7 +13,7 @@
 | 문서 | 경로 | 역할 | 방법론 |
 | :--- | :--- | :--- | :--- |
 | **PRD** | [`specs/PRD.md`](./specs/PRD.md) | 비즈니스 요구사항 및 개발 방법론 가이드 | **Project Guide** |
-| **API Spec** | [`specs/openapi.yaml`](./specs/openapi.yaml) | REST API 인터페이스 정의 (Controller 구현의 기준) | **SDD** |
+| **API Spec** | [`specs/openapi/*.yaml`](./specs/openapi/) | 서비스별 REST API 인터페이스 정의 (Controller 구현의 기준) | **SDD** |
 | **DB Spec** | [`specs/erd.dbml`](./specs/erd.dbml) | 데이터베이스 스키마 및 도메인 모델 정의 | **DDD** |
 | **Event Spec** | [`specs/events.toml`](./specs/events.toml) | Redis Streams 비동기 이벤트 명세 정의 | **EDD** |
 
@@ -153,10 +153,13 @@ bash tools/dbml/validate.sh specs/erd.dbml
 
 # API 문서
 
-OpenAPI 3.0 스펙으로 정의되어 있으며, 모든 Controller 구현의 기준이 됩니다.
+OpenAPI 3.0 스펙으로 정의되어 있으며, 각 마이크로서비스의 Controller 구현 기준이 됩니다.
 
-- **스펙 파일**: [`specs/openapi.yaml`](./specs/openapi.yaml)
-- **Swagger Editor**: [editor.swagger.io](https://editor.swagger.io/?url=https://raw.githubusercontent.com/danielk0121/study-start-java17/master/specs/openapi.yaml)
+- **Auth**: [`specs/openapi/auth-service.yaml`](./specs/openapi/auth-service.yaml)
+- **Member**: [`specs/openapi/member-service.yaml`](./specs/openapi/member-service.yaml)
+- **Order**: [`specs/openapi/order-service.yaml`](./specs/openapi/order-service.yaml)
+- **BFF**: [`specs/openapi/bff.yaml`](./specs/openapi/bff.yaml)
+- **Common**: [`specs/openapi/common.yaml`](./specs/openapi/common.yaml)
 
 ---
 
