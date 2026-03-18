@@ -1,0 +1,36 @@
+# specs/events.toml
+# 시스템 전체 이벤트 명세 (Event Driven Development)
+
+[[streams]]
+name = "order-stream"
+description = "주문 도메인에서 발생하는 주요 이벤트 스트림"
+
+  [[streams.events]]
+  name = "OrderCreated"
+  record_name = "OrderEvent"
+  producer = "order-service"
+  consumers = ["member-service", "stats-service"]
+  description = "주문이 완료되어 결제/배송/통계 처리가 필요한 상태"
+
+    [streams.events.payload]
+    orderId = "Long"
+    memberId = "Long"
+    items = "List<OrderItem>"
+    orderedAt = "LocalDateTime"
+
+[[streams]]
+name = "member-stream"
+description = "회원 도메인에서 발생하는 주요 이벤트 스트림"
+
+  [[streams.events]]
+  name = "MemberSignedUp"
+  record_name = "MemberEvent"
+  producer = "member-service"
+  consumers = ["auth-service", "mail-service"]
+  description = "새로운 회원이 가입하여 인증 정보 생성 및 가입 환영 메일 발송이 필요한 상태"
+
+    [streams.events.payload]
+    memberId = "Long"
+    email = "String"
+    name = "String"
+    signedUpAt = "LocalDateTime"
