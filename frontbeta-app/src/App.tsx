@@ -23,7 +23,7 @@ function App() {
   };
 
   return (
-    <Router basename="/study-start-java17">
+    <Router basename="/study-start-java17/frontbeta">
       <nav style={{ 
         padding: '1rem', 
         borderBottom: '1px solid #000', 
