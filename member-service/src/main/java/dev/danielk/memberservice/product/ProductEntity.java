@@ -25,6 +25,10 @@ public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private BrandEntity brand;
+
     @Column(nullable = false)
     private String name;
 
@@ -46,19 +50,20 @@ public class ProductEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public ProductEntity(Long id, String name, BigDecimal price, int stock, ProductCategory category) {
+    public ProductEntity(Long id, BrandEntity brand, String name, BigDecimal price, int stock, ProductCategory category) {
         this.id = id;
+        this.brand = brand;
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.category = category;
     }
 
-    public static ProductEntity from(Product product) {
-        return new ProductEntity(product.id(), product.name(), product.price(), product.stock(), product.category());
+    public static ProductEntity from(Product product, BrandEntity brand) {
+        return new ProductEntity(product.id(), brand, product.name(), product.price(), product.stock(), product.category());
     }
 
     public Product toDomain() {
-        return new Product(id, name, price, stock, category, createdAt, updatedAt);
+        return new Product(id, name, price, stock, category, brand != null ? brand.getName() : null, createdAt, updatedAt);
     }
 }

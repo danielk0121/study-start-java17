@@ -14,10 +14,21 @@ Table members {
 }
 
 // ─────────────────────────────────────────
+// 브랜드 (brand)
+// ─────────────────────────────────────────
+Table brands {
+  id         bigint   [pk, increment, note: '브랜드 ID']
+  name       varchar  [not null, unique, note: '브랜드명 (max 255)']
+  created_at datetime [not null, default: `now()`, note: '등록 일시']
+  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시']
+}
+
+// ─────────────────────────────────────────
 // 상품 (product)
 // ─────────────────────────────────────────
 Table products {
   id         bigint   [pk, increment, note: '상품 ID']
+  brand_id   bigint   [not null, note: '소속 브랜드']
   name       varchar  [not null, note: '상품명 (max 255)']
   price      decimal  [not null, note: '가격 (0 이상, precision 15,2)']
   stock      int      [not null, default: 0, note: '재고 수량 (0 이상)']
@@ -64,6 +75,7 @@ Table order_events {
 // ─────────────────────────────────────────
 // 관계 정의
 // ─────────────────────────────────────────
+Ref: brands.id               < products.brand_id // 브랜드 : 상품 = 1 : N
 Ref: orders.member_id        > members.id    // 회원 : 주문 = 1 : N
 Ref: order_items.order_id    > orders.id     // 주문 : 주문항목 = 1 : N
 Ref: order_items.product_id  > products.id   // 상품 : 주문항목 = 1 : N
