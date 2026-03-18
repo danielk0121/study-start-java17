@@ -58,7 +58,7 @@ dependencies {
     // MDC에 traceId/spanId를 자동 주입, 로그와 응답 헤더에서 확인 가능
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
     // JSON 로그 출력 — logback-spring.xml에서 dev/prod 프로파일에 사용
-    implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // Spring REST Docs — MockMvc 기반 테스트로 API 문서 스니펫 자동 생성
@@ -81,6 +81,10 @@ dependencies {
     // 로컬 캐시 — Caffeine (Spring Cache 추상화와 통합, Spring Boot 2.x 공식 지원)
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'com.github.ben-manes.caffeine:caffeine'
+
+    // Swagger UI — springdoc-openapi (Spring Boot 2.x 호환 버전)
+    // 접근: http://localhost:8080/swagger-ui/index.html
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

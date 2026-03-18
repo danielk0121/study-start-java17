@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
  * POST /orders  →  Redis Stream에 메시지 publish
  */
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/orders")
+@RestController("streamOrderController")
+@RequestMapping("/stream/orders")
 public class OrderController {
 
     private final OrderStreamProducer producer;
