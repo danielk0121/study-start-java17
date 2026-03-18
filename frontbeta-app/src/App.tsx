@@ -10,6 +10,7 @@ import ManagerRegister from './pages/ManagerRegister';
 import OrderList from './pages/OrderList';
 import AddressManagement from './pages/AddressManagement';
 import ProductSalesList from './pages/ProductSalesList';
+import BrandList from './pages/BrandList';
 import type { Member } from './types';
 
 /**
@@ -38,6 +39,7 @@ function App() {
         
         {/* 공통 메뉴 (상시 노출) */}
         <Link to="/" style={{ textDecoration: 'none', color: '#333' }}>상품목록</Link>
+        <Link to="/brands" style={{ textDecoration: 'none', color: '#333' }}>브랜드관</Link>
         <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
         <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
         <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
@@ -73,6 +75,7 @@ function App() {
       <main style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/brands" element={<BrandList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
