@@ -17,6 +17,9 @@ spring:
   flyway:
     enabled: false
 
+jwt:
+  secret: study-start-java17-secret-key-for-jwt-token-generation
+
 management:
   endpoints:
     web:

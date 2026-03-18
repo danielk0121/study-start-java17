@@ -21,7 +21,7 @@ public class MemberInMemoryRepository implements MemberRepository {
     public Member save(Member member) {
         var id = sequence.getAndIncrement();
         var now = LocalDateTime.now();
-        var saved = new Member(id, member.email(), member.name(), member.role(), now, now);
+        var saved = new Member(id, member.email(), member.name(), member.password(), member.role(), now, now);
         store.put(id, saved);
         return saved;
     }
@@ -29,6 +29,13 @@ public class MemberInMemoryRepository implements MemberRepository {
     @Override
     public Optional<Member> findById(Long id) {
         return Optional.ofNullable(store.get(id));
+    }
+
+    @Override
+    public Optional<Member> findByEmail(String email) {
+        return store.values().stream()
+                .filter(m -> m.email().equals(email))
+                .findFirst();
     }
 
     @Override
@@ -49,7 +56,7 @@ public class MemberInMemoryRepository implements MemberRepository {
     @Override
     public Member update(Member member) {
         var updated = new Member(
-                member.id(), member.email(), member.name(), member.role(),
+                member.id(), member.email(), member.name(), member.password(), member.role(),
                 member.createdAt(), LocalDateTime.now()
         );
         store.put(updated.id(), updated);

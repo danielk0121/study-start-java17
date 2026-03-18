@@ -33,6 +33,9 @@ public class MemberEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberRole role;
@@ -45,18 +48,19 @@ public class MemberEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public MemberEntity(Long id, String email, String name, MemberRole role) {
+    public MemberEntity(Long id, String email, String name, String password, MemberRole role) {
         this.id = id;
         this.email = email;
         this.name = name;
+        this.password = password;
         this.role = role;
     }
 
     public static MemberEntity from(Member member) {
-        return new MemberEntity(member.id(), member.email(), member.name(), member.role());
+        return new MemberEntity(member.id(), member.email(), member.name(), member.password(), member.role());
     }
 
     public Member toDomain() {
-        return new Member(id, email, name, role, createdAt, updatedAt);
+        return new Member(id, email, name, password, role, createdAt, updatedAt);
     }
 }

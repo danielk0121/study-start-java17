@@ -24,12 +24,12 @@ public class JwtService {
         signingKey = Keys.hmacShaKeyFor(properties.getSecret().getBytes());
     }
 
-    public String generateAccessToken(Long memberId, String email) {
+    public String generateAccessToken(Long memberId, String role) {
         var now = new Date();
         var expiry = new Date(now.getTime() + properties.getExpiration());
         return Jwts.builder()
                 .setSubject(String.valueOf(memberId))
-                .claim("email", email)
+                .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(signingKey, SignatureAlgorithm.HS256)

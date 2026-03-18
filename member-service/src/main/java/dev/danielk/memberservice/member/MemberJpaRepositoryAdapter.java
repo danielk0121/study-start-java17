@@ -29,6 +29,11 @@ public class MemberJpaRepositoryAdapter implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByEmail(String email) {
+        return jpaRepository.findByEmail(email).map(MemberEntity::toDomain);
+    }
+
+    @Override
     public List<Member> findAll() {
         return jpaRepository.findAll().stream()
                 .map(MemberEntity::toDomain)
