@@ -286,6 +286,9 @@ components:
           type: string
         email:
           type: string
+        adminCode:
+          type: string
+          description: 상품 관리자(MANAGER) 가입 시 필요한 인증 코드 (선택)
     AddressRequest:
       type: object
       properties:
