@@ -60,10 +60,10 @@ Java 17과 Spring Boot 2.7.18을 기반으로 한 MSA(Microservices Architecture
 ## 8. 프로토타이핑 주도 개발 전략 (PDD)
 기획, 프론트엔드, 백엔드를 3단계로 나누어 관리한다.
 
-1.  **기획 (Planning/Prototyping)**: `prototype-app`
+1.  **기획 (Planning/Prototyping)**: `frontbeta-app`
     *   Flyway 샘플 데이터를 활용한 UI/UX 조기 검증.
     *   피그마(Figma) 등 디자인 도구와 병행하여 유스케이스 확정.
-2.  **프론트엔드 (Frontend)**: `frontapp`
+2.  **프론트엔드 (Frontend)**: `front-app`
     *   검증된 프로토타입 UI를 이관하고 실제 백엔드 API와 연동.
 3.  **백엔드 (Backend)**: 각 마이크로서비스
     *   확정된 API 규격에 따라 비즈니스 로직 및 DB 처리 구현.
