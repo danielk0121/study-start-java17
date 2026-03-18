@@ -13,7 +13,7 @@ import type { Member } from './types';
 
 /**
  * 프론트엔드 메인 진입점
- * PRD-FRONTAPP 2.1 요구사항 반영 (마이페이지 하위 탭 내비게이션 추가)
+ * PRD-FRONTAPP 요구사항 반영 (메뉴 상시 노출로 변경)
  */
 function App() {
   const [currentUser, setCurrentUser] = useState<Member | null>(null);
@@ -35,19 +35,17 @@ function App() {
         <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000' }}>SHOP</Link>
         <div style={{ flex: 1 }}></div>
         
-        {/* 공통 메뉴 */}
+        {/* 공통 메뉴 (상시 노출) */}
         <Link to="/" style={{ textDecoration: 'none', color: '#333' }}>상품목록</Link>
         <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
+        <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
+        <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
+        <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
         
+        <span style={{ color: '#ccc' }}>|</span>
+
         {currentUser ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ color: '#ccc' }}>|</span>
-            {/* 마이페이지 하위 탭 메뉴 */}
-            <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
-            <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
-            <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
-            <span style={{ color: '#ccc' }}>|</span>
-
             <span style={{ 
               padding: '0.2rem 0.5rem', 
               border: '1px solid #ccc',
