@@ -1,0 +1,66 @@
+import { useState, useEffect } from 'react';
+import type { Product } from '../types';
+
+/**
+ * 상품 목록 페이지 (Home)
+ * PRD 2.3 요구사항 반영 (장바구니 담기 기능 추가)
+ */
+function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // TODO: 백엔드 API 연동 (GET /products)
+    const mockProducts: Product[] = [
+      { id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple' },
+      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple' },
+      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech' },
+      { id: 4, name: '린넨 셔츠', price: 49000, stock: 100, category: 'CLOTHING', brandName: 'Uniqlo' },
+      { id: 5, name: '청바지 슬림핏', price: 79000, stock: 80, category: 'CLOTHING', brandName: 'Zara' },
+      { id: 6, name: '제주 감귤 2kg', price: 15000, stock: 200, category: 'FOOD', brandName: 'CJ' },
+      { id: 7, name: '유기농 아메리카노 원두 500g', price: 22000, stock: 150, category: 'FOOD', brandName: 'Starbucks' },
+      { id: 8, name: '클린 코드', price: 33000, stock: 60, category: 'BOOKS', brandName: 'Pearson' },
+      { id: 9, name: '자바 ORM 표준 JPA 프로그래밍', price: 38000, stock: 45, category: 'BOOKS', brandName: 'OReilly' },
+      { id: 10, name: '텀블러 500ml', price: 25000, stock: 120, category: 'ETC', brandName: 'Muji' },
+      { id: 11, name: 'Galaxy S24', price: 1150000, stock: 30, category: 'ELECTRONICS', brandName: 'Samsung' },
+      { id: 12, name: 'WH-1000XM5', price: 450000, stock: 20, category: 'ELECTRONICS', brandName: 'Sony' },
+      { id: 13, name: 'Air Max 97', price: 199000, stock: 50, category: 'CLOTHING', brandName: 'Nike' },
+      { id: 14, name: 'Designing Data-Intensive Applications', price: 45000, stock: 100, category: 'BOOKS', brandName: 'OReilly' },
+      { id: 15, name: 'LEGO Star Wars', price: 210000, stock: 5, category: 'ETC', brandName: 'LEGO' }
+    ];
+    setProducts(mockProducts);
+  }, []);
+
+  const handleAddToCart = (product: Product) => {
+    // TODO: API 연동 (POST /carts/me/items)
+    console.log('Add to cart:', product);
+    alert(`${product.name}이(가) 장바구니에 담겼습니다.`);
+  };
+
+  return (
+    <div>
+      <h1>상품 목록</h1>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
+        {products.map(product => (
+          <div key={product.id} style={{ border: '1px solid #ddd', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+            <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>{product.brandName} | {product.category}</div>
+            <h3 style={{ margin: '0 0 1rem 0' }}>{product.name}</h3>
+            <p style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{product.price.toLocaleString()}원</p>
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+              <button 
+                onClick={() => handleAddToCart(product)}
+                style={{ flex: 1, padding: '0.5rem', cursor: 'pointer' }}
+              >
+                장바구니 담기
+              </button>
+              <button style={{ flex: 1, padding: '0.5rem', backgroundColor: '#333', color: 'white', border: 'none', cursor: 'pointer' }}>
+                바로구매
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Home;
