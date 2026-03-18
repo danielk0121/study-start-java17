@@ -16,6 +16,8 @@ description = "주문 도메인에서 발생하는 주요 이벤트 스트림"
     orderId = "Long"
     memberId = "Long"
     items = "List<OrderItem>"
+    shippingAddress = "String"
+    shippingZipCode = "String"
     orderedAt = "LocalDateTime"
 
 [[streams]]
