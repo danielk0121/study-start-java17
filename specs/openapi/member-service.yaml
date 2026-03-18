@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
   title: Member Service API
-  description: 회원 관리 및 상품 관리 API 명세 (브랜드 포함)
-  version: 0.0.2
+  description: 회원 관리, 상품 관리 및 배송지 관리 API 명세
+  version: 0.0.3
 servers:
 - url: http://localhost:8080
 paths:
@@ -42,7 +42,6 @@ paths:
       parameters:
       - name: id
         in: path
-        description: 회원 ID
         required: true
         schema:
           type: string
@@ -60,7 +59,6 @@ paths:
       parameters:
       - name: id
         in: path
-        description: 회원 ID
         required: true
         schema:
           type: string
@@ -83,13 +81,100 @@ paths:
       parameters:
       - name: id
         in: path
-        description: 회원 ID
         required: true
         schema:
           type: string
       responses:
         "204":
           description: "204"
+  /members/{id}/addresses:
+    get:
+      tags:
+      - addresses
+      summary: 회원의 배송지 목록 조회
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressResponse'
+    post:
+      tags:
+      - addresses
+      summary: 배송지 신규 등록
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+  /members/{id}/addresses/{addressId}:
+    put:
+      tags:
+      - addresses
+      summary: 배송지 정보 수정
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: addressId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+    delete:
+      tags:
+      - addresses
+      summary: 배송지 삭제
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: addressId
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: 성공
   /products:
     get:
       tags:
@@ -126,7 +211,6 @@ paths:
       parameters:
       - name: id
         in: path
-        description: 상품 ID
         required: true
         schema:
           type: string
@@ -144,7 +228,6 @@ paths:
       parameters:
       - name: id
         in: path
-        description: 상품 ID
         required: true
         schema:
           type: string
@@ -167,7 +250,6 @@ paths:
       parameters:
       - name: id
         in: path
-        description: 상품 ID
         required: true
         schema:
           type: string
@@ -181,87 +263,87 @@ components:
       properties:
         name:
           type: string
-          description: 변경할 이름
     MemberResponse:
       type: array
       items:
         type: object
         properties:
-          role:
-            type: string
-            description: 권한
-          name:
-            type: string
-            description: 이름
           id:
             type: number
-            description: 회원 ID
           email:
             type: string
-            description: 이메일
+          name:
+            type: string
+          role:
+            type: string
     MemberJoinRequest:
       type: object
       properties:
         name:
           type: string
-          description: 회원 이름
         email:
           type: string
-          description: 이메일 (로그인 ID)
+    AddressRequest:
+      type: object
+      properties:
+        nickname:
+          type: string
+          description: 배송지 별명
+        address:
+          type: string
+          description: 상세 주소
+        zipCode:
+          type: string
+          description: 우편번호
+    AddressResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        nickname:
+          type: string
+        address:
+          type: string
+        zipCode:
+          type: string
     ProductUpdateRequest:
       type: object
       properties:
-        price:
-          type: number
-          description: 가격
         name:
           type: string
-          description: 상품명
-        category:
-          type: string
-          description: 카테고리
+        price:
+          type: number
         stock:
           type: number
-          description: 재고 수량
+        category:
+          type: string
         brandId:
           type: number
-          description: 브랜드 ID
     ProductRegisterRequest:
       type: object
       properties:
-        price:
-          type: number
-          description: 가격
         name:
           type: string
-          description: 상품명
-        category:
-          type: string
-          description: 카테고리 (ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC)
+        price:
+          type: number
         stock:
           type: number
-          description: 초기 재고 수량
+        category:
+          type: string
         brandId:
           type: number
-          description: 브랜드 ID
     ProductResponse:
       type: object
       properties:
-        price:
-          type: number
-          description: 가격
-        name:
-          type: string
-          description: 상품명
         id:
           type: number
-          description: 상품 ID
-        category:
+        name:
           type: string
-          description: 카테고리
+        price:
+          type: number
         stock:
           type: number
-          description: 재고 수량
+        category:
+          type: string
         brandName:
           type: string
-          description: 브랜드명

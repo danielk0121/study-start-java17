@@ -1,5 +1,6 @@
 package dev.danielk.orderservice.order;
 
+import dev.danielk.orderservice.client.MemberClient;
 import dev.danielk.orderservice.config.CacheNames;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -19,11 +20,19 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository repository;
+    private final MemberClient memberClient;
 
     @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.ORDER_LIST, allEntries = true))
-    public Order place(Long memberId, List<OrderItem> items) {
-        return repository.save(Order.create(memberId, items));
+    public Order place(Long memberId, Long addressId, List<OrderItem> items) {
+        // 배송지 정보 조회 및 복사
+        var addresses = memberClient.getAddresses(memberId);
+        var address = addresses.stream()
+                .filter(a -> a.id().equals(addressId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 배송지입니다. id=" + addressId));
+
+        return repository.save(Order.create(memberId, items, address.address(), address.zipCode()));
     }
 
     @Cacheable(value = CacheNames.ORDER, key = "#id")

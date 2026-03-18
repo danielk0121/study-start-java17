@@ -1,8 +1,8 @@
 openapi: 3.0.1
 info:
   title: Order Service API
-  description: 주문 관리 API 명세
-  version: 0.0.1
+  description: 주문 관리 API 명세 (배송지 정보 포함)
+  version: 0.0.2
 servers:
 - url: http://localhost:8081
 paths:
@@ -91,45 +91,43 @@ components:
     OrderResponse:
       type: object
       properties:
-        createdAt:
-          type: string
-          description: 주문 일시
         id:
           type: number
-          description: 주문 ID
+        memberId:
+          type: number
         items:
           type: array
-          description: 주문 항목 목록
           items:
             type: object
             properties:
-              quantity:
-                type: number
-                description: 주문 수량
               productId:
                 type: number
-                description: 상품 ID
+              quantity:
+                type: number
         status:
           type: string
-          description: 주문 상태
-        memberId:
-          type: number
-          description: 회원 ID
+        shippingAddress:
+          type: string
+          description: 복사된 배송지 상세 주소
+        shippingZipCode:
+          type: string
+          description: 복사된 배송지 우편번호
+        createdAt:
+          type: string
     OrderPlaceRequest:
       type: object
       properties:
+        memberId:
+          type: number
+        addressId:
+          type: number
+          description: 선택한 배송지 ID
         items:
           type: array
-          description: 주문 항목 목록 (1개 이상)
           items:
             type: object
             properties:
-              quantity:
-                type: number
-                description: 주문 수량 (1 이상)
               productId:
                 type: number
-                description: 상품 ID
-        memberId:
-          type: number
-          description: 회원 ID
+              quantity:
+                type: number

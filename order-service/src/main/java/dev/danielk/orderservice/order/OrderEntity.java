@@ -29,6 +29,12 @@ public class OrderEntity {
     @Column(name = "member_id", nullable = false)
     private Long memberId;
 
+    @Column(name = "shipping_address", nullable = false)
+    private String shippingAddress;
+
+    @Column(name = "shipping_zip_code", nullable = false)
+    private String shippingZipCode;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
@@ -44,15 +50,17 @@ public class OrderEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemEntity> items = new ArrayList<>();
 
-    public OrderEntity(Long id, Long memberId, OrderStatus status, LocalDateTime createdAt) {
+    public OrderEntity(Long id, Long memberId, OrderStatus status, String shippingAddress, String shippingZipCode, LocalDateTime createdAt) {
         this.id = id;
         this.memberId = memberId;
         this.status = status;
+        this.shippingAddress = shippingAddress;
+        this.shippingZipCode = shippingZipCode;
         this.createdAt = createdAt;
     }
 
     public static OrderEntity from(Order order) {
-        var entity = new OrderEntity(order.id(), order.memberId(), order.status(), order.createdAt());
+        var entity = new OrderEntity(order.id(), order.memberId(), order.status(), order.shippingAddress(), order.shippingZipCode(), order.createdAt());
         for (var item : order.items()) {
             entity.items.add(new OrderItemEntity(entity, item.productId(), item.quantity()));
         }
@@ -63,6 +71,6 @@ public class OrderEntity {
         var domainItems = items.stream()
                 .map(OrderItemEntity::toDomain)
                 .toList();
-        return new Order(id, memberId, domainItems, status, createdAt, updatedAt);
+        return new Order(id, memberId, domainItems, status, shippingAddress, shippingZipCode, createdAt, updatedAt);
     }
 }

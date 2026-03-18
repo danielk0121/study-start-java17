@@ -26,15 +26,17 @@ public class OrderController {
     public record OrderItemRequest(@NotNull(message = "상품 ID는 필수입니다.") Long productId,
                                    @Min(value = 1, message = "수량은 1 이상이어야 합니다.") int quantity) {}
     public record PlaceRequest(@NotNull(message = "회원 ID는 필수입니다.") Long memberId,
+                               @NotNull(message = "배송지 ID는 필수입니다.") Long addressId,
                                @NotEmpty(message = "주문 항목은 최소 1개 이상이어야 합니다.") List<@Valid OrderItemRequest> items) {}
     public record OrderItemResponse(Long productId, int quantity) {}
     public record OrderResponse(Long id, Long memberId, List<OrderItemResponse> items, String status,
+                                    String shippingAddress, String shippingZipCode,
                                     OffsetDateTime createdAt, OffsetDateTime updatedAt) {}
 
     @PostMapping
     public ResponseEntity<OrderResponse> place(@RequestBody @Valid PlaceRequest request) {
         var items = mapper.toOrderItems(request.items());
-        var order = service.place(request.memberId(), items);
+        var order = service.place(request.memberId(), request.addressId(), items);
         var response = mapper.toResponse(order);
         return ResponseEntity.ok(response);
     }

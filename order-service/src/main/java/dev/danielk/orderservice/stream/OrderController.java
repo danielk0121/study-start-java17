@@ -6,25 +6,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 주문 이벤트 발행 REST API
- * POST /orders  →  Redis Stream에 메시지 publish
- */
+import java.util.UUID;
+
 @RequiredArgsConstructor
-@RestController("streamOrderController")
-@RequestMapping("/stream/orders")
+@RestController
+@RequestMapping("/orders/stream") // 기존 /orders와 충돌 방지
 public class OrderController {
 
     private final OrderStreamProducer producer;
 
-    // Java 17 Record를 요청 DTO로 그대로 활용
     public record OrderRequest(String product, int quantity) {}
 
     @PostMapping
-    public String publish(@RequestBody OrderRequest request) {
-        var uuid = java.util.UUID.randomUUID().toString();
-        var event = OrderEvent.of(uuid, request.product(), request.quantity());
-        var recordId = producer.publish(event);
-        return "published: " + recordId;
+    public String placeOrder(@RequestBody OrderRequest request) {
+        // 학습용 샘플 코드: OrderEvent 구조 변경에 맞춰 임시 수정
+        Long dummyOrderId = System.currentTimeMillis();
+        Long dummyMemberId = 1L;
+        String dummyAddress = "Seoul, Korea";
+        String dummyZipCode = "12345";
+
+        var event = OrderEvent.of(dummyOrderId, dummyMemberId, dummyAddress, dummyZipCode);
+        producer.sendEvent(event);
+
+        return "Order Event Published: " + dummyOrderId;
     }
 }

@@ -21,7 +21,7 @@ public class OrderInMemoryRepository implements OrderRepository {
     public Order save(Order order) {
         var id = sequence.getAndIncrement();
         var now = LocalDateTime.now();
-        var saved = new Order(id, order.memberId(), order.items(), order.status(), now, now);
+        var saved = new Order(id, order.memberId(), order.items(), order.status(), order.shippingAddress(), order.shippingZipCode(), now, null);
         store.put(id, saved);
         return saved;
     }
@@ -33,8 +33,7 @@ public class OrderInMemoryRepository implements OrderRepository {
 
     @Override
     public List<Order> findAll() {
-        var all = new ArrayList<>(store.values());
-        return all;
+        return new ArrayList<>(store.values());
     }
 
     @Override
@@ -50,6 +49,7 @@ public class OrderInMemoryRepository implements OrderRepository {
     public Order update(Order order) {
         var updated = new Order(
                 order.id(), order.memberId(), order.items(), order.status(),
+                order.shippingAddress(), order.shippingZipCode(),
                 order.createdAt(), LocalDateTime.now()
         );
         store.put(updated.id(), updated);
