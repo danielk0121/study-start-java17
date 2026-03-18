@@ -112,7 +112,7 @@ function OrderList() {
                   </ul>
                 </td>
                 <td style={{ padding: '1rem', textAlign: 'center' }}>
-          ...
+                  <span style={{ 
                     padding: '0.2rem 0.5rem', 
                     border: '1px solid #ccc',
                     fontSize: '0.8rem'
