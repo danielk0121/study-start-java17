@@ -31,7 +31,7 @@
   - [x] bff / auth-service Sleuth + Zipkin 적용
   - [x] Zipkin docker-compose 추가 (`:9411`)
   - [x] 모든 서비스 traceId 로그 패턴 통일
-- [ ] OSIV(Open Session In View) 적용 테스트
+- [ ] OSIV(Open Session In View) 적용 테스트 [연구조사 문서](docs/search-osiv.md)
 - [ ] 부하 테스트 (Locust) — 샘플 랜덤 데이터를 활용한 e2e 시나리오 ([제안 문서](./docs/proposal-locust-load-test.md))
 - [ ] 네이버 Pinpoint APM 연동 및 샘플 테스트 보고서 문서 작성
 - [ ] Prometheus + Grafana 메트릭 모니터링 — `/actuator/prometheus` 수집 및 대시보드 구성 테스트
