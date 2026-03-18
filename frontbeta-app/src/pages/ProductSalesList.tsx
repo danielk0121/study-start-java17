@@ -11,10 +11,18 @@ interface SalesItem {
 
 /**
  * 상품 판매 내역 조회 (매니저용)
- * UC_PROD_04 구현 (Prototype)
+ * UC_PROD_04 구현 (Prototype - 검색 조건 추가)
  */
 function ProductSalesList() {
   const [sales, setSales] = useState<SalesItem[]>([]);
+  const [filteredSales, setFilteredSales] = useState<SalesItem[]>([]);
+  
+  // 검색 조건 상태
+  const [searchName, setSearchName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   useEffect(() => {
     // Flyway V2, V3 샘플 데이터를 기반으로 한 Mock 데이터
@@ -31,13 +39,93 @@ function ProductSalesList() {
       { id: 10, orderId: 15, productName: '아이폰 15 Pro', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
     ];
     setSales(mockSales);
+    setFilteredSales(mockSales);
   }, []);
+
+  const handleSearch = () => {
+    let result = [...sales];
+
+    // 상품명 검색
+    if (searchName) {
+      result = result.filter(item => item.productName.toLowerCase().includes(searchName.toLowerCase()));
+    }
+
+    // 날짜 검색
+    if (startDate) {
+      result = result.filter(item => item.soldAt >= `${startDate}T00:00:00`);
+    }
+    if (endDate) {
+      result = result.filter(item => item.soldAt <= `${endDate}T23:59:59`);
+    }
+
+    // 금액 검색
+    if (minPrice) {
+      result = result.filter(item => item.totalPrice >= parseInt(minPrice));
+    }
+    if (maxPrice) {
+      result = result.filter(item => item.totalPrice <= parseInt(maxPrice));
+    }
+
+    setFilteredSales(result);
+  };
+
+  const resetFilters = () => {
+    setSearchName('');
+    setStartDate('');
+    setEndDate('');
+    setMinPrice('');
+    setMaxPrice('');
+    setFilteredSales(sales);
+  };
 
   return (
     <div>
       <h1>상품 판매 내역 (MANAGER)</h1>
-      <p style={{ color: '#666', marginBottom: '1.5rem' }}>※ 유스케이스 UC_PROD_04 검증을 위한 샘플 데이터입니다.</p>
       
+      {/* 검색 필터 UI */}
+      <div style={{ 
+        padding: '1.5rem', 
+        backgroundColor: '#f5f5f5', 
+        borderRadius: '8px', 
+        marginBottom: '2rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem'
+      }}>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>상품명</label>
+            <input 
+              type="text" 
+              placeholder="상품명 입력..." 
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              style={{ padding: '0.4rem', border: '1px solid #ccc' }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>판매기간</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc' }} />
+              <span>~</span>
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc' }} />
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>금액 범위 (원)</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <input type="number" placeholder="최소" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', width: '100px' }} />
+              <span>~</span>
+              <input type="number" placeholder="최대" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', width: '100px' }} />
+            </div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+          <button onClick={resetFilters} style={{ padding: '0.5rem 1rem', cursor: 'pointer' }}>초기화</button>
+          <button onClick={handleSearch} style={{ padding: '0.5rem 1.5rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>검색</button>
+        </div>
+      </div>
+
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ borderBottom: '2px solid #000' }}>
@@ -50,23 +138,29 @@ function ProductSalesList() {
           </tr>
         </thead>
         <tbody>
-          {sales.map(item => (
-            <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '1rem' }}>{item.id}</td>
-              <td style={{ padding: '1rem' }}>#{item.orderId}</td>
-              <td style={{ padding: '1rem' }}>{item.productName}</td>
-              <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
-              <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
-              <td style={{ padding: '1rem', textAlign: 'right' }}>
-                {new Date(item.soldAt).toLocaleString()}
-              </td>
+          {filteredSales.length === 0 ? (
+            <tr>
+              <td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
             </tr>
-          ))}
+          ) : (
+            filteredSales.map(item => (
+              <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                <td style={{ padding: '1rem' }}>{item.id}</td>
+                <td style={{ padding: '1rem' }}>#{item.orderId}</td>
+                <td style={{ padding: '1rem' }}>{item.productName}</td>
+                <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
+                <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
+                <td style={{ padding: '1rem', textAlign: 'right' }}>
+                  {new Date(item.soldAt).toLocaleString()}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       
       <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f9f9f9', border: '1px solid #ddd' }}>
-        <strong>총 매출 요약 (샘플):</strong> {sales.reduce((acc, curr) => acc + curr.totalPrice, 0).toLocaleString()}원
+        <strong>검색 결과 총 매출:</strong> {filteredSales.reduce((acc, curr) => acc + curr.totalPrice, 0).toLocaleString()}원
       </div>
     </div>
   );
