@@ -9,6 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * Redis Streams 프로듀서
+ * 카프카의 KafkaTemplate.send()에 대응 → opsForStream().add()
+ *
+ * Redis Stream 메시지 구조:
+ *   - key   : 스트림 이름 (카프카 토픽)
+ *   - value : Map<String, String> 페이로드 (카프카 메시지 value)
+ *   - id    : Redis가 자동 생성하는 타임스탬프 기반 ID (카프카 offset에 대응)
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service

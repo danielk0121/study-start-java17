@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 
 /**
  * 상품 도메인 모델 — Java 17 Record
+ *
+ * Lombok @Builder 대체 예시:
+ *   record는 생성자가 명확하므로 of() 팩토리 메서드로 빌더 역할을 대체.
+ *   필드가 많아지면 별도 Builder 클래스를 만들거나 @Builder를 남겨도 무방.
  */
 public record Product(
         Long id,

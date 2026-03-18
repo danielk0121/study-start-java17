@@ -14,6 +14,9 @@ import java.util.List;
 
 /**
  * JPA 영속성 전용 엔티티 — 도메인 record(Member)와 분리
+ *
+ * record는 final 필드 + setter 없음 → JPA 프록시 생성 불가.
+ * 별도 @Entity 클래스로 분리하고, JPA 구현체 안에서만 사용한다.
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

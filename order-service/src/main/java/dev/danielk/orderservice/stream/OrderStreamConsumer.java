@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+/**
+ * Redis Streams 컨슈머
+ * @KafkaListener와 유사한 역할 — StreamListener 구현
+ */
 @Slf4j
 @Service
 public class OrderStreamConsumer implements StreamListener<String, MapRecord<String, String, String>> {

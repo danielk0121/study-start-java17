@@ -7,6 +7,10 @@ import java.util.List;
 
 /**
  * MapStruct — Product 도메인 변환
+ *
+ * LocalDateTime(도메인) → OffsetDateTime(DTO) 변환:
+ *   도메인/영속 레이어는 LocalDateTime을 유지하고,
+ *   API 응답 시 시스템 기본 ZoneId를 붙여 OffsetDateTime으로 노출한다.
  */
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
