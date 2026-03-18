@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--
+        Spring Boot 기본 로그 설정을 베이스로 포함.
+        기본 appender(콘솔 색상, 패턴 등)가 여기서 정의됨.
+    -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- ================================================================
+         local 프로파일: Spring Boot 기본 콘솔 포맷
+         - 가독성 좋은 색상 출력
+         - [traceId, spanId] 를 패턴에 포함 (Sleuth MDC 자동 주입)
+         ================================================================ -->
+    <springProfile name="local | default">
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <!--
+                    Spring Boot 기본 패턴에 traceId/spanId 추가.
+                    %clr(...)%(...) : 색상 적용
+                    %X{traceId:-} : MDC에 traceId 없으면 빈 문자열
+                -->
+                <pattern>
+                    %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p){highlight} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr([%X{traceId:-},%X{spanId:-}]){yellow} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}
+                </pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+    </springProfile>
+
+    <!-- ================================================================
+         dev / prod 프로파일: JSON 출력 (logstash-logback-encoder)
+         - 한 줄에 JSON 1건 → ELK/CloudWatch 같은 로그 수집기에 적합
+         - traceId/spanId 는 Sleuth가 MDC에 자동 주입하므로 별도 설정 불필요
+         ================================================================ -->
+    <springProfile name="dev | prod | k8s">
+
+        <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <!--
+                    LogstashEncoder 기본 출력 필드:
+                      @timestamp, @version, message, logger_name,
+                      thread_name, level, level_value, stack_trace
+                    Sleuth MDC 필드 (자동 포함):
+                      traceId, spanId, parentId, X-Span-Export
+                -->
+
+                <!-- 애플리케이션 식별 필드 추가 -->
+                <customFields>{"app":"start-java17"}</customFields>
+
+                <!-- 타임스탬프 형식을 ISO 8601로 고정 -->
+                <timestampPattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</timestampPattern>
+                <timeZone>UTC</timeZone>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_JSON"/>
+        </root>
+
+    </springProfile>
+
+</configuration>
