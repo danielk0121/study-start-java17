@@ -39,7 +39,7 @@
          - 한 줄에 JSON 1건 → ELK/CloudWatch 같은 로그 수집기에 적합
          - traceId/spanId 는 Sleuth가 MDC에 자동 주입하므로 별도 설정 불필요
          ================================================================ -->
-    <springProfile name="dev | prod">
+    <springProfile name="dev | prod | k8s">
 
         <appender name="CONSOLE_JSON" class="ch.qos.logback.core.ConsoleAppender">
             <encoder class="net.logstash.logback.encoder.LogstashEncoder">

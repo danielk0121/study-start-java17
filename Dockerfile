@@ -1,5 +1,5 @@
 # ── 1단계: 빌드 ──────────────────────────────────────────────────────────────
-FROM eclipse-temurin:17-jdk-alpine AS builder
+FROM amazoncorretto:17-alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN ./gradlew dependencies --no-daemon -q
 
 # 소스 복사 후 빌드 (테스트 제외)
 COPY src/ src/
-RUN ./gradlew bootJar --no-daemon -x test
+RUN ./gradlew bootJar --no-daemon -x test -x restDocsTest
 
 # ── 2단계: 실행 이미지 ────────────────────────────────────────────────────────
 FROM amazoncorretto:17-alpine

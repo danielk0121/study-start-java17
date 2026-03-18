@@ -74,7 +74,7 @@ class OrderControllerRestDocsTest {
         when(producer.publish(any(OrderEvent.class)))
                 .thenReturn(RecordId.of("1700000000000-0"));
 
-        mockMvc.perform(post("/orders")
+        mockMvc.perform(post("/stream/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
