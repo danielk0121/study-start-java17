@@ -105,9 +105,11 @@ bash tools/dbml/validate.sh docs/erd.dbml     # 특정 파일만 검증
 - `ls`
 - `find`
 - `grep`
+- `cat`
 - `head`
 - `tail`
 - `jar`
 - `xargs`
 - `npm`
+- `chmod`
 - `WebFetch` (웹사이트 자료 조회)
