@@ -46,6 +46,12 @@ Table products {
   price      decimal  [not null, note: '가격 (0 이상, precision 15,2)']
   stock      int      [not null, default: 0, note: '재고 수량 (0 이상)']
   category   varchar  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC (max 50)']
+  thumbnail_url_1 varchar [note: '썸네일 이미지 1']
+  thumbnail_url_2 varchar [note: '썸네일 이미지 2']
+  thumbnail_url_3 varchar [note: '썸네일 이미지 3']
+  detail_url_1    varchar [note: '상세 이미지 1']
+  detail_url_2    varchar [note: '상세 이미지 2']
+  detail_url_3    varchar [note: '상세 이미지 3']
   created_at datetime [not null, default: `now()`, note: '등록 일시 (JPA Auditing 자동 관리)']
   updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
 }
