@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -39,6 +40,7 @@ public class ProductController {
                                       String brandName,
                                       OffsetDateTime createdAt, OffsetDateTime updatedAt) {}
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PostMapping
     public ResponseEntity<ProductResponse> register(@RequestBody @Valid RegisterRequest request) {
         Product product = service.register(request.brandId(), mapper.toProduct(request));
@@ -65,12 +67,14 @@ public class ProductController {
         return ResponseEntity.ok(page);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody @Valid UpdateRequest request) {
         Product product = service.update(id, request.brandId(), mapper.toProduct(request));
         return ResponseEntity.ok(mapper.toResponse(product));
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

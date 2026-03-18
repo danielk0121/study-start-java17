@@ -8,7 +8,7 @@ Table members {
   id         bigint   [pk, increment, note: '회원 ID']
   email      varchar  [not null, unique, note: '로그인 이메일 (max 255)']
   name       varchar  [not null, note: '회원 이름 (max 100)']
-  role       varchar  [not null, default: 'USER', note: 'USER | ADMIN (max 20)']
+  role       varchar  [not null, default: 'BUYER', note: 'BUYER | MANAGER (max 20)']
   created_at datetime [not null, default: `now()`, note: '가입 일시 (JPA Auditing 자동 관리)']
   updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
 }
