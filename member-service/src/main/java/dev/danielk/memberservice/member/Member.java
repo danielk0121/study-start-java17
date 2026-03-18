@@ -18,6 +18,7 @@ public record Member(
         Long id,
         String email,
         String name,
+        String password,
         MemberRole role,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -29,7 +30,7 @@ public record Member(
     }
 
     // 신규 회원 생성 팩토리 (id/audit은 저장소가 부여)
-    public static Member create(String email, String name) {
-        return new Member(null, email, name, MemberRole.USER, null, null);
+    public static Member create(String email, String name, String encodedPassword) {
+        return new Member(null, email, name, encodedPassword, MemberRole.USER, null, null);
     }
 }

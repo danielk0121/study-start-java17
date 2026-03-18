@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -23,14 +24,22 @@ public class MemberController {
     private final MemberMapper mapper;
 
     public record JoinRequest(@Email(message = "올바른 이메일 형식이 아닙니다.") @NotBlank(message = "이메일은 필수입니다.") String email,
-                              @NotBlank(message = "이름은 필수입니다.") String name) {}
+                              @NotBlank(message = "이름은 필수입니다.") String name,
+                              @NotBlank(message = "비밀번호는 필수입니다.") String password) {}
     public record UpdateRequest(@NotBlank(message = "이름은 필수입니다.") String name) {}
     public record MemberResponse(Long id, String email, String name, String role,
                                      OffsetDateTime createdAt, OffsetDateTime updatedAt) {}
 
     @PostMapping
     public ResponseEntity<MemberResponse> join(@RequestBody @Valid JoinRequest request) {
-        var member = service.join(request.email(), request.name());
+        var member = service.join(request.email(), request.name(), request.password());
+        var response = mapper.toResponse(member);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<MemberResponse> me(@AuthenticationPrincipal String memberId) {
+        var member = service.findById(Long.parseLong(memberId));
         var response = mapper.toResponse(member);
         return ResponseEntity.ok(response);
     }

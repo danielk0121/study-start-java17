@@ -12,14 +12,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-    public record LoginRequest(String email) {}
+    public record LoginRequest(String email, String password) {}
     public record RefreshRequest(String refreshToken) {}
     public record ValidateRequest(String token) {}
     public record ValidateResponse(boolean valid) {}
 
     @PostMapping("/login")
     public ResponseEntity<AuthService.TokenResponse> login(@RequestBody LoginRequest request) {
-        var response = authService.login(request.email());
+        var response = authService.login(request.email(), request.password());
         return ResponseEntity.ok(response);
     }
 

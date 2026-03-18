@@ -8,10 +8,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,17 +21,23 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Caching(evict = @CacheEvict(value = CacheNames.MEMBER_LIST, allEntries = true))
-    public Member join(String email, String name) {
-        return repository.save(Member.create(email, name));
+    public Member join(String email, String name, String rawPassword) {
+        var encodedPassword = passwordEncoder.encode(rawPassword);
+        return repository.save(Member.create(email, name, encodedPassword));
     }
 
     @Cacheable(value = CacheNames.MEMBER, key = "#id")
     public Member findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다. id=" + id));
+    }
+
+    public Optional<Member> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 
     @Cacheable(value = CacheNames.MEMBER_LIST)
@@ -48,7 +56,7 @@ public class MemberService {
     )
     public Member update(Long id, String name) {
         var member = findById(id);
-        var updated = new Member(member.id(), member.email(), name, member.role(), member.createdAt(), member.updatedAt());
+        var updated = new Member(member.id(), member.email(), name, member.password(), member.role(), member.createdAt(), member.updatedAt());
         return repository.update(updated);
     }
 

@@ -4,6 +4,7 @@ import dev.danielk.authservice.entity.RefreshTokenEntity;
 import dev.danielk.authservice.repository.MemberReadRepository;
 import dev.danielk.authservice.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +18,18 @@ public class AuthService {
     private final MemberReadRepository memberReadRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public TokenResponse login(String email) {
+    public TokenResponse login(String email, String rawPassword) {
         var member = memberReadRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다: " + email));
 
-        var accessToken = jwtService.generateAccessToken(member.getId(), member.getEmail());
+        if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        var accessToken = jwtService.generateAccessToken(member.getId(), member.getRole().name());
         var refreshToken = createRefreshToken(member.getId());
 
         return new TokenResponse(accessToken, refreshToken);
@@ -44,7 +50,7 @@ public class AuthService {
 
         // 기존 리프레시 토큰 삭제 후 새로 발급
         refreshTokenRepository.delete(tokenEntity);
-        var accessToken = jwtService.generateAccessToken(member.getId(), member.getEmail());
+        var accessToken = jwtService.generateAccessToken(member.getId(), member.getRole().name());
         var newRefreshToken = createRefreshToken(member.getId());
 
         return new TokenResponse(accessToken, newRefreshToken);
