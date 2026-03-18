@@ -34,7 +34,7 @@
 - [ ] CQRS + Event Sourcing — Read/Write 모델 분리 및 이벤트 이력 저장 ([연구조사 문서](./docs/search-cqrs-event-sourcing.md))
 - [ ] Rate Limiting / Throttling — API Gateway 레벨에서 클라이언트별 요청 수 제한 ([연구조사 문서](./docs/search-rate-limiting.md))
 - [x] 월 $50 배포 운영 전략 — Lightsail + k3s + MySQL 컨테이너 기반 소규모 MSA 운영 ([연구조사 문서](./docs/search-deployment-strategy.md))
-- [x] k3s 로컬 테스트 환경 구축 — k3d로 Mac에서 k3s 클러스터 실행, Spring Boot 앱 배포 ([가이드 문서](./docs/search-k3s-local-test-guide.md) / [명령어 참조](./docs/search-kubectl-commands.md))
+- [x] k3s 로컬 테스트 환경 구축 — k3d로 Mac에서 k3s 클러스터 실행, Spring Boot 앱 배포 ([가이드 문서](./docs/search-k3s-local-test-guide.md) / [명령어 참조](./docs/search-k3d-kubectl-commands.md))
 - [ ] 테스트 커버리지 보강 — Service 단위 테스트, `@DataJpaTest`, 통합 테스트
 
 ## 적용된 기술 요약
