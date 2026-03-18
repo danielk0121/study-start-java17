@@ -51,6 +51,18 @@ Table products {
 }
 
 // ─────────────────────────────────────────
+// 장바구니 항목 (cart_items)
+// ─────────────────────────────────────────
+Table cart_items {
+  id         bigint   [pk, increment, note: '장바구니 항목 ID']
+  member_id  bigint   [not null, note: '회원 ID']
+  product_id bigint   [not null, note: '상품 ID']
+  quantity   int      [not null, default: 1, note: '담은 수량']
+  created_at datetime [not null, default: `now()`, note: '담은 일시']
+  updated_at datetime [not null, default: `now()`, note: '수정 일시']
+}
+
+// ─────────────────────────────────────────
 // 주문 (orders)
 // ─────────────────────────────────────────
 Table orders {
@@ -91,6 +103,8 @@ Table order_events {
 // 관계 정의
 // ─────────────────────────────────────────
 Ref: shipping_addresses.member_id > members.id // 회원 : 배송지 = 1 : N
+Ref: cart_items.member_id         > members.id // 회원 : 장바구니항목 = 1 : N
+Ref: cart_items.product_id        > products.id // 상품 : 장바구니항목 = 1 : N
 Ref: brands.id                    < products.brand_id // 브랜드 : 상품 = 1 : N
 Ref: orders.member_id             > members.id    // 회원 : 주문 = 1 : N
 Ref: order_items.order_id         > orders.id     // 주문 : 주문항목 = 1 : N
