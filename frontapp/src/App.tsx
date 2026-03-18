@@ -13,7 +13,7 @@ import type { Member } from './types';
 
 /**
  * 프론트엔드 메인 진입점
- * PRD-FRONTAPP 2.5 & 2.6 요구사항 반영
+ * PRD-FRONTAPP 2.1 요구사항 반영 (마이페이지 하위 탭 내비게이션 추가)
  */
 function App() {
   const [currentUser, setCurrentUser] = useState<Member | null>(null);
@@ -41,6 +41,13 @@ function App() {
         
         {currentUser ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <span style={{ color: '#ccc' }}>|</span>
+            {/* 마이페이지 하위 탭 메뉴 */}
+            <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
+            <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
+            <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
+            <span style={{ color: '#ccc' }}>|</span>
+
             <span style={{ 
               padding: '0.2rem 0.5rem', 
               border: '1px solid #ccc',
@@ -50,7 +57,6 @@ function App() {
               {currentUser.role === 'MANAGER' ? 'ADMIN' : 'USER'}
             </span>
             <span style={{ fontSize: '0.9rem' }}>{currentUser.name}</span>
-            <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
             <button onClick={handleLogout} style={{ padding: '0.2rem 0.5rem', cursor: 'pointer' }}>로그아웃</button>
           </div>
         ) : (
