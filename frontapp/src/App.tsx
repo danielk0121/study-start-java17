@@ -28,7 +28,7 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basename="/study-start-java17">
       <nav style={{ 
         padding: '1rem', 
         borderBottom: '1px solid #000', 
