@@ -30,6 +30,7 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
+  orderNo: string;
   memberId: number;
   status: string;
   shippingAddress: string;

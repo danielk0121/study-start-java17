@@ -23,6 +23,7 @@ function OrderList() {
     const mockOrders: Order[] = [
       {
         id: 1,
+        orderNo: '250902101500001',
         memberId: 2,
         status: 'CONFIRMED',
         shippingAddress: '서울시 강남구 역삼동 123-45',
@@ -32,6 +33,7 @@ function OrderList() {
       },
       {
         id: 4,
+        orderNo: '250929140000004',
         memberId: 4,
         status: 'CANCELLED',
         shippingAddress: '서울시 서초구 서초동 678-90',
@@ -41,6 +43,7 @@ function OrderList() {
       },
       {
         id: 6,
+        orderNo: '250902101500006',
         memberId: 2,
         status: 'CONFIRMED',
         shippingAddress: '서울시 강남구 역삼동 123-45',
@@ -50,6 +53,7 @@ function OrderList() {
       },
       {
         id: 105,
+        orderNo: '260226130000105',
         memberId: 8,
         status: 'PENDING',
         shippingAddress: '서울시 서초구 서초동 678-90',
@@ -97,7 +101,10 @@ function OrderList() {
           <tbody>
             {orders.map(order => (
               <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: '1rem' }}>{order.id}</td>
+                <td style={{ padding: '1rem' }}>
+                  <div style={{ fontWeight: 'bold' }}>{order.orderNo}</div>
+                  <small style={{ color: '#999' }}>ID: {order.id}</small>
+                </td>
                 <td style={{ padding: '1rem' }}>
                   <div>{order.shippingAddress}</div>
                   <small style={{ color: '#666' }}>({order.shippingZipCode})</small>

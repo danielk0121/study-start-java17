@@ -67,6 +67,7 @@ Table cart_items {
 // ─────────────────────────────────────────
 Table orders {
   id                bigint   [pk, increment, note: '주문 ID']
+  order_no          varchar  [not null, unique, note: '주문번호 (yyMMddHHmmssNNN)']
   member_id         bigint   [not null, note: '주문 회원']
   shipping_address  varchar  [not null, note: '배송지 주소 (생성 시점 복사)']
   shipping_zip_code varchar  [not null, note: '배송지 우편번호 (생성 시점 복사)']
