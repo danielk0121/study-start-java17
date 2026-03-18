@@ -41,6 +41,7 @@ function App() {
         {/* 공통 메뉴 (상시 노출) */}
         <Link to="/" style={{ textDecoration: 'none', color: '#333' }}>상품목록</Link>
         <Link to="/brands" style={{ textDecoration: 'none', color: '#333' }}>브랜드관</Link>
+        <Link to="/product/1" style={{ textDecoration: 'none', color: '#333' }}>상품상세(S)</Link>
         <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
         <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
         <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
@@ -55,7 +56,7 @@ function App() {
               padding: '0.2rem 0.5rem', 
               border: '1px solid #ccc',
               fontSize: '0.8rem',
-              color: currentUser.role === 'MANAGER' ? '#d00' : '#00d'
+              color: currentUser.role === 'MANAGER' ? '#d00' : '#333'
             }}>
               {currentUser.role === 'MANAGER' ? 'ADMIN' : 'USER'}
             </span>
