@@ -89,6 +89,7 @@ function OrderList() {
             <tr style={{ borderBottom: '2px solid #000' }}>
               <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
               <th style={{ textAlign: 'left', padding: '1rem' }}>배송지</th>
+              <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품</th>
               <th style={{ textAlign: 'center', padding: '1rem' }}>상태</th>
               <th style={{ textAlign: 'right', padding: '1rem' }}>주문일시</th>
             </tr>
@@ -101,8 +102,17 @@ function OrderList() {
                   <div>{order.shippingAddress}</div>
                   <small style={{ color: '#666' }}>({order.shippingZipCode})</small>
                 </td>
+                <td style={{ padding: '1rem' }}>
+                  <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#333' }}>
+                    {order.items.map((item, idx) => (
+                      <li key={idx}>
+                        {productMap[item.productId] || '기타 상품'} ({item.quantity}개)
+                      </li>
+                    ))}
+                  </ul>
+                </td>
                 <td style={{ padding: '1rem', textAlign: 'center' }}>
-                  <span style={{ 
+          ...
                     padding: '0.2rem 0.5rem', 
                     border: '1px solid #ccc',
                     fontSize: '0.8rem'
