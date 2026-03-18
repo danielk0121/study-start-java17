@@ -1,156 +1,38 @@
-plugins {
-    id 'java'
-    id 'idea'                                               // IntelliJ Q클래스 소스 루트 인식
-    id 'org.springframework.boot' version '2.7.18' // Spring Boot 2 마지막 버전
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'       // Spring REST Docs HTML 변환
-    id 'com.epages.restdocs-api-spec' version '0.16.4'     // REST Docs → OpenAPI 스펙 자동 생성
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.7.18'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE'
+    }
 }
 
 group = 'dev.danielk'
 version = '0.0.1-SNAPSHOT'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+
+    repositories {
+        mavenCentral()
     }
-}
 
-repositories {
-    mavenCentral()
-}
-
-configurations {
-    asciidoctorExt
-}
-
-// 스니펫 생성 경로
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
-
-// QueryDSL Q클래스 생성 경로
-def querydslDir = "$buildDir/generated/querydsl"
-sourceSets {
-    main.java.srcDirs += [querydslDir]
-}
-tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
-}
-// IntelliJ가 Q클래스 생성 경로를 소스 루트로 인식하도록 설정
-idea {
-    module {
-        generatedSourceDirs += file(querydslDir)
-    }
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.flywaydb:flyway-mysql'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    // traceId — Spring Cloud Sleuth (Spring Boot 2.x 표준 분산 추적)
-    // MDC에 traceId/spanId를 자동 주입, 로그와 응답 헤더에서 확인 가능
-    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth:3.1.11'
-    // JSON 로그 출력 — logback-spring.xml에서 dev/prod 프로파일에 사용
-    implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    // Spring REST Docs — MockMvc 기반 테스트로 API 문서 스니펫 자동 생성
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.8.RELEASE'
-    // restdocs-api-spec — REST Docs 테스트 실행 시 OpenAPI 3.0 스펙 자동 생성
-    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.16.4'
-    // 임베디드 Redis — Docker 없이 테스트용 Redis 서버를 JVM 안에서 실행
-    testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
-    // AsciiDoc 스니펫 처리 확장
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.8.RELEASE'
-
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-
-    // QueryDSL — Spring Boot 2.7.x + Jakarta 미사용 환경은 classifier 없이 사용
-    implementation 'com.querydsl:querydsl-jpa:5.0.0'
-    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jpa'
-    annotationProcessor 'javax.annotation:javax.annotation-api:1.3.2'
-    annotationProcessor 'javax.persistence:javax.persistence-api:2.2'
-
-    // 로컬 캐시 — Caffeine (Spring Cache 추상화와 통합, Spring Boot 2.x 공식 지원)
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'com.github.ben-manes.caffeine:caffeine'
-
-    // Swagger UI — springdoc-openapi (Spring Boot 2.x 호환 버전)
-    // 접근: http://localhost:8080/swagger-ui/index.html
-    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
-
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
-
-    // MapStruct Processor & Binding
-    // 순서 중요: lombok-mapstruct-binding이 반드시 포함되어야 함
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-}
-
-tasks.named('test') {
-    useJUnitPlatform {
-        // Docker Redis가 필요한 통합 테스트는 기본 test 태스크에서 제외
-        // 실행하려면: ./gradlew test -Dinclude.docker-redis=true
-        if (!System.getProperty('include.docker-redis')) {
-            excludeTags 'docker-redis'
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.boot:spring-boot-dependencies:2.7.18'
         }
     }
-}
 
-// REST Docs 전용 테스트 태스크 — Docker Redis 없이 실행 가능한 @WebMvcTest만 포함
-// asciidoctor가 이 태스크에 의존하여 전체 테스트(Redis 연결 필요) 실패를 방지
-tasks.register('restDocsTest', Test) {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-    // RestDocs 테스트는 패키지 규칙: 클래스명이 RestDocsTest로 끝나는 것만 실행
-    include '**/*RestDocsTest.class'
-}
-
-// 테스트 스니펫 → HTML 문서 변환
-asciidoctor {
-    onlyIf { snippetsDir.exists() }
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-    dependsOn restDocsTest   // 전체 test 대신 restDocsTest만 의존
-    attributes 'snippets': snippetsDir
-}
-
-// REST Docs 테스트 스니펫 → OpenAPI 3.0 YAML 자동 생성
-// 생성 위치: build/api-spec/openapi3.yaml
-openapi3 {
-    server = 'http://localhost:8080'
-    title = 'Start Java 17 API'
-    description = 'Java 17 + Redis Streams 학습 프로젝트 API 명세'
-    version = '0.0.1'
-    format = 'yaml'
-    outputDirectory = 'build/api-spec'
-    outputFileNamePrefix = 'openapi3'
-}
-
-
-// openapi3 태스크 실행 후 docs/openapi.yaml로 자동 복사
-// → Git에 커밋되어 README 링크(Swagger Editor, ReDoc)에서 항상 최신 상태 유지
-tasks.register('copyOpenApiSpec', Copy) {
-    dependsOn 'openapi3'
-    from 'build/api-spec/openapi3.yaml'
-    into 'docs'
-    rename { 'openapi.yaml' }
-}
-
-// 빌드된 JAR에 HTML 문서 포함 → 앱 실행 중 /docs/index.html 로 접근 가능
-bootJar {
-    dependsOn asciidoctor
-    from("${asciidoctor.outputDir}") {
-        into 'static/docs'
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 }

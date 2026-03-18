@@ -1,0 +1,18 @@
+server:
+  port: 8000
+
+spring:
+  main:
+    web-application-type: servlet
+
+feign:
+  member-service:
+    url: http://localhost:8080
+  order-service:
+    url: http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,0 +1,7 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+// 실행 가능한 JAR 생성 방지 — 다른 모듈이 라이브러리로 참조
+jar.enabled = true
