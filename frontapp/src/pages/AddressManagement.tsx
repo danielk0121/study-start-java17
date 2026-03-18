@@ -11,8 +11,8 @@ function AddressManagement() {
   useEffect(() => {
     // TODO: API 연동 (GET /members/{id}/addresses)
     const mockAddresses: Address[] = [
-      { id: 1, nickname: '우리집', address: '서울시 강남구 테헤란로 123', zipCode: '12345' },
-      { id: 2, nickname: '회사', address: '서울시 서초구 서초대로 456', zipCode: '54321' }
+      { id: 1, nickname: '우리집', address: '서울시 강남구 역삼동 123-45', zipCode: '06123' },
+      { id: 2, nickname: '회사', address: '서울시 서초구 서초동 678-90', zipCode: '06543' }
     ];
     setAddresses(mockAddresses);
   }, []);
