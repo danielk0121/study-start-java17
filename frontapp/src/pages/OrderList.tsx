@@ -12,22 +12,40 @@ function OrderList() {
     // TODO: API 연동 (GET /orders)
     const mockOrders: Order[] = [
       {
-        id: 1001,
-        memberId: 1,
-        status: 'COMPLETED',
-        shippingAddress: '서울시 강남구 테헤란로 123',
-        shippingZipCode: '12345',
-        createdAt: '2024-03-19T10:00:00',
-        items: [{ productId: 1, quantity: 1 }]
+        id: 1,
+        memberId: 2,
+        status: 'CONFIRMED',
+        shippingAddress: '서울시 강남구 역삼동 123-45',
+        shippingZipCode: '06123',
+        createdAt: '2025-09-02T10:15:00',
+        items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
       },
       {
-        id: 1002,
-        memberId: 1,
+        id: 4,
+        memberId: 4,
+        status: 'CANCELLED',
+        shippingAddress: '서울시 서초구 서초동 678-90',
+        shippingZipCode: '06543',
+        createdAt: '2025-09-29T14:00:00',
+        items: [{ productId: 4, quantity: 2 }]
+      },
+      {
+        id: 6,
+        memberId: 2,
+        status: 'CONFIRMED',
+        shippingAddress: '서울시 강남구 역삼동 123-45',
+        shippingZipCode: '06123',
+        createdAt: '2025-09-02T10:15:00',
+        items: [{ productId: 3, quantity: 1 }, { productId: 8, quantity: 1 }]
+      },
+      {
+        id: 105,
+        memberId: 8,
         status: 'PENDING',
-        shippingAddress: '서울시 서초구 서초대로 456',
-        shippingZipCode: '54321',
-        createdAt: '2024-03-19T11:30:00',
-        items: [{ productId: 2, quantity: 2 }]
+        shippingAddress: '서울시 서초구 서초동 678-90',
+        shippingZipCode: '06543',
+        createdAt: '2026-02-26T13:00:00',
+        items: [{ productId: 3, quantity: 1 }]
       }
     ];
     setOrders(mockOrders);

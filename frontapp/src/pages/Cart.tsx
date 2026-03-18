@@ -19,8 +19,9 @@ function Cart() {
   useEffect(() => {
     // TODO: API 연동 (GET /carts/me)
     const mockCartItems: CartItem[] = [
-      { productId: 1, productName: 'MacBook Pro', price: 2000000, quantity: 1, itemTotal: 2000000 },
-      { productId: 2, productName: 'iPhone 15', price: 1500000, quantity: 2, itemTotal: 3000000 }
+      { productId: 1, productName: '맥북 프로 14인치', price: 2990000, quantity: 1, itemTotal: 2990000 },
+      { productId: 3, productName: '무선 키보드', price: 89000, quantity: 2, itemTotal: 178000 },
+      { productId: 8, productName: '클린 코드', price: 33000, quantity: 1, itemTotal: 33000 }
     ];
     setCartItems(mockCartItems);
     setTotalPrice(mockCartItems.reduce((acc, item) => acc + item.itemTotal, 0));
