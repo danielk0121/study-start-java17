@@ -20,11 +20,12 @@
 - [ ] 멀티 모듈 아키텍처 전환 — member-service / order-service / auth-service / bff 분리 ([설계 문서](./docs/proposal-multimodule-architecture.md))
 - [ ] 서비스 간 통신 — FeignClient / WebClient 패턴 적용
 - [ ] 도메인 이벤트 / Transactional Outbox 패턴 — 주문 생성 후 이벤트 유실 방지 ([설계 문서](./docs/proposal-distributed-transaction-patterns.md))
-- [ ] Spring Security + JWT 인증/인가 적용 — auth-service 전담, 서비스 간 내부 통신 인증 없음 ([설계 문서](./docs/proposal-spring-security-jwt.md))
-  - [ ] 회원가입 시 비밀번호 저장 (BCrypt 해싱)
-  - [ ] JWT 발급 / 검증 (로그인 → AccessToken + RefreshToken 반환)
-  - [ ] JWT 기반 회원 정보 조회 (`Authorization: Bearer <token>`)
+- [x] Spring Security + JWT 인증/인가 적용 — auth-service 전담, 서비스 간 내부 통신 인증 없음 ([설계 문서](./docs/proposal-spring-security-jwt.md))
+  - [x] 회원가입 시 비밀번호 저장 (BCrypt 해싱)
+  - [x] JWT 발급 / 검증 (로그인 → AccessToken + RefreshToken 반환)
+  - [x] JWT 기반 회원 정보 조회 (`Authorization: Bearer <token>`) — `GET /members/me`
   - [ ] Spring Security 통합 테스트 (`@SpringBootTest` + MockMvc SecurityContext)
+- [ ] MSA API 문서 — 서비스별 Swagger + 통합 뷰 ([제안 문서](./docs/proposal-api-docs-msa.md))
 - [ ] Circuit Breaker (Resilience4j) — FeignClient 호출 장애 시 연쇄 장애 방지 ([연구조사 문서](./docs/search-circuit-breaker.md))
 - [ ] 분산 추적 — 멀티 모듈 전환 후 서비스 간 Sleuth traceId 전파 동작 확인 ([연구조사 문서](./docs/search-distributed-tracing.md))
 - [ ] OSIV(Open Session In View) 적용 테스트
