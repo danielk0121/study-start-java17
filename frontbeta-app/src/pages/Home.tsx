@@ -7,6 +7,7 @@ import type { Product } from '../types';
  */
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
@@ -27,8 +28,15 @@ function Home() {
       { id: 14, name: 'Designing Data-Intensive Applications', price: 45000, stock: 100, category: 'BOOKS', brandName: 'OReilly' },
       { id: 15, name: 'LEGO Star Wars', price: 210000, stock: 5, category: 'ETC', brandName: 'LEGO' }
     ];
-    setProducts(mockProducts);
-  }, []);
+
+    // 검색 필터링
+    const filtered = mockProducts.filter(p => 
+      p.name.includes(searchQuery) || 
+      p.brandName.includes(searchQuery) || 
+      p.category.includes(searchQuery)
+    );
+    setProducts(filtered);
+  }, [searchQuery]);
 
   const handleAddToCart = (product: Product) => {
     // TODO: API 연동 (POST /carts/me/items)
@@ -38,8 +46,23 @@ function Home() {
 
   return (
     <div>
-      <h1>상품 목록</h1>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <h1>상품 목록</h1>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <input 
+            type="text" 
+            placeholder="상품, 브랜드 검색..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
+          />
+        </div>
+      </div>
+      
+      {products.length === 0 ? (
+        <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</p>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
         {products.map(product => (
           <div key={product.id} style={{ border: '1px solid #ddd', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
             <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>{product.brandName} | {product.category}</div>

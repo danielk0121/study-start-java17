@@ -7,6 +7,16 @@ import type { Order } from '../types';
  */
 function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // 상품 ID -> 상품명 매핑 (검색용)
+  const productMap: Record<number, string> = {
+    1: '맥북 프로 14인치',
+    2: '아이폰 15 Pro',
+    3: '무선 키보드',
+    4: '린넨 셔츠',
+    8: '클린 코드'
+  };
 
   useEffect(() => {
     // TODO: API 연동 (GET /orders)
@@ -48,14 +58,31 @@ function OrderList() {
         items: [{ productId: 3, quantity: 1 }]
       }
     ];
-    setOrders(mockOrders);
-  }, []);
+
+    // 상품명으로 주문 필터링
+    const filtered = mockOrders.filter(order => 
+      order.items.some(item => 
+        (productMap[item.productId] || '').includes(searchQuery)
+      )
+    );
+    setOrders(filtered);
+  }, [searchQuery]);
 
   return (
     <div>
-      <h1>주문 내역</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <h1>주문 내역</h1>
+        <input 
+          type="text" 
+          placeholder="주문 상품명 검색..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
+        />
+      </div>
+      
       {orders.length === 0 ? (
-        <p>주문 내역이 없습니다.</p>
+        <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
