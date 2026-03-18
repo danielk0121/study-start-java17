@@ -1,0 +1,135 @@
+openapi: 3.0.1
+info:
+  title: Order Service API
+  description: 주문 관리 API 명세
+  version: 0.0.1
+servers:
+- url: http://localhost:8081
+paths:
+  /orders:
+    get:
+      tags:
+      - orders
+      operationId: orders-find-all
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+    post:
+      tags:
+      - orders
+      operationId: orders-place
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPlaceRequest'
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+  /orders/{id}:
+    get:
+      tags:
+      - orders
+      operationId: orders-find-by-id
+      parameters:
+      - name: id
+        in: path
+        description: 주문 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+    delete:
+      tags:
+      - orders
+      operationId: orders-delete
+      parameters:
+      - name: id
+        in: path
+        description: 주문 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: "204"
+  /orders/{id}/cancel:
+    patch:
+      tags:
+      - orders
+      operationId: orders-cancel
+      parameters:
+      - name: id
+        in: path
+        description: 주문 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+components:
+  schemas:
+    OrderResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: 주문 일시
+        id:
+          type: number
+          description: 주문 ID
+        items:
+          type: array
+          description: 주문 항목 목록
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+                description: 주문 수량
+              productId:
+                type: number
+                description: 상품 ID
+        status:
+          type: string
+          description: 주문 상태
+        memberId:
+          type: number
+          description: 회원 ID
+    OrderPlaceRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          description: 주문 항목 목록 (1개 이상)
+          items:
+            type: object
+            properties:
+              quantity:
+                type: number
+                description: 주문 수량 (1 이상)
+              productId:
+                type: number
+                description: 상품 ID
+        memberId:
+          type: number
+          description: 회원 ID

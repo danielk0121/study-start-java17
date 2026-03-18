@@ -1,0 +1,42 @@
+openapi: 3.0.1
+info:
+  title: Auth Service API
+  description: 인증 및 인가 관리 API 명세
+  version: 0.0.1
+servers:
+- url: http://localhost:8082
+paths:
+  /auth/login:
+    post:
+      tags:
+      - auth
+      operationId: login
+      summary: 로그인 및 토큰 발급
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string

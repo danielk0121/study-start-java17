@@ -13,10 +13,10 @@
 ## 2. 개발 방법론 (Development Methodologies)
 
 ### 2.1. 스펙 주도 개발 (SDD - Spec Driven Development)
-- **기준 문서**: `specs/openapi.yaml`
+- **기준 문서**: `specs/openapi/*.yaml` (서비스별 독립 관리)
 - **원칙**:
     - Controller 코드를 먼저 작성하지 않는다.
-    - 기능 변경 시 반드시 `openapi.yaml` 스펙을 우선 수정한다.
+    - 기능 변경 시 해당 서비스의 `openapi/*.yaml` 스펙을 우선 수정한다.
     - 구현된 코드는 정의된 API 스펙을 100% 준수해야 한다.
 
 ### 2.2. 도메인 주도 개발 (DDD - Domain Driven Development)
