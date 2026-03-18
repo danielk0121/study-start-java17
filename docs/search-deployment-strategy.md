@@ -255,3 +255,73 @@ Mac에서 Docker Desktop이 내부적으로 Linux VM을 띄우고 그 안에서 
 ```
 
 각 단계마다 전면 재설계 없이 스펙업 또는 서비스 분리만 하면 된다.
+
+---
+
+## 11. CDN — CloudFront vs Cloudflare
+
+CloudFront는 VPC 리소스가 아니라 엣지 네트워크 서비스라서 Lightsail에서도 연동 가능하다. Lightsail 고정 IP를 CloudFront 오리진으로 설정하면 된다.
+
+```
+클라이언트 → CloudFront → Lightsail 인스턴스
+```
+
+| 항목 | CloudFront | Cloudflare |
+|---|---|---|
+| 비용 | 트래픽 과금 (소규모는 프리티어 커버) | 무료 플랜이 강력 (트래픽 비용 없음) |
+| HTTPS | ACM 무료 인증서 | 무료 |
+| DDoS 방어 | AWS Shield Standard 기본 포함 | 무료 플랜에 기본 포함 |
+| WAF | 유료 | 무료 플랜에 기본 포함 |
+| DNS 관리 | Route 53 별도 | 한 곳에서 통합 관리 |
+| AWS 연동 | S3, ALB, Lambda@Edge 등 긴밀한 연동 | 해당 없음 |
+| 엣지 컴퓨팅 | Lambda@Edge | Cloudflare Workers |
+
+Lightsail 단일 인스턴스에서 비용 최소화가 목표라면 Cloudflare 무료 플랜이 현실적이다. CloudFront는 S3, ALB, Lambda@Edge 등 AWS 생태계를 깊게 쓸수록 가치가 올라간다.
+
+---
+
+## 12. Cloudflare 무료 플랜 심화 — R2 vs S3
+
+### CloudFront 아웃바운드 과금 구조
+
+CloudFront를 쓴다고 아웃바운드가 무료가 되는 게 아니다.
+
+```
+S3 → CloudFront         : 무료 (AWS 내부 전송, 오리진 fetch)
+CloudFront → 클라이언트 : 유료 (아웃바운드 과금)
+```
+
+S3에서 CloudFront로 데이터를 가져오는 오리진 fetch는 무료지만, CloudFront에서 최종 클라이언트로 나가는 아웃바운드는 트래픽 과금이 발생한다.
+
+### R2 vs S3
+
+Cloudflare R2는 전송료(Egress Fee) 철폐를 목표로 출시된 S3 호환 오브젝트 스토리지다.
+
+| 항목 | S3 + CloudFront | Cloudflare R2 |
+|---|---|---|
+| 아웃바운드 비용 | CloudFront → 클라이언트 구간 과금 | 무료 (무제한) |
+| 스토리지 무료 티어 | 5GB/월 (12개월) | 10GB/월 (영구) |
+| 요청 무료 티어 | — | Class A(쓰기) 100만 회, Class B(읽기) 1,000만 회/월 |
+| S3 API 호환 | — | 호환 (코드 변경 최소화) |
+| AWS 생태계 연동 | Lambda, ECS 등 긴밀한 연동 | 해당 없음 |
+
+### Cloudflare 무료 플랜 조합
+
+```
+클라이언트 → Cloudflare CDN → Lightsail   : CDN 캐싱, HTTPS, DDoS, WAF 무료
+R2 → 클라이언트                            : 아웃바운드 무료 (스토리지 10GB/월)
+```
+
+AWS만 쓸 때는 CloudFront 아웃바운드 비용이 트래픽 늘수록 쌓이는데, Cloudflare로 가면 그 부분이 통째로 0원이 된다.
+
+### R2 무료 티어 용량 추정
+
+1000×1000 JPG 이미지 평균 용량 300KB 기준:
+
+```
+10GB = 10,000,000KB
+10,000,000KB ÷ 300KB = 약 33,333회/월
+                      = 약 1,111회/일
+```
+
+월 3만 3천 번 이미지 요청까지 무료 티어 안에 들어온다. 10GB를 초과해도 아웃바운드는 여전히 무료이고 추가 스토리지는 GB당 $0.015다.
