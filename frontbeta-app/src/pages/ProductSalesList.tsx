@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface SalesItem {
   id: number;
-  orderId: number;
+  orderNo: string;
   productName: string;
   quantity: number;
   soldAt: string;
@@ -25,18 +25,19 @@ function ProductSalesList() {
   const [maxPrice, setMaxPrice] = useState('');
 
   useEffect(() => {
-    // Flyway V2, V3 샘플 데이터를 기반으로 한 Mock 데이터
+    // Flyway V2, V3, V11 샘플 데이터를 기반으로 한 Mock 데이터
+    // 주문번호 형식: yyMMddHHmmssNNN
     const mockSales: SalesItem[] = [
-      { id: 1, orderId: 1, productName: '맥북 프로 14인치', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
-      { id: 2, orderId: 1, productName: '무선 키보드', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
-      { id: 3, orderId: 2, productName: '아이폰 15 Pro', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },
-      { id: 4, orderId: 3, productName: '클린 코드', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 33000 },
-      { id: 5, orderId: 3, productName: '자바 ORM 표준 JPA 프로그래밍', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 38000 },
-      { id: 6, orderId: 5, productName: '제주 감귤 2kg', quantity: 3, soldAt: '2025-09-14T13:00:00', totalPrice: 45000 },
-      { id: 7, orderId: 6, productName: '무선 키보드', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 89000 },
-      { id: 8, orderId: 6, productName: '클린 코드', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 33000 },
-      { id: 9, orderId: 10, productName: '린넨 셔츠', quantity: 2, soldAt: '2025-09-24T15:30:00', totalPrice: 98000 },
-      { id: 10, orderId: 15, productName: '아이폰 15 Pro', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
+      { id: 1, orderNo: '250902101500001', productName: '맥북 프로 14인치', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
+      { id: 2, orderNo: '250902101500001', productName: '무선 키보드', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
+      { id: 3, orderNo: '250905143000002', productName: '아이폰 15 Pro', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },
+      { id: 4, orderNo: '250910164500003', productName: '클린 코드', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 33000 },
+      { id: 5, orderNo: '250910164500003', productName: '자바 ORM 표준 JPA 프로그래밍', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 38000 },
+      { id: 6, orderNo: '250914130000005', productName: '제주 감귤 2kg', quantity: 3, soldAt: '2025-09-14T13:00:00', totalPrice: 45000 },
+      { id: 7, orderNo: '250916083000006', productName: '무선 키보드', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 89000 },
+      { id: 8, orderNo: '250916083000006', productName: '클린 코드', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 33000 },
+      { id: 9, orderNo: '250924153000010', productName: '린넨 셔츠', quantity: 2, soldAt: '2025-09-24T15:30:00', totalPrice: 98000 },
+      { id: 10, orderNo: '251003133000015', productName: '아이폰 15 Pro', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
     ];
     setSales(mockSales);
     setFilteredSales(mockSales);
@@ -129,7 +130,6 @@ function ProductSalesList() {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ borderBottom: '2px solid #000' }}>
-            <th style={{ textAlign: 'left', padding: '1rem' }}>판매ID</th>
             <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
             <th style={{ textAlign: 'left', padding: '1rem' }}>상품명</th>
             <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
@@ -140,13 +140,12 @@ function ProductSalesList() {
         <tbody>
           {filteredSales.length === 0 ? (
             <tr>
-              <td colSpan={6} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
+              <td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
             </tr>
           ) : (
             filteredSales.map(item => (
               <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: '1rem' }}>{item.id}</td>
-                <td style={{ padding: '1rem' }}>#{item.orderId}</td>
+                <td style={{ padding: '1rem', fontWeight: 'bold' }}>{item.orderNo}</td>
                 <td style={{ padding: '1rem' }}>{item.productName}</td>
                 <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
                 <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
