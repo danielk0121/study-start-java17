@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,18 +94,21 @@ public class MemberController {
         return ResponseEntity.ok(addresses);
     }
 
+    @PreAuthorize("hasRole('BUYER')")
     @PostMapping("/{id}/addresses")
     public ResponseEntity<AddressResponse> addAddress(@PathVariable Long id, @RequestBody @Valid AddressRequest request) {
         var address = addressService.create(id, Address.create(request.nickname(), request.address(), request.zipCode()));
         return ResponseEntity.ok(new AddressResponse(address.id(), address.nickname(), address.address(), address.zipCode()));
     }
 
+    @PreAuthorize("hasRole('BUYER')")
     @PutMapping("/{id}/addresses/{addressId}")
     public ResponseEntity<AddressResponse> updateAddress(@PathVariable Long id, @PathVariable Long addressId, @RequestBody @Valid AddressRequest request) {
         var address = addressService.update(addressId, new Address(addressId, request.nickname(), request.address(), request.zipCode()));
         return ResponseEntity.ok(new AddressResponse(address.id(), address.nickname(), address.address(), address.zipCode()));
     }
 
+    @PreAuthorize("hasRole('BUYER')")
     @DeleteMapping("/{id}/addresses/{addressId}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id, @PathVariable Long addressId) {
         addressService.delete(addressId);

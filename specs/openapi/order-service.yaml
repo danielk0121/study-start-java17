@@ -10,6 +10,7 @@ paths:
     get:
       tags:
       - orders
+      summary: 주문 목록 조회 (본인 또는 ADMIN 권한 필요)
       operationId: orders-find-all
       responses:
         "200":
@@ -21,6 +22,7 @@ paths:
     post:
       tags:
       - orders
+      summary: 주문 생성 (BUYER 권한 필요)
       operationId: orders-place
       requestBody:
         content:

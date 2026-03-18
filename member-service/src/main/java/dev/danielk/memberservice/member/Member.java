@@ -4,15 +4,6 @@ import java.time.LocalDateTime;
 
 /**
  * 회원 도메인 모델 — Java 17 Record
- *
- * Lombok @Value 대체 예시:
- *   @Value 클래스는 불변 + getter + equals/hashCode/toString을 제공하는데
- *   record가 이 모든 것을 언어 레벨에서 제공함.
- *
- * record 제약:
- *   - 모든 필드가 final (불변)
- *   - 상속 불가 (암묵적으로 final class)
- *   - 커스텀 로직은 compact constructor 또는 static 팩토리 메서드로 처리
  */
 public record Member(
         Long id,
@@ -29,8 +20,8 @@ public record Member(
         if (name == null || name.isBlank())   throw new IllegalArgumentException("이름은 필수입니다.");
     }
 
-    // 신규 회원 생성 팩토리 (id/audit은 저장소가 부여)
+    // 신규 회원 생성 팩토리 (기본 권한: BUYER)
     public static Member create(String email, String name, String encodedPassword) {
-        return new Member(null, email, name, encodedPassword, MemberRole.USER, null, null);
+        return new Member(null, email, name, encodedPassword, MemberRole.BUYER, null, null);
     }
 }
