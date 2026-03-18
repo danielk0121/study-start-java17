@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# 쇼핑몰 프론트엔드 (frontapp) 실행 가이드
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+백엔드 개발자를 위한 React + TypeScript 프로젝트 가이드입니다. Java/Spring 환경과 비교하여 설명합니다.
 
-Currently, two official plugins are available:
+## 1. 사전 준비 (Prerequisites)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+이 앱을 실행하려면 컴퓨터에 **Node.js**가 설치되어 있어야 합니다.
+- 설치 확인: 터미널에서 `node -v` 입력
+- 권장 버전: v18 이상
 
-## React Compiler
+## 2. 실행 명령어 (Commands)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Spring의 Gradle 명령어와 대응되는 npm 명령어입니다. `frontapp` 폴더 안에서 실행하세요.
 
-## Expanding the ESLint configuration
+| 작업 | 명령어 | 설명 | Spring (Gradle) 대응 |
+| :--- | :--- | :--- | :--- |
+| **의존성 설치** | `npm install` | `package.json`에 적힌 라이브러리 다운로드 | `./gradlew build` (의존성 다운로드 단계) |
+| **앱 실행** | `npm run dev` | 개발 서버 실행 (기본 포트: 5173) | `./gradlew bootRun` |
+| **빌드** | `npm run build` | 배포용 정적 파일(HTML/JS) 생성 | `./gradlew build` (jar 생성) |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 3. 코드 구조 이해 (Project Structure)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+백엔드 개발자의 시선에서 본 주요 폴더와 파일의 역할입니다.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **`index.html`**: 앱의 뼈대가 되는 유일한 HTML 파일입니다. 모든 React 화면은 이 파일의 `<div id="root"></div>` 안에 동적으로 그려집니다.
+- **`src/main.tsx`**: Java의 `public static void main`과 같습니다. 앱이 시작되는 진입점입니다.
+- **`src/App.tsx`**: 전체 앱의 레이아웃과 **라우팅(URL 경로 설정)**을 담당합니다. Spring의 `Interceptor`나 `SecurityConfig`와 유사한 역할을 수행합니다.
+- **`src/pages/`**: 실제 화면 하나하나를 담당하는 컴포넌트들입니다. Spring의 **Controller + View** 역할을 합쳐놓은 것과 비슷합니다.
+- **`src/types/`**: 데이터 모델을 정의하는 곳입니다. Java의 **DTO(record/class)**와 1:1로 대응됩니다.
+- **`package.json`**: 프로젝트 설정 및 라이브러리 관리 파일입니다. Gradle의 **`build.gradle`**과 같은 역할을 합니다.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 4. 코드 수정 팁
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 화면은 **TSX (TypeScript + XML)** 형식을 사용합니다. 
+- HTML 태그를 그대로 사용할 수 있어 백엔드 개발자도 쉽게 수정할 수 있습니다. 
+- 예: `<div>`, `<h1>`, `<button>` 등
+- 수정 후 파일을 저장하면 화면에 **실시간으로 반영(Hot Reload)**됩니다.
+
+## 5. 백엔드 API 연동
+
+현재 앱은 `http://localhost:8080` (백엔드 기본 포트)와 통신하도록 설계될 예정입니다. 백엔드 서버가 켜져 있어야 실제 데이터를 볼 수 있습니다.
