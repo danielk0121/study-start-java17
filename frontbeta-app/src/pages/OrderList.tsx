@@ -93,16 +93,6 @@ function OrderList() {
     if (e.key === 'Enter') handleSearch();
   };
 
-  const handleCancelOrder = (orderId: number) => {
-    if (!window.confirm('주문을 취소하시겠습니까?')) return;
-
-    // TODO: API 연동 (PATCH /orders/{id}/cancel)
-    setOrders(prev => prev.map(order =>
-      order.id === orderId ? { ...order, status: 'CANCELLED' } : order
-    ));
-    alert('주문이 취소되었습니다.');
-  };
-
   return (
     <div>
       <div style={{
@@ -183,25 +173,6 @@ function OrderList() {
                     ))}
                   </ul>
                 </div>
-
-                {order.status === 'PENDING' && (
-                  <button
-                    onClick={() => handleCancelOrder(order.id)}
-                    style={{
-                      width: '100%',
-                      padding: '0.6rem',
-                      fontSize: '0.9rem',
-                      cursor: 'pointer',
-                      color: '#d00',
-                      border: '1px solid #d00',
-                      backgroundColor: '#fff',
-                      borderRadius: '4px',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    주문취소
-                  </button>
-                )}
               </div>
             ))}
           </div>
@@ -215,7 +186,6 @@ function OrderList() {
                   <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품</th>
                   <th style={{ textAlign: 'center', padding: '1rem' }}>상태</th>
                   <th style={{ textAlign: 'right', padding: '1rem' }}>주문일시</th>
-                  <th style={{ textAlign: 'center', padding: '1rem' }}>관리</th>
                 </tr>
               </thead>
               <tbody>
@@ -263,23 +233,6 @@ function OrderList() {
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'right' }}>
                       {new Date(order.createdAt).toLocaleString()}
-                    </td>
-                    <td style={{ padding: '1rem', textAlign: 'center' }}>
-                      {order.status === 'PENDING' && (
-                        <button
-                          onClick={() => handleCancelOrder(order.id)}
-                          style={{
-                            padding: '0.3rem 0.6rem',
-                            fontSize: '0.8rem',
-                            cursor: 'pointer',
-                            color: '#d00',
-                            border: '1px solid #d00',
-                            backgroundColor: '#fff'
-                          }}
-                        >
-                          주문취소
-                        </button>
-                      )}
                     </td>
                   </tr>
                 ))}
