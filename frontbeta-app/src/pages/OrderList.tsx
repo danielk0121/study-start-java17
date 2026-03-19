@@ -9,13 +9,13 @@ function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // 상품 ID -> 상품명 매핑 (검색용)
-  const productMap: Record<number, string> = {
-    1: '맥북 프로 14인치',
-    2: '아이폰 15 Pro',
-    3: '무선 키보드',
-    4: '린넨 셔츠',
-    8: '클린 코드'
+  // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
+  const productInfoMap: Record<number, { name: string, thumb: string }> = {
+    1: { name: '맥북 프로 14인치', thumb: 'https://via.placeholder.com/50x50?text=MBP' },
+    2: { name: '아이폰 15 Pro', thumb: 'https://via.placeholder.com/50x50?text=iPhone' },
+    3: { name: '무선 키보드', thumb: 'https://via.placeholder.com/50x50?text=KBD' },
+    4: { name: '린넨 셔츠', thumb: 'https://via.placeholder.com/50x50?text=Shirt' },
+    8: { name: '클린 코드', thumb: 'https://via.placeholder.com/50x50?text=Book' }
   };
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function OrderList() {
     // 상품명으로 주문 필터링
     const filtered = mockOrders.filter(order => 
       order.items.some(item => 
-        (productMap[item.productId] || '').includes(searchQuery)
+        (productInfoMap[item.productId]?.name || '').includes(searchQuery)
       )
     );
     setOrders(filtered);
@@ -110,10 +110,17 @@ function OrderList() {
                   <small style={{ color: '#666' }}>({order.shippingZipCode})</small>
                 </td>
                 <td style={{ padding: '1rem' }}>
-                  <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.9rem', color: '#333' }}>
+                  <ul style={{ margin: 0, padding: 0, listStyle: 'none', fontSize: '0.9rem', color: '#333' }}>
                     {order.items.map((item, idx) => (
-                      <li key={idx}>
-                        {productMap[item.productId] || '기타 상품'} ({item.quantity}개)
+                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
+                        <div style={{ width: '30px', height: '30px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {productInfoMap[item.productId]?.thumb ? (
+                            <img src={productInfoMap[item.productId].thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
+                          )}
+                        </div>
+                        <span>{productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)</span>
                       </li>
                     ))}
                   </ul>
