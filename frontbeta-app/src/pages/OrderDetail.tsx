@@ -98,22 +98,21 @@ function OrderDetail() {
           </div>
         </div>
         
-        {/* 주문 취소 버튼: PENDING 상태일 때만 노출 */}
-        {order.status === 'PENDING' && (
-          <button 
-            onClick={handleCancelOrder}
-            style={{ 
-              padding: '0.6rem 1.2rem', 
-              backgroundColor: '#fff', 
-              color: '#d00', 
-              border: '1px solid #d00', 
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            주문 취소하기
-          </button>
-        )}
+        {/* 주문 취소 버튼: 항상 노출하되 PENDING 상태일 때만 활성화 */}
+        <button 
+          onClick={handleCancelOrder}
+          disabled={order.status !== 'PENDING'}
+          style={{ 
+            padding: '0.6rem 1.2rem', 
+            backgroundColor: order.status === 'PENDING' ? '#fff' : '#eee', 
+            color: order.status === 'PENDING' ? '#d00' : '#999', 
+            border: `1px solid ${order.status === 'PENDING' ? '#d00' : '#ccc'}`, 
+            cursor: order.status === 'PENDING' ? 'pointer' : 'not-allowed',
+            fontWeight: 'bold'
+          }}
+        >
+          주문 취소하기
+        </button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem' }}>
