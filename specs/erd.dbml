@@ -93,6 +93,16 @@ Table order_items {
 }
 
 // ─────────────────────────────────────────
+// 주문 상태 이력 (order_status_histories)
+// ─────────────────────────────────────────
+Table order_status_histories {
+  id         bigint   [pk, increment, note: '이력 ID']
+  order_id   bigint   [not null, note: '주문 ID']
+  status     varchar  [not null, note: '변경된 상태']
+  created_at datetime [not null, default: `now()`, note: '상태 변경 일시']
+}
+
+// ─────────────────────────────────────────
 // 주문 이벤트 (order_events) — Redis Stream 메시지를 RDB로 표현
 // ─────────────────────────────────────────
 Table order_events {
@@ -116,5 +126,6 @@ Ref: brands.id                    < products.brand_id // 브랜드 : 상품 = 1 
 Ref: orders.member_id             > members.id    // 회원 : 주문 = 1 : N
 Ref: order_items.order_id         > orders.id     // 주문 : 주문항목 = 1 : N
 Ref: order_items.product_id       > products.id   // 상품 : 주문항목 = 1 : N
+Ref: order_status_histories.order_id > orders.id  // 주문 : 주문상태이력 = 1 : N
 Ref: order_events.member_id       > members.id    // 회원 : 주문이벤트 = 1 : N
 Ref: order_events.product_id      > products.id   // 상품 : 주문이벤트 = 1 : N

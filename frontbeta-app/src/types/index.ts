@@ -34,6 +34,12 @@ export interface OrderItem {
   quantity: number;
 }
 
+export interface OrderStatusHistory {
+  id: number;
+  status: string;
+  createdAt: string;
+}
+
 export interface Order {
   id: number;
   orderNo: string;
