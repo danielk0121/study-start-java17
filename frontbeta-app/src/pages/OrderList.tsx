@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { Order } from '../types';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 /**
  * 주문 목록 페이지
@@ -11,6 +12,7 @@ function OrderList() {
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [finalQuery, setFinalQuery] = useState('');
+  const isMobile = useIsMobile();
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
   const productInfoMap: Record<number, { name: string, thumb: string }> = {
@@ -71,8 +73,8 @@ function OrderList() {
   useEffect(() => {
     // 상품명으로 주문 필터링
     const query = finalQuery.toLowerCase();
-    const filtered = orders.filter(order => 
-      order.items.some(item => 
+    const filtered = orders.filter(order =>
+      order.items.some(item =>
         (productInfoMap[item.productId]?.name || '').toLowerCase().includes(query)
       )
     );
@@ -91,7 +93,7 @@ function OrderList() {
     if (!window.confirm('주문을 취소하시겠습니까?')) return;
 
     // TODO: API 연동 (PATCH /orders/{id}/cancel)
-    setOrders(prev => prev.map(order => 
+    setOrders(prev => prev.map(order =>
       order.id === orderId ? { ...order, status: 'CANCELLED' } : order
     ));
     alert('주문이 취소되었습니다.');
@@ -99,107 +101,116 @@ function OrderList() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h1>주문 내역</h1>
+      <div style={{
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        justifyContent: 'space-between',
+        alignItems: isMobile ? 'stretch' : 'center',
+        gap: isMobile ? '0.75rem' : '0',
+        marginBottom: '1.5rem'
+      }}>
+        <h1 style={{ margin: 0 }}>주문 내역</h1>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <input 
-            type="text" 
-            placeholder="주문 상품명 검색..." 
+          <input
+            type="text"
+            placeholder="주문 상품명 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
+            style={{ padding: '0.5rem', flex: 1, minWidth: 0, border: '1px solid #000' }}
           />
-          <button 
+          <button
             onClick={handleSearch}
-            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}
+            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             검색
           </button>
         </div>
       </div>
-      
+
       {filteredOrders.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '2px solid #000' }}>
-              <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
-              <th style={{ textAlign: 'left', padding: '1rem' }}>배송지</th>
-              <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품</th>
-              <th style={{ textAlign: 'center', padding: '1rem' }}>상태</th>
-              <th style={{ textAlign: 'right', padding: '1rem' }}>주문일시</th>
-              <th style={{ textAlign: 'center', padding: '1rem' }}>관리</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map(order => (
-              <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: '1rem' }}>
-                  <Link to={`/order/${order.id}`} style={{ textDecoration: 'none', color: '#000' }}>
-                    <div style={{ fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>{order.orderNo}</div>
-                  </Link>
-                  <small style={{ color: '#999' }}>ID: {order.id}</small>
-                </td>
-                <td style={{ padding: '1rem' }}>
-                  <div>{order.shippingAddress}</div>
-                  <small style={{ color: '#666' }}>({order.shippingZipCode})</small>
-                </td>
-                <td style={{ padding: '1rem' }}>
-                  <ul style={{ margin: 0, padding: 0, listStyle: 'none', fontSize: '0.9rem', color: '#333' }}>
-                    {order.items.map((item, idx) => (
-                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-                        <div style={{ width: '30px', height: '30px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          {productInfoMap[item.productId]?.thumb ? (
-                            <img src={productInfoMap[item.productId].thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          ) : (
-                            <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
-                          )}
-                        </div>
-                        <span>
-                          <small style={{ color: '#999', marginRight: '0.3rem' }}>#{item.productId}</small>
-                          {productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td style={{ padding: '1rem', textAlign: 'center' }}>
-                  <span style={{ 
-                    padding: '0.2rem 0.5rem', 
-                    border: '1px solid #ccc',
-                    fontSize: '0.8rem',
-                    color: order.status === 'CANCELLED' ? '#d00' : '#333',
-                    backgroundColor: order.status === 'CANCELLED' ? '#fff0f0' : 'transparent'
-                  }}>
-                    {order.status}
-                  </span>
-                </td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  {new Date(order.createdAt).toLocaleString()}
-                </td>
-                <td style={{ padding: '1rem', textAlign: 'center' }}>
-                  {order.status === 'PENDING' && (
-                    <button 
-                      onClick={() => handleCancelOrder(order.id)}
-                      style={{ 
-                        padding: '0.3rem 0.6rem', 
-                        fontSize: '0.8rem', 
-                        cursor: 'pointer', 
-                        color: '#d00',
-                        border: '1px solid #d00',
-                        backgroundColor: '#fff'
-                      }}
-                    >
-                      주문취소
-                    </button>
-                  )}
-                </td>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid #000' }}>
+                <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
+                <th style={{ textAlign: 'left', padding: '1rem' }}>배송지</th>
+                <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품</th>
+                <th style={{ textAlign: 'center', padding: '1rem' }}>상태</th>
+                <th style={{ textAlign: 'right', padding: '1rem' }}>주문일시</th>
+                <th style={{ textAlign: 'center', padding: '1rem' }}>관리</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredOrders.map(order => (
+                <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '1rem' }}>
+                    <Link to={`/order/${order.id}`} style={{ textDecoration: 'none', color: '#000' }}>
+                      <div style={{ fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>{order.orderNo}</div>
+                    </Link>
+                    <small style={{ color: '#999' }}>ID: {order.id}</small>
+                  </td>
+                  <td style={{ padding: '1rem' }}>
+                    <div>{order.shippingAddress}</div>
+                    <small style={{ color: '#666' }}>({order.shippingZipCode})</small>
+                  </td>
+                  <td style={{ padding: '1rem' }}>
+                    <ul style={{ margin: 0, padding: 0, listStyle: 'none', fontSize: '0.9rem', color: '#333' }}>
+                      {order.items.map((item, idx) => (
+                        <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
+                          <div style={{ width: '30px', height: '30px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {productInfoMap[item.productId]?.thumb ? (
+                              <img src={productInfoMap[item.productId].thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
+                            )}
+                          </div>
+                          <span>
+                            <small style={{ color: '#999', marginRight: '0.3rem' }}>#{item.productId}</small>
+                            {productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>
+                    <span style={{
+                      padding: '0.2rem 0.5rem',
+                      border: '1px solid #ccc',
+                      fontSize: '0.8rem',
+                      color: order.status === 'CANCELLED' ? '#d00' : '#333',
+                      backgroundColor: order.status === 'CANCELLED' ? '#fff0f0' : 'transparent'
+                    }}>
+                      {order.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '1rem', textAlign: 'right' }}>
+                    {new Date(order.createdAt).toLocaleString()}
+                  </td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>
+                    {order.status === 'PENDING' && (
+                      <button
+                        onClick={() => handleCancelOrder(order.id)}
+                        style={{
+                          padding: '0.3rem 0.6rem',
+                          fontSize: '0.8rem',
+                          cursor: 'pointer',
+                          color: '#d00',
+                          border: '1px solid #d00',
+                          backgroundColor: '#fff'
+                        }}
+                      >
+                        주문취소
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

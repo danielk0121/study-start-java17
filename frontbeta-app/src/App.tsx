@@ -15,6 +15,7 @@ import ProductSalesList from './pages/ProductSalesList';
 import BrandList from './pages/BrandList';
 import ProductDetail from './pages/ProductDetail';
 import type { Member } from './types';
+import { useIsMobile } from './hooks/useIsMobile';
 
 /**
  * 프론트엔드 메인 진입점
@@ -22,6 +23,7 @@ import type { Member } from './types';
  */
 function App() {
   const [currentUser, setCurrentUser] = useState<Member | null>(null);
+  const isMobile = useIsMobile();
 
   const handleLogout = () => {
     setCurrentUser(null);
@@ -32,23 +34,24 @@ function App() {
       <nav style={{
         borderBottom: '1px solid #000',
         fontFamily: 'sans-serif',
-        fontSize: '0.85rem'
+        fontSize: isMobile ? '0.75rem' : '0.85rem'
       }}>
         {/* 1행: 로고 + 인증 영역 */}
         <div style={{
-          padding: '0.5rem 1rem',
+          padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
           alignItems: 'center',
-          gap: '1rem',
-          borderBottom: '1px solid #eee'
+          gap: isMobile ? '0.4rem' : '1rem',
+          borderBottom: '1px solid #eee',
+          flexWrap: 'wrap'
         }}>
-          <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000', fontSize: '1rem' }}>SHOP</Link>
+          <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000', fontSize: isMobile ? '0.9rem' : '1rem' }}>SHOP</Link>
           <div style={{ flex: 1 }}></div>
           <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
           <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
           <span style={{ color: '#ccc' }}>|</span>
           {currentUser ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '0.4rem' : '0.8rem', flexWrap: 'wrap' }}>
               <span style={{
                 padding: '0.1rem 0.4rem',
                 border: '1px solid #ccc',
@@ -61,7 +64,7 @@ function App() {
               <button onClick={handleLogout} style={{ padding: '0.2rem 0.4rem', cursor: 'pointer', fontSize: '0.75rem' }}>로그아웃</button>
             </div>
           ) : (
-            <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: isMobile ? '0.4rem' : '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
               <Link to="/login" style={{ textDecoration: 'none', color: '#333' }}>로그인</Link>
               <Link to="/register" style={{ textDecoration: 'none', color: '#333' }}>회원가입</Link>
               <span style={{ color: '#ccc' }}>|</span>
@@ -73,9 +76,9 @@ function App() {
 
         {/* 2행: 내비게이션 메뉴 */}
         <div style={{
-          padding: '0.5rem 1rem',
+          padding: isMobile ? '0.3rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
-          gap: '1.2rem',
+          gap: isMobile ? '0.6rem' : '1.2rem',
           alignItems: 'center',
           flexWrap: 'wrap'
         }}>
@@ -94,7 +97,7 @@ function App() {
         </div>
       </nav>
 
-      <main style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <main style={{ padding: isMobile ? '1rem 0.5rem' : '2rem', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetail />} />

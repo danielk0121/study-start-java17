@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Order, OrderStatusHistory } from '../types';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 /**
  * 주문 상세 페이지
@@ -11,6 +12,7 @@ function OrderDetail() {
   const navigate = useNavigate();
   const [order, setOrder] = useState<Order | null>(null);
   const [histories, setHistories] = useState<OrderStatusHistory[]>([]);
+  const isMobile = useIsMobile();
 
   // 상품 ID -> 상품 정보 매핑 (상세용)
   const productInfoMap: Record<number, { name: string, price: number, thumb: string }> = {
@@ -53,13 +55,13 @@ function OrderDetail() {
     const mockHistories: OrderStatusHistory[] = [
       { id: 1, status: 'PENDING', createdAt: foundOrder.createdAt }
     ];
-    
+
     if (foundOrder.status === 'CONFIRMED') {
       mockHistories.push({ id: 2, status: 'CONFIRMED', createdAt: '2025-09-02T14:30:00' });
     } else if (foundOrder.status === 'CANCELLED') {
       mockHistories.push({ id: 2, status: 'CANCELLED', createdAt: new Date().toISOString() });
     }
-    
+
     setHistories(mockHistories);
   }, [id]);
 
@@ -69,13 +71,13 @@ function OrderDetail() {
 
     // TODO: API 연동 (PATCH /orders/{id}/cancel)
     const cancelTime = new Date().toISOString();
-    
+
     setOrder(prev => prev ? { ...prev, status: 'CANCELLED' } : null);
     setHistories(prev => [
       ...prev,
       { id: prev.length + 1, status: 'CANCELLED', createdAt: cancelTime }
     ]);
-    
+
     alert('주문이 취소되었습니다.');
   };
 
@@ -83,46 +85,56 @@ function OrderDetail() {
 
   return (
     <div>
-      <button 
-        onClick={() => navigate(-1)} 
+      <button
+        onClick={() => navigate(-1)}
         style={{ marginBottom: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
       >
         &lt; 뒤로가기
       </button>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #000', paddingBottom: '1rem', marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'baseline' }}>
+      <div style={{
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        justifyContent: 'space-between',
+        alignItems: isMobile ? 'flex-start' : 'center',
+        gap: isMobile ? '1rem' : '0',
+        borderBottom: '2px solid #000',
+        paddingBottom: '1rem',
+        marginBottom: '2rem'
+      }}>
+        <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '0.5rem' : '1.5rem', alignItems: isMobile ? 'flex-start' : 'baseline' }}>
           <h1 style={{ margin: 0 }}>주문 상세 내역</h1>
           <div style={{ fontSize: '1.1rem' }}>
             주문번호: <strong>{order.orderNo}</strong>
           </div>
         </div>
-        
+
         {/* 주문 취소 버튼: 항상 노출하되 PENDING 상태일 때만 활성화 */}
-        <button 
+        <button
           onClick={handleCancelOrder}
           disabled={order.status !== 'PENDING'}
-          style={{ 
-            padding: '0.6rem 1.2rem', 
-            backgroundColor: order.status === 'PENDING' ? '#fff' : '#eee', 
-            color: order.status === 'PENDING' ? '#d00' : '#999', 
-            border: `1px solid ${order.status === 'PENDING' ? '#d00' : '#ccc'}`, 
+          style={{
+            padding: '0.6rem 1.2rem',
+            backgroundColor: order.status === 'PENDING' ? '#fff' : '#eee',
+            color: order.status === 'PENDING' ? '#d00' : '#999',
+            border: `1px solid ${order.status === 'PENDING' ? '#d00' : '#ccc'}`,
             cursor: order.status === 'PENDING' ? 'pointer' : 'not-allowed',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            alignSelf: isMobile ? 'stretch' : 'auto'
           }}
         >
           주문 취소하기
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', gap: isMobile ? '2rem' : '3rem' }}>
         {/* 왼쪽: 상품 및 배송 정보 */}
         <div>
           <section style={{ marginBottom: '3rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <h3>주문 상품 정보</h3>
-              <span style={{ 
-                padding: '0.2rem 0.6rem', 
+              <span style={{
+                padding: '0.2rem 0.6rem',
                 border: '1px solid #ccc',
                 fontSize: '0.85rem',
                 color: order.status === 'CANCELLED' ? '#d00' : '#333',
@@ -131,35 +143,37 @@ function OrderDetail() {
                 현재 상태: <strong>{order.status}</strong>
               </span>
             </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
-                  <th style={{ padding: '1rem 0' }}>상품정보</th>
-                  <th style={{ padding: '1rem 0', textAlign: 'right' }}>수량</th>
-                  <th style={{ padding: '1rem 0', textAlign: 'right' }}>금액</th>
-                </tr>
-              </thead>
-              <tbody>
-                {order.items.map((item, idx) => {
-                  const info = productInfoMap[item.productId];
-                  return (
-                    <tr key={idx} style={{ borderBottom: '1px solid #f9f9f9' }}>
-                      <td style={{ padding: '1rem 0', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <img src={info?.thumb} alt={info?.name} style={{ width: '50px', height: '50px', objectFit: 'cover', border: '1px solid #eee' }} />
-                        <div>
-                          <div style={{ fontSize: '0.8rem', color: '#999' }}>#{item.productId}</div>
-                          <div style={{ fontWeight: 'bold' }}>{info?.name || '알 수 없는 상품'}</div>
-                        </div>
-                      </td>
-                      <td style={{ textAlign: 'right' }}>{item.quantity}개</td>
-                      <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
-                        {( (info?.price || 0) * item.quantity ).toLocaleString()}원
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem', minWidth: '280px' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
+                    <th style={{ padding: '1rem 0' }}>상품정보</th>
+                    <th style={{ padding: '1rem 0', textAlign: 'right' }}>수량</th>
+                    <th style={{ padding: '1rem 0', textAlign: 'right' }}>금액</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.items.map((item, idx) => {
+                    const info = productInfoMap[item.productId];
+                    return (
+                      <tr key={idx} style={{ borderBottom: '1px solid #f9f9f9' }}>
+                        <td style={{ padding: '1rem 0', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                          <img src={info?.thumb} alt={info?.name} style={{ width: '50px', height: '50px', objectFit: 'cover', border: '1px solid #eee' }} />
+                          <div>
+                            <div style={{ fontSize: '0.8rem', color: '#999' }}>#{item.productId}</div>
+                            <div style={{ fontWeight: 'bold' }}>{info?.name || '알 수 없는 상품'}</div>
+                          </div>
+                        </td>
+                        <td style={{ textAlign: 'right' }}>{item.quantity}개</td>
+                        <td style={{ textAlign: 'right', fontWeight: 'bold' }}>
+                          {( (info?.price || 0) * item.quantity ).toLocaleString()}원
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </section>
 
           <section>
@@ -189,8 +203,8 @@ function OrderDetail() {
                     <div style={{ position: 'absolute', left: '7px', top: '20px', bottom: '-25px', width: '2px', backgroundColor: '#ddd' }}></div>
                   )}
                   {/* 타임라인 점 */}
-                  <div style={{ 
-                    width: '16px', height: '16px', borderRadius: '50%', 
+                  <div style={{
+                    width: '16px', height: '16px', borderRadius: '50%',
                     backgroundColor: history.status === 'CANCELLED' ? '#d00' : (idx === histories.length - 1 ? '#000' : '#ccc'),
                     zIndex: 1, marginTop: '4px'
                   }}></div>
@@ -205,7 +219,7 @@ function OrderDetail() {
               ))}
             </div>
           </div>
-          
+
           <div style={{ marginTop: '2rem', padding: '1.5rem', borderTop: '2px solid #eee' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span>총 주문 금액</span>

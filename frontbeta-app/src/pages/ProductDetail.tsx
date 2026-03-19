@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Product } from '../types';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 /**
  * 상품 상세 페이지
@@ -11,11 +12,12 @@ function ProductDetail() {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [activeThumb, setActiveThumb] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Flyway 샘플 데이터를 기반으로 한 Mock 데이터 조회 시뮬레이션
     const mockProducts: Product[] = [
-      { 
+      {
         id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple',
         brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
         thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1',
@@ -49,24 +51,27 @@ function ProductDetail() {
     alert(`${product.name}이(가) 장바구니에 담겼습니다.`);
   };
 
+  const imageSize = isMobile ? '100%' : '400px';
+
   return (
     <div>
-      <button 
-        onClick={() => navigate(-1)} 
+      <button
+        onClick={() => navigate(-1)}
         style={{ marginBottom: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
       >
         &lt; 뒤로가기
       </button>
 
-      <div style={{ display: 'flex', gap: '3rem', alignItems: 'start' }}>
+      <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '1.5rem' : '3rem', alignItems: 'start' }}>
         {/* 이미지 영역 */}
-        <div style={{ width: '400px' }}>
-          <div style={{ 
-            width: '400px', 
-            height: '400px', 
-            backgroundColor: '#f0f0f0', 
-            display: 'flex', 
-            alignItems: 'center', 
+        <div style={{ width: imageSize, flexShrink: 0 }}>
+          <div style={{
+            width: '100%',
+            paddingTop: isMobile ? '0' : '0',
+            height: isMobile ? '280px' : '400px',
+            backgroundColor: '#f0f0f0',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             border: '1px solid #ddd',
             marginBottom: '1rem'
@@ -77,15 +82,17 @@ function ProductDetail() {
               <span style={{ color: '#ccc' }}>이미지 없음</span>
             )}
           </div>
-          
+
           {/* 썸네일 리스트 (3장) */}
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             {[0, 1, 2].map(idx => (
-              <div 
+              <div
                 key={idx}
                 onClick={() => setActiveThumb(idx)}
-                style={{ 
-                  width: '80px', height: '80px', border: activeThumb === idx ? '2px solid #000' : '1px solid #ddd',
+                style={{
+                  width: isMobile ? '72px' : '80px',
+                  height: isMobile ? '72px' : '80px',
+                  border: activeThumb === idx ? '2px solid #000' : '1px solid #ddd',
                   backgroundColor: '#f9f9f9', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}
               >
@@ -99,7 +106,7 @@ function ProductDetail() {
           </div>
         </div>
 
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: '1rem', color: '#666', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {product.brandThumbnailUrl && (
               <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '30px', height: '30px', border: '1px solid #eee', objectFit: 'contain' }} />
@@ -107,8 +114,8 @@ function ProductDetail() {
             <span>{product.brandName} | {product.category}</span>
             <small style={{ color: '#999' }}>(ID: {product.id})</small>
           </div>
-          <h1 style={{ margin: '0 0 1.5rem 0', fontSize: '2.5rem' }}>{product.name}</h1>
-          
+          <h1 style={{ margin: '0 0 1.5rem 0', fontSize: isMobile ? '1.6rem' : '2.5rem' }}>{product.name}</h1>
+
           <div style={{ borderTop: '2px solid #000', borderBottom: '1px solid #eee', padding: '1.5rem 0', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <span style={{ color: '#666' }}>판매가</span>
@@ -121,13 +128,13 @@ function ProductDetail() {
           </div>
 
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <button 
+            <button
               onClick={handleAddToCart}
-              style={{ flex: 1, padding: '1.2rem', fontSize: '1.1rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff' }}
+              style={{ flex: 1, padding: '1.2rem', fontSize: isMobile ? '0.95rem' : '1.1rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff' }}
             >
               장바구니 담기
             </button>
-            <button style={{ flex: 1, padding: '1.2rem', fontSize: '1.1rem', cursor: 'pointer', border: 'none', backgroundColor: '#000', color: '#fff' }}>
+            <button style={{ flex: 1, padding: '1.2rem', fontSize: isMobile ? '0.95rem' : '1.1rem', cursor: 'pointer', border: 'none', backgroundColor: '#000', color: '#fff' }}>
               바로 구매하기
             </button>
           </div>

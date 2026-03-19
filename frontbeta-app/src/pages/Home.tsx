@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import type { Product } from '../types';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 /**
  * 상품 목록 페이지 (Home)
@@ -10,6 +11,7 @@ function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [finalQuery, setFinalQuery] = useState('');
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
@@ -35,9 +37,9 @@ function Home() {
 
     // 검색 필터링
     const query = finalQuery.toLowerCase();
-    const filtered = mockProducts.filter(p => 
-      p.name.toLowerCase().includes(query) || 
-      p.brandName.toLowerCase().includes(query) || 
+    const filtered = mockProducts.filter(p =>
+      p.name.toLowerCase().includes(query) ||
+      p.brandName.toLowerCase().includes(query) ||
       p.category.toLowerCase().includes(query)
     );
     setProducts(filtered);
@@ -59,33 +61,40 @@ function Home() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h1>상품 목록</h1>
+      <div style={{
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        justifyContent: 'space-between',
+        alignItems: isMobile ? 'stretch' : 'center',
+        gap: isMobile ? '0.75rem' : '0',
+        marginBottom: '1.5rem'
+      }}>
+        <h1 style={{ margin: 0 }}>상품 목록</h1>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <input 
-            type="text" 
-            placeholder="상품, 브랜드 검색..." 
+          <input
+            type="text"
+            placeholder="상품, 브랜드 검색..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
+            style={{ padding: '0.5rem', flex: 1, minWidth: 0, border: '1px solid #000' }}
           />
-          <button 
+          <button
             onClick={handleSearch}
-            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}
+            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             검색
           </button>
         </div>
       </div>
-      
+
       {products.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</p>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
         {products.map(product => (
           <div key={product.id} style={{ border: '1px solid #ddd', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-            <div style={{ 
+            <div style={{
               width: '100%', height: '150px', backgroundColor: '#f0f0f0', marginBottom: '1rem',
               display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
             }}>
@@ -108,7 +117,7 @@ function Home() {
             <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>재고: {product.stock}개</div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
-              <button 
+              <button
                 onClick={() => handleAddToCart(product)}
                 style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '0.8rem' }}
               >

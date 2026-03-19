@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 interface SalesItem {
   id: number;
@@ -18,7 +19,8 @@ interface SalesItem {
 function ProductSalesList() {
   const [sales, setSales] = useState<SalesItem[]>([]);
   const [filteredSales, setFilteredSales] = useState<SalesItem[]>([]);
-  
+  const isMobile = useIsMobile();
+
   // 검색 조건 상태
   const [searchName, setSearchName] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -50,7 +52,7 @@ function ProductSalesList() {
 
     // 상품명 검색
     if (searchName) {
-      result = result.filter(item => 
+      result = result.filter(item =>
         item.productName.toLowerCase().includes(searchName.toLowerCase()) ||
         item.brandName.toLowerCase().includes(searchName.toLowerCase())
       );
@@ -87,42 +89,42 @@ function ProductSalesList() {
   return (
     <div>
       <h1>상품 판매 내역 (MANAGER)</h1>
-      
+
       {/* 검색 필터 UI */}
-      <div style={{ 
-        padding: '1.5rem', 
-        backgroundColor: '#f5f5f5', 
-        borderRadius: '8px', 
+      <div style={{
+        padding: isMobile ? '1rem' : '1.5rem',
+        backgroundColor: '#f5f5f5',
+        borderRadius: '8px',
         marginBottom: '2rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem'
       }}>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>상품명/브랜드</label>
-            <input 
-              type="text" 
-              placeholder="상품명 또는 브랜드 입력..." 
+            <input
+              type="text"
+              placeholder="상품명 또는 브랜드 입력..."
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
-              style={{ padding: '0.4rem', border: '1px solid #ccc' }}
+              style={{ padding: '0.4rem', border: '1px solid #ccc', width: '100%' }}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>판매기간</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: '120px' }} />
               <span>~</span>
-              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc' }} />
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: '120px' }} />
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>금액 범위 (원)</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <input type="number" placeholder="최소" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', width: '100px' }} />
+              <input type="number" placeholder="최소" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: 0 }} />
               <span>~</span>
-              <input type="number" placeholder="최대" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', width: '100px' }} />
+              <input type="number" placeholder="최대" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: 0 }} />
             </div>
           </div>
         </div>
@@ -132,41 +134,43 @@ function ProductSalesList() {
         </div>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ borderBottom: '2px solid #000' }}>
-            <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
-            <th style={{ textAlign: 'left', padding: '1rem' }}>상품ID</th>
-            <th style={{ textAlign: 'left', padding: '1rem' }}>상품명</th>
-            <th style={{ textAlign: 'left', padding: '1rem' }}>브랜드명</th>
-            <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
-            <th style={{ textAlign: 'right', padding: '1rem' }}>판매금액</th>
-            <th style={{ textAlign: 'right', padding: '1rem' }}>판매일시</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredSales.length === 0 ? (
-            <tr>
-              <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '600px' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #000' }}>
+              <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
+              <th style={{ textAlign: 'left', padding: '1rem' }}>상품ID</th>
+              <th style={{ textAlign: 'left', padding: '1rem' }}>상품명</th>
+              <th style={{ textAlign: 'left', padding: '1rem' }}>브랜드명</th>
+              <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
+              <th style={{ textAlign: 'right', padding: '1rem' }}>판매금액</th>
+              <th style={{ textAlign: 'right', padding: '1rem' }}>판매일시</th>
             </tr>
-          ) : (
-            filteredSales.map(item => (
-              <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: '1rem', fontWeight: 'bold' }}>{item.orderNo}</td>
-                <td style={{ padding: '1rem', color: '#999' }}>#{item.productId}</td>
-                <td style={{ padding: '1rem' }}>{item.productName}</td>
-                <td style={{ padding: '1rem' }}>{item.brandName}</td>
-                <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
-                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                  {new Date(item.soldAt).toLocaleString()}
-                </td>
+          </thead>
+          <tbody>
+            {filteredSales.length === 0 ? (
+              <tr>
+                <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      
+            ) : (
+              filteredSales.map(item => (
+                <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '1rem', fontWeight: 'bold' }}>{item.orderNo}</td>
+                  <td style={{ padding: '1rem', color: '#999' }}>#{item.productId}</td>
+                  <td style={{ padding: '1rem' }}>{item.productName}</td>
+                  <td style={{ padding: '1rem' }}>{item.brandName}</td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
+                  <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
+                  <td style={{ padding: '1rem', textAlign: 'right' }}>
+                    {new Date(item.soldAt).toLocaleString()}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
       <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f9f9f9', border: '1px solid #ddd' }}>
         <strong>검색 결과 총 매출:</strong> {filteredSales.reduce((acc, curr) => acc + curr.totalPrice, 0).toLocaleString()}원
       </div>
