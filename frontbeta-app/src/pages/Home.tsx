@@ -104,18 +104,21 @@ function Home() {
                 <span style={{ color: '#ccc', fontSize: '0.8rem' }}>No Image</span>
               )}
             </div>
-            <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              {product.brandThumbnailUrl && (
-                <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '20px', height: '20px', border: '1px solid #eee', objectFit: 'contain' }} />
-              )}
-              <span>{product.brandName} | {product.category}</span>
-              <small style={{ color: '#999' }}>(ID: {product.id})</small>
+            <div style={{ marginBottom: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.15rem' }}>
+                {product.brandThumbnailUrl && (
+                  <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '16px', height: '16px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
+                )}
+                <span style={{ fontSize: '0.75rem', color: '#555', fontWeight: 600 }}>{product.brandName}</span>
+              </div>
+              <div style={{ fontSize: '0.72rem', color: '#888', paddingLeft: '20px', marginBottom: '0.1rem' }}>{product.category}</div>
+              <div style={{ fontSize: '0.68rem', color: '#aaa', paddingLeft: '20px' }}>ID: {product.id}</div>
             </div>
             <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
-              <h3 style={{ 
-                margin: '0 0 1rem 0', 
+              <h3 style={{
+                margin: '0 0 0.75rem 0',
                 cursor: 'pointer',
-                fontSize: isMobile ? '0.9rem' : '1.05rem',
+                fontSize: isMobile ? '0.85rem' : '1rem',
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical',
@@ -127,15 +130,15 @@ function Home() {
                 {product.name}
               </h3>
             </Link>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>
-              <span>재고: {product.stock}개</span>
-              <span style={{ fontWeight: 'bold' }}>판매: {product.salesCount}개</span>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', fontSize: '0.72rem', color: '#666', marginBottom: '0.5rem', gap: '0.1rem 0.25rem' }}>
+              <span>재고: <strong>{product.stock.toLocaleString()}개</strong></span>
+              <span>판매: <strong>{product.salesCount.toLocaleString()}개</strong></span>
             </div>
-            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'stretch' : 'center', gap: isMobile ? '0.4rem' : '0' }}>
-              <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.4rem' }}>
+              <p style={{ fontWeight: 'bold', fontSize: '1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
               <button
                 onClick={() => handleAddToCart(product)}
-                style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '0.8rem' }}
+                style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
               >
                 장바구니
               </button>

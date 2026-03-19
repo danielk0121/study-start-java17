@@ -73,10 +73,22 @@ bash tools/dbml/validate.sh docs/erd.dbml     # 특정 파일만 검증
 
 ## 코드 작성 규칙
 
-코드 작성이 완료된 후에는 반드시 skip test 빌드를 실행하여 컴파일 에러가 없는지 확인한다:
+코드 작성이 완료된 후에는 반드시 빌드를 실행하여 컴파일 에러가 없는지 확인한다.
+
+### 백엔드 (Java/Spring Boot)
 
 ```bash
 ./gradlew build -x test
+```
+
+### 프론트엔드 (front-app / frontbeta-app)
+
+프론트엔드 파일(`front-app/`, `frontbeta-app/` 하위)을 수정한 경우에는 해당 앱 디렉토리에서 npm 빌드로 검증한다:
+
+```bash
+cd frontbeta-app && npm run build
+# 또는
+cd front-app && npm run build
 ```
 
 빌드가 실패하면 에러를 수정한 후 다시 빌드를 통과시킨 뒤 커밋한다.
