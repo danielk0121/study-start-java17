@@ -4,7 +4,7 @@ import type { Order, OrderStatusHistory } from '../types';
 
 /**
  * 주문 상세 페이지
- * UC_ORD_06 구현 (Prototype - 상태 변경 이력 포함)
+ * UC_ORD_06 구현 (Prototype - 상태 변경 이력 및 취소 기능 포함)
  */
 function OrderDetail() {
   const { id } = useParams();
@@ -33,6 +33,16 @@ function OrderDetail() {
         shippingZipCode: '06123',
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
+      },
+      {
+        id: 105,
+        orderNo: '260226130000105',
+        memberId: 8,
+        status: 'PENDING',
+        shippingAddress: '서울시 서초구 서초동 678-90',
+        shippingZipCode: '06543',
+        createdAt: '2026-02-26T13:00:00',
+        items: [{ productId: 3, quantity: 1 }]
       }
     ];
 
@@ -41,11 +51,33 @@ function OrderDetail() {
 
     // 상태 변경 이력 Mock
     const mockHistories: OrderStatusHistory[] = [
-      { id: 1, status: 'PENDING', createdAt: '2025-09-02T10:15:00' },
-      { id: 2, status: 'CONFIRMED', createdAt: '2025-09-02T14:30:00' }
+      { id: 1, status: 'PENDING', createdAt: foundOrder.createdAt }
     ];
+    
+    if (foundOrder.status === 'CONFIRMED') {
+      mockHistories.push({ id: 2, status: 'CONFIRMED', createdAt: '2025-09-02T14:30:00' });
+    } else if (foundOrder.status === 'CANCELLED') {
+      mockHistories.push({ id: 2, status: 'CANCELLED', createdAt: new Date().toISOString() });
+    }
+    
     setHistories(mockHistories);
   }, [id]);
+
+  const handleCancelOrder = () => {
+    if (!order || order.status !== 'PENDING') return;
+    if (!window.confirm('정말로 이 주문을 취소하시겠습니까?')) return;
+
+    // TODO: API 연동 (PATCH /orders/{id}/cancel)
+    const cancelTime = new Date().toISOString();
+    
+    setOrder(prev => prev ? { ...prev, status: 'CANCELLED' } : null);
+    setHistories(prev => [
+      ...prev,
+      { id: prev.length + 1, status: 'CANCELLED', createdAt: cancelTime }
+    ]);
+    
+    alert('주문이 취소되었습니다.');
+  };
 
   if (!order) return <div>주문 정보를 불러오는 중...</div>;
 
@@ -58,18 +90,48 @@ function OrderDetail() {
         &lt; 뒤로가기
       </button>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', borderBottom: '2px solid #000', paddingBottom: '1rem', marginBottom: '2rem' }}>
-        <h1>주문 상세 내역</h1>
-        <div style={{ fontSize: '1.1rem' }}>
-          주문번호: <strong>{order.orderNo}</strong>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #000', paddingBottom: '1rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'baseline' }}>
+          <h1 style={{ margin: 0 }}>주문 상세 내역</h1>
+          <div style={{ fontSize: '1.1rem' }}>
+            주문번호: <strong>{order.orderNo}</strong>
+          </div>
         </div>
+        
+        {/* 주문 취소 버튼: PENDING 상태일 때만 노출 */}
+        {order.status === 'PENDING' && (
+          <button 
+            onClick={handleCancelOrder}
+            style={{ 
+              padding: '0.6rem 1.2rem', 
+              backgroundColor: '#fff', 
+              color: '#d00', 
+              border: '1px solid #d00', 
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            주문 취소하기
+          </button>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem' }}>
         {/* 왼쪽: 상품 및 배송 정보 */}
         <div>
           <section style={{ marginBottom: '3rem' }}>
-            <h3>주문 상품 정보</h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <h3>주문 상품 정보</h3>
+              <span style={{ 
+                padding: '0.2rem 0.6rem', 
+                border: '1px solid #ccc',
+                fontSize: '0.85rem',
+                color: order.status === 'CANCELLED' ? '#d00' : '#333',
+                backgroundColor: order.status === 'CANCELLED' ? '#fff0f0' : '#f9f9f9'
+              }}>
+                현재 상태: <strong>{order.status}</strong>
+              </span>
+            </div>
             <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #eee', textAlign: 'left' }}>
@@ -118,11 +180,11 @@ function OrderDetail() {
 
         {/* 오른쪽: 주문 상태 타임라인 */}
         <div>
-          <h3>주문 진행 상태</h3>
+          <h3>주문 진행 상태 (타임라인)</h3>
           <div style={{ marginTop: '1.5rem', padding: '1.5rem', backgroundColor: '#f9f9f9', borderRadius: '8px', border: '1px solid #eee' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {histories.map((history, idx) => (
-                <div key={history.id} style={{ display: 'flex', gap: '1rem', position: 'relative' }}>
+                <div key={idx} style={{ display: 'flex', gap: '1rem', position: 'relative' }}>
                   {/* 타임라인 라인 */}
                   {idx !== histories.length - 1 && (
                     <div style={{ position: 'absolute', left: '7px', top: '20px', bottom: '-25px', width: '2px', backgroundColor: '#ddd' }}></div>
@@ -130,12 +192,14 @@ function OrderDetail() {
                   {/* 타임라인 점 */}
                   <div style={{ 
                     width: '16px', height: '16px', borderRadius: '50%', 
-                    backgroundColor: idx === histories.length - 1 ? '#000' : '#ccc',
+                    backgroundColor: history.status === 'CANCELLED' ? '#d00' : (idx === histories.length - 1 ? '#000' : '#ccc'),
                     zIndex: 1, marginTop: '4px'
                   }}></div>
                   {/* 내용 */}
                   <div>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{history.status}</div>
+                    <div style={{ fontWeight: 'bold', fontSize: '1rem', color: history.status === 'CANCELLED' ? '#d00' : '#000' }}>
+                      {history.status}
+                    </div>
                     <div style={{ fontSize: '0.85rem', color: '#666' }}>{new Date(history.createdAt).toLocaleString()}</div>
                   </div>
                 </div>
