@@ -21,6 +21,14 @@ export interface Product {
   stock: number;
   category: string;
   brandName: string;
+  brandThumbnailUrl?: string;
+  thumbnailUrl1?: string;
+  thumbnailUrl2?: string;
+  thumbnailUrl3?: string;
+  detailUrl1?: string;
+  detailUrl2?: string;
+  detailUrl3?: string;
+  salesCount: number;
 }
 
 export interface OrderItem {
@@ -28,12 +36,20 @@ export interface OrderItem {
   quantity: number;
 }
 
+export interface OrderStatusHistory {
+  id: number;
+  status: string;
+  createdAt: string;
+}
+
 export interface Order {
   id: number;
+  orderNo: string;
   memberId: number;
   status: string;
   shippingAddress: string;
   shippingZipCode: string;
+  shippingCost: number;
   createdAt: string;
   items: OrderItem[];
 }
