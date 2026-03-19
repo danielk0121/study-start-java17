@@ -61,9 +61,15 @@ jobs:
                 var l = window.location;
                 var path = l.pathname;
                 var repoName = 'study-start-java17';
-                var repoIdx = path.indexOf('/' + repoName);
-                var pathAfterRepo = repoIdx >= 0 ? path.slice(repoIdx + repoName.length + 1) : path.slice(1);
-                var appRoot = pathAfterRepo.startsWith('frontbeta') ? '/frontbeta/' : '/front/';
+                
+                // repoName 이후의 경로 추출 (예: /frontbeta/orders)
+                var repoPath = '/' + repoName + '/';
+                var pathAfterRepo = path.split(repoPath)[1] || '';
+                
+                // 앱 루트 판단 (frontbeta로 시작하면 frontbeta, 아니면 front)
+                var isBeta = pathAfterRepo.startsWith('frontbeta');
+                var appRoot = isBeta ? '/frontbeta/' : '/front/';
+                
                 var redirectTarget =
                   l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
                   '/' + repoName + appRoot +

@@ -23,7 +23,7 @@ function App() {
   };
 
   return (
-    <Router basename="/study-start-java17/front">
+    <Router basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <nav style={{ 
         padding: '1rem', 
         borderBottom: '1px solid #000', 

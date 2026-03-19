@@ -30,7 +30,7 @@ function App() {
   };
 
   return (
-    <Router basename="/study-start-java17/frontbeta">
+    <Router basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
       <nav style={{
         borderBottom: '1px solid #000',
         fontFamily: 'sans-serif',
