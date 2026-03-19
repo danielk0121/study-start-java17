@@ -76,7 +76,9 @@ function Home() {
                 <span style={{ color: '#ccc', fontSize: '0.8rem' }}>No Image</span>
               )}
             </div>
-            <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>{product.brandName} | {product.category}</div>
+            <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>
+              {product.brandName} | {product.category} <small style={{ color: '#999' }}>(ID: {product.id})</small>
+            </div>
             <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
               <h3 style={{ margin: '0 0 1rem 0', cursor: 'pointer' }}>{product.name}</h3>
             </Link>
