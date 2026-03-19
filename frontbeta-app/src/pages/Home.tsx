@@ -82,7 +82,8 @@ function Home() {
             <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
               <h3 style={{ margin: '0 0 1rem 0', cursor: 'pointer' }}>{product.name}</h3>
             </Link>
-            <p style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{product.price.toLocaleString()}원</p>
+            <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>재고: {product.stock}개</div>
+            <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
               <button 
                 onClick={() => handleAddToCart(product)}
