@@ -30,14 +30,15 @@ function App() {
   return (
     <Router basename="/study-start-java17/frontbeta">
       <nav style={{ 
-        padding: '1rem', 
+        padding: '0.8rem 1rem', 
         borderBottom: '1px solid #000', 
         display: 'flex', 
-        gap: '1.5rem', 
+        gap: '1rem', 
         alignItems: 'center',
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
+        fontSize: '0.85rem'
       }}>
-        <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000' }}>SHOP</Link>
+        <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000', fontSize: '1rem' }}>SHOP</Link>
         <div style={{ flex: 1 }}></div>
         
         {/* 공통 메뉴 (상시 노출) */}
@@ -46,7 +47,7 @@ function App() {
         <Link to="/product/1" style={{ textDecoration: 'none', color: '#333' }}>상품상세(S)</Link>
         <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
         <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
-        <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00', fontSize: '0.9rem' }}>내정보(M)</Link>
+        <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
         <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
         <Link to="/order/1" style={{ textDecoration: 'none', color: '#333' }}>주문상세(S)</Link>
         <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
@@ -55,25 +56,25 @@ function App() {
         <span style={{ color: '#ccc' }}>|</span>
 
         {currentUser ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
             <span style={{ 
-              padding: '0.2rem 0.5rem', 
+              padding: '0.1rem 0.4rem', 
               border: '1px solid #ccc',
-              fontSize: '0.8rem',
+              fontSize: '0.75rem',
               color: currentUser.role === 'MANAGER' ? '#d00' : '#333'
             }}>
               {currentUser.role === 'MANAGER' ? 'ADMIN' : 'USER'}
             </span>
-            <span style={{ fontSize: '0.9rem' }}>{currentUser.name}</span>
-            <button onClick={handleLogout} style={{ padding: '0.2rem 0.5rem', cursor: 'pointer' }}>로그아웃</button>
+            <span>{currentUser.name}</span>
+            <button onClick={handleLogout} style={{ padding: '0.2rem 0.4rem', cursor: 'pointer', fontSize: '0.75rem' }}>로그아웃</button>
           </div>
         ) : (
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
             <Link to="/login" style={{ textDecoration: 'none', color: '#333' }}>로그인</Link>
             <Link to="/register" style={{ textDecoration: 'none', color: '#333' }}>회원가입</Link>
             <span style={{ color: '#ccc' }}>|</span>
-            <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00', fontSize: '0.9rem' }}>관리자로그인</Link>
-            <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00', fontSize: '0.9rem' }}>관리자가입</Link>
+            <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00' }}>관리자로그인</Link>
+            <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00' }}>관리자가입</Link>
           </div>
         )}
       </nav>
