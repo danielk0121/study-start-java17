@@ -44,7 +44,8 @@ Java 17과 Spring Boot 2.7.18을 기반으로 한 MSA(Microservices Architecture
     - JPA 엔티티 등 `record`가 부적합한 경우에만 `@Getter`, `@RequiredArgsConstructor`, `@NoArgsConstructor(access = AccessLevel.PROTECTED)`를 선언적으로 사용한다.
 
 ### 작업 관리
-- **작업 단위**: 반드시 1개 작업 단위로 진행하며, 작업 1개당 1개의 커밋을 생성한다.
+- **빌드 및 배포**:
+    - **에셋 404 해결**: 배포 시 에셋 로드 실패(404)를 방지하기 위해 `vite.config.ts`의 `base` 경로를 배포 서브디렉토리와 일치시킨다. (예: `/study-start-java17/frontbeta/`)
 - **검증**: 커밋 전에는 반드시 컴파일 및 빌드 에러 여부를 확인한다.
     - 백엔드: `./gradlew build -x test`
     - 프론트엔드(`front-app`, `frontbeta-app`): `npm run build`를 실행하여 에러가 없는지 반드시 확인한다.
