@@ -120,7 +120,10 @@ function OrderList() {
                             <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
                           )}
                         </div>
-                        <span>{productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)</span>
+                        <span>
+                          <small style={{ color: '#999', marginRight: '0.3rem' }}>#{item.productId}</small>
+                          {productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)
+                        </span>
                       </li>
                     ))}
                   </ul>

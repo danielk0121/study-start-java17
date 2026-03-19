@@ -49,6 +49,7 @@ function Cart() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #eee' }}>
+                <th style={{ textAlign: 'left', padding: '1rem' }}>상품 ID</th>
                 <th style={{ textAlign: 'left', padding: '1rem' }}>상품명</th>
                 <th style={{ textAlign: 'right', padding: '1rem' }}>가격</th>
                 <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
@@ -59,6 +60,7 @@ function Cart() {
             <tbody>
               {cartItems.map(item => (
                 <tr key={item.productId} style={{ borderBottom: '1px solid #eee' }}>
+                  <td style={{ padding: '1rem', color: '#999' }}>#{item.productId}</td>
                   <td style={{ padding: '1rem' }}>{item.productName}</td>
                   <td style={{ padding: '1rem', textAlign: 'right' }}>{item.price.toLocaleString()}원</td>
                   <td style={{ padding: '1rem', textAlign: 'center' }}>
@@ -68,7 +70,7 @@ function Cart() {
                   </td>
                   <td style={{ padding: '1rem', textAlign: 'right' }}>{item.itemTotal.toLocaleString()}원</td>
                   <td style={{ padding: '1rem', textAlign: 'center' }}>
-                    <button onClick={() => handleRemove(item.productId)} style={{ color: 'red' }}>삭제</button>
+                    <button onClick={() => handleRemove(item.productId)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>삭제</button>
                   </td>
                 </tr>
               ))}
