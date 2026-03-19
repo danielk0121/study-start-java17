@@ -46,6 +46,42 @@ jobs:
           # 루트 접속 시 front로 리다이렉트하는 간단한 index.html 추가
           echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=./front/"></head></html>' > build-dist/index.html
 
+      - name: Add SPA 404 redirect support 🔄
+        run: |
+          # GitHub Pages SPA 새로고침 404 해결:
+          # 1. 루트 404.html: 요청 경로를 query string에 담아 해당 앱의 index.html로 리다이렉트
+          cat > build-dist/404.html << 'HTMLEOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Redirecting...</title>
+            <script>
+              (function() {
+                var l = window.location;
+                var path = l.pathname;
+                var repoName = 'study-start-java17';
+                var repoIdx = path.indexOf('/' + repoName);
+                var pathAfterRepo = repoIdx >= 0 ? path.slice(repoIdx + repoName.length + 1) : path.slice(1);
+                var appRoot = pathAfterRepo.startsWith('frontbeta') ? '/frontbeta/' : '/front/';
+                var redirectTarget =
+                  l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                  '/' + repoName + appRoot +
+                  '?spaRedirect=' + encodeURIComponent(l.pathname + l.search) +
+                  l.hash;
+                l.replace(redirectTarget);
+              })();
+            </script>
+          </head>
+          <body></body>
+          </html>
+          HTMLEOF
+
+          # 2. 각 앱의 index.html에 경로 복원 스크립트 주입 (</head> 직전)
+          SPA_RESTORE_SCRIPT='<script>(function(){var p=new URLSearchParams(window.location.search).get("spaRedirect");if(p){window.history.replaceState(null,null,decodeURIComponent(p));}})()</script>'
+          sed -i "s|</head>|${SPA_RESTORE_SCRIPT}</head>|" build-dist/front/index.html
+          sed -i "s|</head>|${SPA_RESTORE_SCRIPT}</head>|" build-dist/frontbeta/index.html
+
       - name: Setup Pages 🌐
         uses: actions/configure-pages@v4
 
