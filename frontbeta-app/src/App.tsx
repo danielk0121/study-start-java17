@@ -58,7 +58,7 @@ function App() {
           alignItems: 'center',
           gap: isMobile ? '0.4rem' : '0.8rem',
           borderBottom: '1px solid #eee',
-          flexWrap: 'wrap'
+          flexWrap: 'nowrap',
         }}>
           {currentUser ? (
             <>
@@ -75,35 +75,46 @@ function App() {
             </>
           ) : (
             <>
-              <Link to="/login" style={{ textDecoration: 'none', color: '#333' }}>로그인</Link>
-              <Link to="/register" style={{ textDecoration: 'none', color: '#333' }}>회원가입</Link>
+              <Link to="/login" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>로그인</Link>
+              <Link to="/register" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>회원가입</Link>
               <span style={{ color: '#ccc' }}>|</span>
-              <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00' }}>관리자로그인</Link>
-              <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00' }}>관리자가입</Link>
+              <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00', whiteSpace: 'nowrap' }}>관리자로그인</Link>
+              <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00', whiteSpace: 'nowrap' }}>관리자가입</Link>
             </>
           )}
         </div>
 
-        {/* 3행: 내비게이션 메뉴 */}
+        {/* 3행: 내비게이션 메뉴 (상단) */}
         <div style={{
           padding: isMobile ? '0.3rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
           gap: isMobile ? '0.6rem' : '1.2rem',
           alignItems: 'center',
-          flexWrap: 'wrap'
+          flexWrap: 'nowrap',
+          borderBottom: '1px solid #eee',
         }}>
           <Link to="/">
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="홈" style={{ width: '20px', height: '20px', verticalAlign: 'middle' }} />
           </Link>
           <div style={{ flex: 1 }}></div>
-          <Link to="/" style={{ textDecoration: 'none', color: '#333' }}>상품목록</Link>
-          <Link to="/brands" style={{ textDecoration: 'none', color: '#333' }}>브랜드관</Link>
-          <Link to="/product/1" style={{ textDecoration: 'none', color: '#333' }}>상품상세(S)</Link>
-          <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
-          <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
-          <Link to="/order/1" style={{ textDecoration: 'none', color: '#333' }}>주문상세(S)</Link>
-          <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
-          <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold' }}>판매내역(M)</Link>
+          <Link to="/" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품목록</Link>
+          <Link to="/brands" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
+          <Link to="/product/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품상세(S)</Link>
+          <Link to="/cart" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>
+          <Link to="/orders" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문목록</Link>
+        </div>
+
+        {/* 4행: 내비게이션 메뉴 (하단) */}
+        <div style={{
+          padding: isMobile ? '0.3rem 0.5rem' : '0.5rem 1rem',
+          display: 'flex',
+          gap: isMobile ? '0.6rem' : '1.2rem',
+          alignItems: 'center',
+          flexWrap: 'nowrap',
+        }}>
+          <Link to="/order/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문상세(S)</Link>
+          <Link to="/addresses" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>배송지관리</Link>
+          <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold', whiteSpace: 'nowrap' }}>판매내역(M)</Link>
         </div>
       </nav>
 
