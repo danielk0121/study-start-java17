@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import MyPage from './pages/MyPage';
+import BuyerMyPage from './pages/BuyerMyPage';
 import Cart from './pages/Cart';
 import ManagerLogin from './pages/ManagerLogin';
 import ManagerRegister from './pages/ManagerRegister';
+import ManagerMyPage from './pages/ManagerMyPage';
 import OrderList from './pages/OrderList';
 import OrderDetail from './pages/OrderDetail';
 import AddressManagement from './pages/AddressManagement';
@@ -44,7 +45,8 @@ function App() {
         <Link to="/brands" style={{ textDecoration: 'none', color: '#333' }}>브랜드관</Link>
         <Link to="/product/1" style={{ textDecoration: 'none', color: '#333' }}>상품상세(S)</Link>
         <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
-        <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
+        <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
+        <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00', fontSize: '0.9rem' }}>내정보(M)</Link>
         <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
         <Link to="/order/1" style={{ textDecoration: 'none', color: '#333' }}>주문상세(S)</Link>
         <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
@@ -84,13 +86,15 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage" element={<BuyerMyPage />} />
           <Route path="/orders" element={<OrderList />} />
           <Route path="/order/:id" element={<OrderDetail />} />
           <Route path="/addresses" element={<AddressManagement />} />
-          <Route path="/manager/sales" element={<ProductSalesList />} />
           <Route path="/manager/login" element={<ManagerLogin />} />
           <Route path="/manager/register" element={<ManagerRegister />} />
+          <Route path="/manager/mypage" element={<ManagerMyPage />} />
+          <Route path="/manager/sales" element={<ProductSalesList />} />
+
         </Routes>
       </main>
     </Router>
