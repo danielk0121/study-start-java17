@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 interface CartItem {
   productId: number;
@@ -11,11 +12,12 @@ interface CartItem {
 
 /**
  * 장바구니 페이지
- * PRD-FRONTAPP 2.4 요구사항 반영 (썸네일 및 ID 포함)
+ * PRD-FRONTAPP 2.4 요구사항 반영 (썸네일 및 ID 포함, 모바일 최적화)
  */
 function Cart() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // TODO: API 연동 (GET /carts/me)
@@ -60,57 +62,116 @@ function Cart() {
         <p>장바구니가 비어 있습니다.</p>
       ) : (
         <>
-          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '480px' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #eee' }}>
-                <th style={{ textAlign: 'left', padding: '1rem' }}>상품정보</th>
-                <th style={{ textAlign: 'right', padding: '1rem' }}>가격</th>
-                <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
-                <th style={{ textAlign: 'right', padding: '1rem' }}>합계</th>
-                <th style={{ textAlign: 'center', padding: '1rem' }}>관리</th>
-              </tr>
-            </thead>
-            <tbody>
+          {isMobile ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {cartItems.map(item => (
-                <tr key={item.productId} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <div style={{ 
-                        width: '60px', height: '60px', backgroundColor: '#f0f0f0',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
-                      }}>
-                        {item.thumbnailUrl ? (
-                          <img src={item.thumbnailUrl} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                          <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
-                        )}
-                      </div>
-                      <div>
-                        <div style={{ color: '#999', fontSize: '0.8rem' }}>ID: #{item.productId}</div>
-                        <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
-                      </div>
+                <div key={item.productId} style={{ 
+                  border: '1px solid #eee', 
+                  borderRadius: '8px', 
+                  padding: '1rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.8rem'
+                }}>
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div style={{ 
+                      width: '80px', height: '80px', backgroundColor: '#f0f0f0',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', flexShrink: 0
+                    }}>
+                      {item.thumbnailUrl ? (
+                        <img src={item.thumbnailUrl} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
+                      )}
                     </div>
-                  </td>
-                  <td style={{ padding: '1rem', textAlign: 'right' }}>{item.price.toLocaleString()}원</td>
-                  <td style={{ padding: '1rem', textAlign: 'center' }}>
-                    <button onClick={() => handleUpdateQuantity(item.productId, -1)}>-</button>
-                    <span style={{ margin: '0 0.5rem' }}>{item.quantity}</span>
-                    <button onClick={() => handleUpdateQuantity(item.productId, 1)}>+</button>
-                  </td>
-                  <td style={{ padding: '1rem', textAlign: 'right' }}>{item.itemTotal.toLocaleString()}원</td>
-                  <td style={{ padding: '1rem', textAlign: 'center' }}>
-                    <button onClick={() => handleRemove(item.productId)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>삭제</button>
-                  </td>
-                </tr>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ color: '#999', fontSize: '0.75rem' }}>ID: #{item.productId}</div>
+                      <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.3rem' }}>{item.productName}</div>
+                      <div style={{ fontSize: '0.9rem', color: '#666' }}>{item.price.toLocaleString()}원</div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #eee', paddingTop: '0.8rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ccc', borderRadius: '4px' }}>
+                      <button onClick={() => handleUpdateQuantity(item.productId, -1)} style={{ padding: '0.3rem 0.6rem', border: 'none', background: 'none' }}>-</button>
+                      <span style={{ padding: '0 0.8rem', fontSize: '0.9rem' }}>{item.quantity}</span>
+                      <button onClick={() => handleUpdateQuantity(item.productId, 1)} style={{ padding: '0.3rem 0.6rem', border: 'none', background: 'none' }}>+</button>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: '0.75rem', color: '#999' }}>합계</div>
+                      <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{item.itemTotal.toLocaleString()}원</div>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    onClick={() => handleRemove(item.productId)} 
+                    style={{ 
+                      width: '100%', padding: '0.5rem', border: '1px solid #ff4d4f', color: '#ff4d4f', 
+                      background: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem' 
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
               ))}
-            </tbody>
-          </table>
-          </div>
-          <div style={{ textAlign: 'right', marginTop: '2rem' }}>
-            <h2>총 결제 예정 금액: {totalPrice.toLocaleString()}원</h2>
+            </div>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #eee' }}>
+                    <th style={{ textAlign: 'left', padding: '1rem' }}>상품정보</th>
+                    <th style={{ textAlign: 'right', padding: '1rem' }}>가격</th>
+                    <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
+                    <th style={{ textAlign: 'right', padding: '1rem' }}>합계</th>
+                    <th style={{ textAlign: 'center', padding: '1rem' }}>관리</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map(item => (
+                    <tr key={item.productId} style={{ borderBottom: '1px solid #eee' }}>
+                      <td style={{ padding: '1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <div style={{ 
+                            width: '60px', height: '60px', backgroundColor: '#f0f0f0',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
+                          }}>
+                            {item.thumbnailUrl ? (
+                              <img src={item.thumbnailUrl} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
+                            )}
+                          </div>
+                          <div>
+                            <div style={{ color: '#999', fontSize: '0.8rem' }}>ID: #{item.productId}</div>
+                            <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '1rem', textAlign: 'right' }}>{item.price.toLocaleString()}원</td>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        <button onClick={() => handleUpdateQuantity(item.productId, -1)}>-</button>
+                        <span style={{ margin: '0 0.5rem' }}>{item.quantity}</span>
+                        <button onClick={() => handleUpdateQuantity(item.productId, 1)}>+</button>
+                      </td>
+                      <td style={{ padding: '1rem', textAlign: 'right' }}>{item.itemTotal.toLocaleString()}원</td>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        <button onClick={() => handleRemove(item.productId)} style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>삭제</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          
+          <div style={{ textAlign: 'right', marginTop: '2rem', borderTop: '2px solid #000', paddingTop: '1rem' }}>
+            <div style={{ marginBottom: '1rem' }}>
+              <span style={{ fontSize: '1.2rem', color: '#666' }}>총 결제 예정 금액:</span>
+              <span style={{ fontSize: '2rem', fontWeight: 'bold', marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원</span>
+            </div>
             <button 
-              style={{ padding: '1rem 2rem', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+              style={{ width: isMobile ? '100%' : 'auto', padding: '1rem 3rem', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold' }}
             >
               주문하기
             </button>
