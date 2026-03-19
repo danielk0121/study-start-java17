@@ -8,6 +8,7 @@ import Cart from './pages/Cart';
 import ManagerLogin from './pages/ManagerLogin';
 import ManagerRegister from './pages/ManagerRegister';
 import OrderList from './pages/OrderList';
+import OrderDetail from './pages/OrderDetail';
 import AddressManagement from './pages/AddressManagement';
 import ProductSalesList from './pages/ProductSalesList';
 import BrandList from './pages/BrandList';
@@ -45,6 +46,7 @@ function App() {
         <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
         <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보</Link>
         <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
+        <Link to="/order/1" style={{ textDecoration: 'none', color: '#333' }}>주문상세(S)</Link>
         <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
         <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold' }}>판매내역(M)</Link>
         
@@ -84,6 +86,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/orders" element={<OrderList />} />
+          <Route path="/order/:id" element={<OrderDetail />} />
           <Route path="/addresses" element={<AddressManagement />} />
           <Route path="/manager/sales" element={<ProductSalesList />} />
           <Route path="/manager/login" element={<ManagerLogin />} />
