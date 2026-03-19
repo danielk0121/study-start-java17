@@ -118,7 +118,7 @@ function Home() {
               <span>재고: {product.stock}개</span>
               <span style={{ color: '#d00', fontWeight: 'bold' }}>판매: {product.salesCount}개</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'stretch' : 'center', gap: isMobile ? '0.4rem' : '0' }}>
               <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
               <button
                 onClick={() => handleAddToCart(product)}
