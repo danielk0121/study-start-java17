@@ -197,7 +197,7 @@ function BrandList() {
                       )}
                     </div>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.1rem' }}>ID: {product.id}</div>
+                      <div style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.1rem', fontFamily: 'monospace' }}>ID: {product.id.toString().padStart(8, '0')}</div>
                       <div style={{ fontWeight: 'bold', marginBottom: '0.2rem', fontSize: '0.9rem', wordBreak: 'break-word' }}>{product.name}</div>
                       <div style={{ color: '#d00', fontSize: '0.85rem' }}>{product.price.toLocaleString()}원</div>
                     </div>

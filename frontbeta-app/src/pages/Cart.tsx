@@ -85,7 +85,7 @@ function Cart() {
                       )}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: '#999', fontSize: '0.75rem' }}>ID: #{item.productId}</div>
+                      <div style={{ color: '#999', fontSize: '0.75rem', fontFamily: 'monospace' }}>ID: {item.productId.toString().padStart(8, '0')}</div>
                       <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.3rem' }}>{item.productName}</div>
                       <div style={{ fontSize: '0.9rem', color: '#666' }}>{item.price.toLocaleString()}원</div>
                     </div>
@@ -143,7 +143,7 @@ function Cart() {
                             )}
                           </div>
                           <div>
-                            <div style={{ color: '#999', fontSize: '0.8rem' }}>ID: #{item.productId}</div>
+                            <div style={{ color: '#999', fontSize: '0.8rem', fontFamily: 'monospace' }}>ID: {item.productId.toString().padStart(8, '0')}</div>
                             <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
                           </div>
                         </div>
@@ -166,17 +166,9 @@ function Cart() {
           )}
           
           <div style={{ textAlign: 'right', marginTop: '2rem', borderTop: '2px solid #000', paddingTop: '1rem' }}>
-            <div style={{ marginBottom: '0.5rem', color: '#555' }}>
-              <span>상품 금액:</span>
-              <span style={{ marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원</span>
-            </div>
-            <div style={{ marginBottom: '1rem', color: '#555' }}>
-              <span>배송비:</span>
-              <span style={{ marginLeft: '1rem' }}>2,000원 ~ 3,000원</span>
-            </div>
             <div style={{ marginBottom: '1rem' }}>
               <span style={{ fontSize: '1.2rem', color: '#666' }}>총 결제 예정 금액:</span>
-              <span style={{ fontSize: '2rem', fontWeight: 'bold', marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원~{(totalPrice + 3000).toLocaleString()}원</span>
+              <span style={{ fontSize: '2rem', fontWeight: 'bold', marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원</span>
             </div>
             <button
               style={{ width: isMobile ? '100%' : 'auto', padding: '1rem 3rem', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold' }}
