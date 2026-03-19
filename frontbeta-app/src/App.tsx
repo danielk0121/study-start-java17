@@ -36,22 +36,32 @@ function App() {
         fontFamily: 'sans-serif',
         fontSize: isMobile ? '0.75rem' : '0.85rem'
       }}>
-        {/* 1행: 로고 + 인증 영역 */}
+        {/* 1행: 로고 + 내정보 링크 */}
         <div style={{
           padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
           alignItems: 'center',
           gap: isMobile ? '0.4rem' : '1rem',
           borderBottom: '1px solid #eee',
-          flexWrap: 'wrap'
         }}>
           <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000', fontSize: isMobile ? '0.9rem' : '1rem' }}>SHOP</Link>
           <div style={{ flex: 1 }}></div>
           <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
           <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
           <span style={{ color: '#ccc' }}>|</span>
+        </div>
+
+        {/* 2행: 로그인/회원가입 영역 */}
+        <div style={{
+          padding: isMobile ? '0.3rem 0.5rem' : '0.4rem 1rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: isMobile ? '0.4rem' : '0.8rem',
+          borderBottom: '1px solid #eee',
+          flexWrap: 'wrap'
+        }}>
           {currentUser ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '0.4rem' : '0.8rem', flexWrap: 'wrap' }}>
+            <>
               <span style={{
                 padding: '0.1rem 0.4rem',
                 border: '1px solid #ccc',
@@ -62,19 +72,19 @@ function App() {
               </span>
               <span>{currentUser.name}</span>
               <button onClick={handleLogout} style={{ padding: '0.2rem 0.4rem', cursor: 'pointer', fontSize: '0.75rem' }}>로그아웃</button>
-            </div>
+            </>
           ) : (
-            <div style={{ display: 'flex', gap: isMobile ? '0.4rem' : '0.8rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <>
               <Link to="/login" style={{ textDecoration: 'none', color: '#333' }}>로그인</Link>
               <Link to="/register" style={{ textDecoration: 'none', color: '#333' }}>회원가입</Link>
               <span style={{ color: '#ccc' }}>|</span>
               <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00' }}>관리자로그인</Link>
               <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00' }}>관리자가입</Link>
-            </div>
+            </>
           )}
         </div>
 
-        {/* 2행: 내비게이션 메뉴 */}
+        {/* 3행: 내비게이션 메뉴 */}
         <div style={{
           padding: isMobile ? '0.3rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
