@@ -18,7 +18,7 @@ function ProductDetail() {
     // Flyway 샘플 데이터를 기반으로 한 Mock 데이터 조회 시뮬레이션
     const mockProducts: Product[] = [
       {
-        id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple',
+        id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: '전자기기', brandName: '애플',
         brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
         thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1',
         thumbnailUrl2: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+2',
@@ -28,8 +28,8 @@ function ProductDetail() {
         detailUrl3: 'https://via.placeholder.com/800x600?text=MacBook+Detail+3',
         salesCount: 15
       },
-      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
-      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 }
+      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
+      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: '전자기기', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 }
     ];
 
     const found = mockProducts.find(p => p.id === Number(id));

@@ -16,23 +16,23 @@ function Home() {
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
     const mockProducts: Product[] = [
-      { id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
+      { id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
         thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1', salesCount: 15
       },
-      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
-      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 },
-      { id: 4, name: '린넨 셔츠', price: 49000, stock: 100, category: 'CLOTHING', brandName: 'Uniqlo', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=U', salesCount: 85 },
-      { id: 5, name: '청바지 슬림핏', price: 79000, stock: 80, category: 'CLOTHING', brandName: 'Zara', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=Z', salesCount: 60 },
-      { id: 6, name: '제주 감귤 2kg', price: 15000, stock: 200, category: 'FOOD', brandName: 'CJ', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=C', salesCount: 350 },
-      { id: 7, name: '유기농 아메리카노 원두 500g', price: 22000, stock: 150, category: 'FOOD', brandName: 'Starbucks', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 210 },
-      { id: 8, name: '클린 코드', price: 33000, stock: 60, category: 'BOOKS', brandName: 'Pearson', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=P', salesCount: 95 },
-      { id: 9, name: '자바 ORM 표준 JPA 프로그래밍', price: 38000, stock: 45, category: 'BOOKS', brandName: 'OReilly', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 78 },
-      { id: 10, name: '텀블러 500ml', price: 25000, stock: 120, category: 'ETC', brandName: 'Muji', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=M', salesCount: 45 },
-      { id: 11, name: 'Galaxy S24', price: 1150000, stock: 30, category: 'ELECTRONICS', brandName: 'Samsung', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 33 },
-      { id: 12, name: 'WH-1000XM5', price: 450000, stock: 20, category: 'ELECTRONICS', brandName: 'Sony', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 18 },
-      { id: 13, name: 'Air Max 97', price: 199000, stock: 50, category: 'CLOTHING', brandName: 'Nike', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=N', salesCount: 112 },
-      { id: 14, name: 'Designing Data-Intensive Applications', price: 45000, stock: 100, category: 'BOOKS', brandName: 'OReilly', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 54 },
-      { id: 15, name: 'LEGO Star Wars', price: 210000, stock: 5, category: 'ETC', brandName: 'LEGO', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 29 }
+      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
+      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: '전자기기', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 },
+      { id: 4, name: '린넨 셔츠', price: 49000, stock: 100, category: '의류', brandName: '유니클로', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=U', salesCount: 85 },
+      { id: 5, name: '청바지 슬림핏', price: 79000, stock: 80, category: '의류', brandName: '자라', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=Z', salesCount: 60 },
+      { id: 6, name: '제주 감귤 2kg', price: 15000, stock: 200, category: '식품', brandName: 'CJ', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=C', salesCount: 350 },
+      { id: 7, name: '유기농 아메리카노 원두 500g', price: 22000, stock: 150, category: '식품', brandName: '스타벅스', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 210 },
+      { id: 8, name: '클린 코드', price: 33000, stock: 60, category: '도서', brandName: '피어슨', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=P', salesCount: 95 },
+      { id: 9, name: '자바 ORM 표준 JPA 프로그래밍', price: 38000, stock: 45, category: '도서', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 78 },
+      { id: 10, name: '텀블러 500ml', price: 25000, stock: 120, category: '기타', brandName: '무지', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=M', salesCount: 45 },
+      { id: 11, name: 'Galaxy S24', price: 1150000, stock: 30, category: '전자기기', brandName: '삼성', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 33 },
+      { id: 12, name: 'WH-1000XM5', price: 450000, stock: 20, category: '전자기기', brandName: '소니', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 18 },
+      { id: 13, name: 'Air Max 97', price: 199000, stock: 50, category: '의류', brandName: '나이키', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=N', salesCount: 112 },
+      { id: 14, name: 'Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 54 },
+      { id: 15, name: 'LEGO Star Wars', price: 210000, stock: 5, category: '기타', brandName: '레고', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 29 }
     ];
 
     // 검색 필터링
@@ -118,7 +118,7 @@ function Home() {
               <span>재고: {product.stock}개</span>
               <span style={{ color: '#d00', fontWeight: 'bold' }}>판매: {product.salesCount}개</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'stretch' : 'center', gap: isMobile ? '0.4rem' : '0' }}>
               <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
               <button
                 onClick={() => handleAddToCart(product)}
