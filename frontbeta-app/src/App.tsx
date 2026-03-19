@@ -60,6 +60,7 @@ function App() {
           borderBottom: '1px solid #eee',
           flexWrap: 'nowrap',
         }}>
+          <div style={{ flex: 1 }}></div>
           {currentUser ? (
             <>
               <span style={{
@@ -112,6 +113,7 @@ function App() {
           alignItems: 'center',
           flexWrap: 'nowrap',
         }}>
+          <div style={{ flex: 1 }}></div>
           <Link to="/order/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문상세(S)</Link>
           <Link to="/addresses" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>배송지관리</Link>
           <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold', whiteSpace: 'nowrap' }}>판매내역(M)</Link>
