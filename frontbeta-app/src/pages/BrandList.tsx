@@ -10,6 +10,7 @@ interface BrandProduct {
 interface BrandSummary {
   id: number;
   name: string;
+  thumbnailUrl?: string;
   productCount: number;
   products: BrandProduct[];
 }
@@ -28,6 +29,7 @@ function BrandList() {
     const allBrands: BrandSummary[] = [
       { 
         id: 1, name: 'Apple', productCount: 2, 
+        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Apple',
         products: [
           { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=MacBook' },
           { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=iPhone' }
@@ -35,6 +37,7 @@ function BrandList() {
       },
       { 
         id: 2, name: 'Samsung', productCount: 2, 
+        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Samsung',
         products: [
           { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=S24' },
           { id: 22, name: 'Galaxy Watch 6', price: 320000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Watch6' }
@@ -42,6 +45,7 @@ function BrandList() {
       },
       { 
         id: 3, name: 'Sony', productCount: 2, 
+        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Sony',
         products: [
           { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=SonyHead' },
           { id: 23, name: 'PlayStation 5', price: 620000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=PS5' }
@@ -49,6 +53,7 @@ function BrandList() {
       },
       { 
         id: 6, name: 'Nike', productCount: 2, 
+        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Nike',
         products: [
           { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=AirMax' },
           { id: 24, name: 'Jordan 1 Retro', price: 239000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Jordan' }
@@ -56,6 +61,7 @@ function BrandList() {
       },
       { 
         id: 12, name: 'Coca-Cola', productCount: 2, 
+        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Coke',
         products: [
           { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Coke' },
           { id: 26, name: 'Sprite 1.5L', price: 3000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Sprite' }
@@ -63,6 +69,7 @@ function BrandList() {
       },
       { 
         id: 16, name: 'OReilly', productCount: 2, 
+        thumbnailUrl: 'https://via.placeholder.com/150x150?text=OReilly',
         products: [
           { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=DDIA' },
           { id: 38, name: 'Python Crash Course', price: 38000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Python' }
@@ -72,13 +79,11 @@ function BrandList() {
 
     const query = finalQuery.toLowerCase();
     const filtered = allBrands.map(brand => {
-      // 브랜드명이 일치하거나, 상품명 중 하나라도 일치하는 상품들을 찾음
       const filteredProducts = brand.products.filter(p => 
         brand.name.toLowerCase().includes(query) || 
         p.name.toLowerCase().includes(query)
       );
       
-      // 브랜드 자체가 일치하면 모든 상품 노출, 아니면 필터링된 상품만 노출
       return {
         ...brand,
         products: brand.name.toLowerCase().includes(query) ? brand.products : filteredProducts,
@@ -122,25 +127,37 @@ function BrandList() {
       {brands.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
           {brands.map(brand => (
             <div key={brand.id} style={{ 
               border: '1px solid #000', 
-              padding: '1.5rem', 
+              padding: '2rem', 
               backgroundColor: '#fff'
             }}>
               <div style={{ 
                 display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'baseline',
+                gap: '2rem',
+                alignItems: 'center',
                 borderBottom: '2px solid #eee',
-                paddingBottom: '1rem',
-                marginBottom: '1rem'
+                paddingBottom: '1.5rem',
+                marginBottom: '1.5rem'
               }}>
-                <h2 style={{ margin: 0 }}>{brand.name}</h2>
-                <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                  전체 상품 <strong>{brand.productCount}</strong>개
-                </span>
+                <div style={{ 
+                  width: '100px', height: '100px', backgroundColor: '#f0f0f0',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
+                }}>
+                  {brand.thumbnailUrl ? (
+                    <img src={brand.thumbnailUrl} alt={brand.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                  ) : (
+                    <span style={{ color: '#ccc' }}>Logo</span>
+                  )}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h2 style={{ margin: '0 0 0.5rem 0' }}>{brand.name}</h2>
+                  <span style={{ color: '#666', fontSize: '0.9rem' }}>
+                    등록 상품 <strong>{brand.productCount}</strong>개
+                  </span>
+                </div>
               </div>
               
               <div style={{ 
