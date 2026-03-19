@@ -106,16 +106,13 @@ function Home() {
               <h3 style={{ margin: '0 0 1rem 0', cursor: 'pointer' }}>{product.name}</h3>
             </Link>
             <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>재고: {product.stock}개</div>
-            <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
               <button 
                 onClick={() => handleAddToCart(product)}
-                style={{ flex: 1, padding: '0.5rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff' }}
+                style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '0.8rem' }}
               >
-                장바구니 담기
-              </button>
-              <button style={{ flex: 1, padding: '0.5rem', backgroundColor: '#333', color: 'white', border: 'none', cursor: 'pointer' }}>
-                바로구매
+                장바구니
               </button>
             </div>
           </div>
