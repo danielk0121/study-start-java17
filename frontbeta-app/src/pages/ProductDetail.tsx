@@ -4,7 +4,7 @@ import type { Product } from '../types';
 
 /**
  * 상품 상세 페이지
- * UC_PROD_07 구현 (Prototype - 이미지 3장씩 추가)
+ * UC_PROD_07 구현 (Prototype - 이미지 3장씩 추가 및 브랜드 썸네일)
  */
 function ProductDetail() {
   const { id } = useParams();
@@ -17,6 +17,7 @@ function ProductDetail() {
     const mockProducts: Product[] = [
       { 
         id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple',
+        brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
         thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1',
         thumbnailUrl2: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+2',
         thumbnailUrl3: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+3',
@@ -24,8 +25,8 @@ function ProductDetail() {
         detailUrl2: 'https://via.placeholder.com/800x600?text=MacBook+Detail+2',
         detailUrl3: 'https://via.placeholder.com/800x600?text=MacBook+Detail+3'
       },
-      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple' },
-      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech' }
+      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A' },
+      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L' }
     ];
 
     const found = mockProducts.find(p => p.id === Number(id));
@@ -71,9 +72,9 @@ function ProductDetail() {
             marginBottom: '1rem'
           }}>
             {thumbnails[activeThumb] ? (
-              <img src={thumbnails[activeThumb]} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={thumbnails[activeThumb] as string} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <span style={{ color: '#999' }}>이미지 없음</span>
+              <span style={{ color: '#ccc' }}>이미지 없음</span>
             )}
           </div>
           
@@ -89,7 +90,7 @@ function ProductDetail() {
                 }}
               >
                 {thumbnails[idx] ? (
-                  <img src={thumbnails[idx]} alt="thumb" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={thumbnails[idx] as string} alt="thumb" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <small style={{ color: '#ccc' }}>No Image</small>
                 )}
@@ -99,8 +100,12 @@ function ProductDetail() {
         </div>
 
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '1rem', color: '#666', marginBottom: '0.5rem' }}>
-            {product.brandName} | {product.category}
+          <div style={{ fontSize: '1rem', color: '#666', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {product.brandThumbnailUrl && (
+              <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '30px', height: '30px', border: '1px solid #eee', objectFit: 'contain' }} />
+            )}
+            <span>{product.brandName} | {product.category}</span>
+            <small style={{ color: '#999' }}>(ID: {product.id})</small>
           </div>
           <h1 style={{ margin: '0 0 1.5rem 0', fontSize: '2.5rem' }}>{product.name}</h1>
           
@@ -133,7 +138,7 @@ function ProductDetail() {
         <h3>상품 상세 설명</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
           {details.length > 0 ? details.map((url, idx) => (
-            <img key={idx} src={url} alt={`detail-${idx}`} style={{ width: '100%', maxWidth: '800px' }} />
+            <img key={idx} src={url as string} alt={`detail-${idx}`} style={{ width: '100%', maxWidth: '800px' }} />
           )) : (
             <p style={{ color: '#666' }}>상세 이미지가 등록되지 않았습니다.</p>
           )}
