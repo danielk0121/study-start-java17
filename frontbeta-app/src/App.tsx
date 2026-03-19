@@ -36,22 +36,7 @@ function App() {
         fontFamily: 'sans-serif',
         fontSize: isMobile ? '0.75rem' : '0.85rem'
       }}>
-        {/* 1행: 로고 + 내정보 링크 */}
-        <div style={{
-          padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 1rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: isMobile ? '0.4rem' : '1rem',
-          borderBottom: '1px solid #eee',
-        }}>
-          <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000', fontSize: isMobile ? '0.9rem' : '1rem' }}>SHOP</Link>
-          <div style={{ flex: 1 }}></div>
-          <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
-          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
-          <span style={{ color: '#ccc' }}>|</span>
-        </div>
-
-        {/* 2행: 로그인/회원가입 영역 */}
+        {/* 1행: S 로고 + 로그인/회원가입 영역 */}
         <div style={{
           padding: isMobile ? '0.3rem 0.5rem' : '0.4rem 1rem',
           display: 'flex',
@@ -60,6 +45,9 @@ function App() {
           borderBottom: '1px solid #eee',
           flexWrap: 'nowrap',
         }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="S" style={{ width: isMobile ? '18px' : '22px', height: isMobile ? '18px' : '22px' }} />
+          </Link>
           <div style={{ flex: 1 }}></div>
           {currentUser ? (
             <>
@@ -85,7 +73,21 @@ function App() {
           )}
         </div>
 
-        {/* 3행: 내비게이션 메뉴 (상단) */}
+        {/* 2행: 내정보 링크 */}
+        <div style={{
+          padding: isMobile ? '0.3rem 0.5rem' : '0.4rem 1rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: isMobile ? '0.4rem' : '1rem',
+          borderBottom: '1px solid #eee',
+        }}>
+          <div style={{ flex: 1 }}></div>
+          <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
+          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
+          <span style={{ color: '#ccc' }}>|</span>
+        </div>
+
+        {/* 3행: 내비게이션 메뉴 (상품 관련) */}
         <div style={{
           padding: isMobile ? '0.3rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
@@ -94,18 +96,14 @@ function App() {
           flexWrap: 'nowrap',
           borderBottom: '1px solid #eee',
         }}>
-          <Link to="/">
-            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="홈" style={{ width: '20px', height: '20px', verticalAlign: 'middle' }} />
-          </Link>
           <div style={{ flex: 1 }}></div>
           <Link to="/" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품목록</Link>
-          <Link to="/brands" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
           <Link to="/product/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품상세(S)</Link>
+          <Link to="/brands" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
           <Link to="/cart" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>
-          <Link to="/orders" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문목록</Link>
         </div>
 
-        {/* 4행: 내비게이션 메뉴 (하단) */}
+        {/* 4행: 내비게이션 메뉴 (주문 및 관리 관련) */}
         <div style={{
           padding: isMobile ? '0.3rem 0.5rem' : '0.5rem 1rem',
           display: 'flex',
@@ -114,6 +112,7 @@ function App() {
           flexWrap: 'nowrap',
         }}>
           <div style={{ flex: 1 }}></div>
+          <Link to="/orders" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문목록</Link>
           <Link to="/order/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문상세(S)</Link>
           <Link to="/addresses" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>배송지관리</Link>
           <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold', whiteSpace: 'nowrap' }}>판매내역(M)</Link>
