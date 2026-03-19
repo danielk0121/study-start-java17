@@ -33,7 +33,8 @@ function AddressManagement() {
       {addresses.length === 0 ? (
         <p>등록된 배송지가 없습니다.</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem', minWidth: '380px' }}>
           <thead>
             <tr style={{ borderBottom: '2px solid #000' }}>
               <th style={{ textAlign: 'left', padding: '1rem' }}>별명</th>
@@ -61,6 +62,7 @@ function AddressManagement() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

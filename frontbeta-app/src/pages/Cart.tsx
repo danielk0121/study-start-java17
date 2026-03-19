@@ -60,7 +60,8 @@ function Cart() {
         <p>장바구니가 비어 있습니다.</p>
       ) : (
         <>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '480px' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #eee' }}>
                 <th style={{ textAlign: 'left', padding: '1rem' }}>상품정보</th>
@@ -105,6 +106,7 @@ function Cart() {
               ))}
             </tbody>
           </table>
+          </div>
           <div style={{ textAlign: 'right', marginTop: '2rem' }}>
             <h2>총 결제 예정 금액: {totalPrice.toLocaleString()}원</h2>
             <button 
