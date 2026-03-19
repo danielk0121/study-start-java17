@@ -10,6 +10,7 @@ function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [finalQuery, setFinalQuery] = useState('');
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
   const productInfoMap: Record<number, { name: string, thumb: string }> = {
@@ -69,13 +70,22 @@ function OrderList() {
 
   useEffect(() => {
     // 상품명으로 주문 필터링
+    const query = finalQuery.toLowerCase();
     const filtered = orders.filter(order => 
       order.items.some(item => 
-        (productInfoMap[item.productId]?.name || '').toLowerCase().includes(searchQuery.toLowerCase())
+        (productInfoMap[item.productId]?.name || '').toLowerCase().includes(query)
       )
     );
     setFilteredOrders(filtered);
-  }, [searchQuery, orders]);
+  }, [finalQuery, orders]);
+
+  const handleSearch = () => {
+    setFinalQuery(searchQuery);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSearch();
+  };
 
   const handleCancelOrder = (orderId: number) => {
     if (!window.confirm('주문을 취소하시겠습니까?')) return;
@@ -91,13 +101,22 @@ function OrderList() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h1>주문 내역</h1>
-        <input 
-          type="text" 
-          placeholder="주문 상품명 검색..." 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
-        />
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <input 
+            type="text" 
+            placeholder="주문 상품명 검색..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
+          />
+          <button 
+            onClick={handleSearch}
+            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}
+          >
+            검색
+          </button>
+        </div>
       </div>
       
       {filteredOrders.length === 0 ? (

@@ -9,11 +9,14 @@ import type { Product } from '../types';
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [finalQuery, setFinalQuery] = useState('');
 
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
     const mockProducts: Product[] = [
-      { id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple' },
+      { id: 1, name: '맥북 프로 14인치', price: 2990000, stock: 10, category: 'ELECTRONICS', brandName: 'Apple',
+        thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1'
+      },
       { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple' },
       { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech' },
       { id: 4, name: '린넨 셔츠', price: 49000, stock: 100, category: 'CLOTHING', brandName: 'Uniqlo' },
@@ -31,13 +34,22 @@ function Home() {
     ];
 
     // 검색 필터링
+    const query = finalQuery.toLowerCase();
     const filtered = mockProducts.filter(p => 
-      p.name.includes(searchQuery) || 
-      p.brandName.includes(searchQuery) || 
-      p.category.includes(searchQuery)
+      p.name.toLowerCase().includes(query) || 
+      p.brandName.toLowerCase().includes(query) || 
+      p.category.toLowerCase().includes(query)
     );
     setProducts(filtered);
-  }, [searchQuery]);
+  }, [finalQuery]);
+
+  const handleSearch = () => {
+    setFinalQuery(searchQuery);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSearch();
+  };
 
   const handleAddToCart = (product: Product) => {
     // TODO: API 연동 (POST /carts/me/items)
@@ -55,8 +67,15 @@ function Home() {
             placeholder="상품, 브랜드 검색..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             style={{ padding: '0.5rem', width: '250px', border: '1px solid #000' }}
           />
+          <button 
+            onClick={handleSearch}
+            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}
+          >
+            검색
+          </button>
         </div>
       </div>
       
