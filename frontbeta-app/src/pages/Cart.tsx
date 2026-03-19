@@ -166,11 +166,19 @@ function Cart() {
           )}
           
           <div style={{ textAlign: 'right', marginTop: '2rem', borderTop: '2px solid #000', paddingTop: '1rem' }}>
+            <div style={{ marginBottom: '0.5rem', color: '#555' }}>
+              <span>상품 금액:</span>
+              <span style={{ marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원</span>
+            </div>
+            <div style={{ marginBottom: '1rem', color: '#555' }}>
+              <span>배송비:</span>
+              <span style={{ marginLeft: '1rem' }}>2,000원 ~ 3,000원</span>
+            </div>
             <div style={{ marginBottom: '1rem' }}>
               <span style={{ fontSize: '1.2rem', color: '#666' }}>총 결제 예정 금액:</span>
-              <span style={{ fontSize: '2rem', fontWeight: 'bold', marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원</span>
+              <span style={{ fontSize: '2rem', fontWeight: 'bold', marginLeft: '1rem' }}>{totalPrice.toLocaleString()}원~{(totalPrice + 3000).toLocaleString()}원</span>
             </div>
-            <button 
+            <button
               style={{ width: isMobile ? '100%' : 'auto', padding: '1rem 3rem', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold' }}
             >
               주문하기

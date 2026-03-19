@@ -33,6 +33,7 @@ function OrderDetail() {
         status: 'CONFIRMED',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
+        shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
       },
@@ -43,6 +44,7 @@ function OrderDetail() {
         status: 'PENDING',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
+        shippingCost: 3000,
         createdAt: '2026-02-26T13:00:00',
         items: [{ productId: 3, quantity: 1 }]
       }
@@ -221,12 +223,28 @@ function OrderDetail() {
           </div>
 
           <div style={{ marginTop: '2rem', padding: '1.5rem', borderTop: '2px solid #eee' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span>총 주문 금액</span>
-              <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
-                {order.items.reduce((acc, item) => acc + (productInfoMap[item.productId]?.price || 0) * item.quantity, 0).toLocaleString()}원
-              </span>
-            </div>
+            {(() => {
+              var itemsTotal = order.items.reduce((acc, item) => acc + (productInfoMap[item.productId]?.price || 0) * item.quantity, 0);
+              var grandTotal = itemsTotal + order.shippingCost;
+              return (
+                <>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', color: '#555' }}>
+                    <span>상품 금액</span>
+                    <span>{itemsTotal.toLocaleString()}원</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', color: '#555' }}>
+                    <span>배송비</span>
+                    <span>{order.shippingCost.toLocaleString()}원</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #eee', paddingTop: '0.75rem' }}>
+                    <span>총 결제 금액</span>
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                      {grandTotal.toLocaleString()}원
+                    </span>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       </div>

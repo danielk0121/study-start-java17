@@ -48,6 +48,7 @@ export interface Order {
   status: string;
   shippingAddress: string;
   shippingZipCode: string;
+  shippingCost: number;
   createdAt: string;
   items: OrderItem[];
 }

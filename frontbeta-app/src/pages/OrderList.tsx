@@ -33,6 +33,7 @@ function OrderList() {
         status: 'CONFIRMED',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
+        shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
       },
@@ -43,6 +44,7 @@ function OrderList() {
         status: 'CANCELLED',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
+        shippingCost: 3000,
         createdAt: '2025-09-29T14:00:00',
         items: [{ productId: 4, quantity: 2 }]
       },
@@ -53,6 +55,7 @@ function OrderList() {
         status: 'CONFIRMED',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
+        shippingCost: 2000,
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 3, quantity: 1 }, { productId: 8, quantity: 1 }]
       },
@@ -63,6 +66,7 @@ function OrderList() {
         status: 'PENDING',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
+        shippingCost: 3000,
         createdAt: '2026-02-26T13:00:00',
         items: [{ productId: 3, quantity: 1 }]
       }
