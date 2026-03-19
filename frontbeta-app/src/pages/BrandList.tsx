@@ -16,14 +16,15 @@ interface BrandSummary {
 
 /**
  * 브랜드관 페이지
- * UC_PROD_06 구현 (Prototype - 브랜드별 상품 정보 추가)
+ * UC_PROD_06 구현 (Prototype - 브랜드별 상품 정보 및 검색 추가)
  */
 function BrandList() {
   const [brands, setBrands] = useState<BrandSummary[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     // V10 샘플 데이터를 기반으로 한 브랜드별 상품 정보 Mock 데이터
-    const mockBrands: BrandSummary[] = [
+    const allBrands: BrandSummary[] = [
       { 
         id: 1, name: 'Apple', productCount: 2, 
         products: [
@@ -67,68 +68,99 @@ function BrandList() {
         ] 
       }
     ];
-    setBrands(mockBrands);
-  }, []);
+
+    const query = searchQuery.toLowerCase();
+    const filtered = allBrands.map(brand => {
+      // 브랜드명이 일치하거나, 상품명 중 하나라도 일치하는 상품들을 찾음
+      const filteredProducts = brand.products.filter(p => 
+        brand.name.toLowerCase().includes(query) || 
+        p.name.toLowerCase().includes(query)
+      );
+      
+      // 브랜드 자체가 일치하면 모든 상품 노출, 아니면 필터링된 상품만 노출
+      return {
+        ...brand,
+        products: brand.name.toLowerCase().includes(query) ? brand.products : filteredProducts,
+        isVisible: brand.name.toLowerCase().includes(query) || filteredProducts.length > 0
+      };
+    }).filter(b => (b as any).isVisible);
+
+    setBrands(filtered);
+  }, [searchQuery]);
 
   return (
     <div>
-      <h1 style={{ marginBottom: '2rem' }}>브랜드관</h1>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        {brands.map(brand => (
-          <div key={brand.id} style={{ 
-            border: '1px solid #000', 
-            padding: '1.5rem', 
-            backgroundColor: '#fff'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'baseline',
-              borderBottom: '2px solid #eee',
-              paddingBottom: '1rem',
-              marginBottom: '1rem'
-            }}>
-              <h2 style={{ margin: 0 }}>{brand.name}</h2>
-              <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                전체 상품 <strong>{brand.productCount}</strong>개
-              </span>
-            </div>
-            
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
-              gap: '1rem' 
-            }}>
-              {brand.products.map(product => (
-                <div key={product.id} style={{ 
-                  padding: '1rem', 
-                  border: '1px solid #eee',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  gap: '1rem',
-                  alignItems: 'center'
-                }}>
-                  <div style={{ 
-                    width: '60px', height: '60px', backgroundColor: '#f0f0f0', 
-                    display: 'flex', alignItems: 'center', justifyContent: 'center' 
-                  }}>
-                    {product.thumbnailUrl ? (
-                      <img src={product.thumbnailUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : (
-                      <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.1rem' }}>ID: {product.id}</div>
-                    <div style={{ fontWeight: 'bold', marginBottom: '0.2rem', fontSize: '0.9rem' }}>{product.name}</div>
-                    <div style={{ color: '#d00', fontSize: '0.85rem' }}>{product.price.toLocaleString()}원</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1>브랜드관</h1>
+        <input 
+          type="text" 
+          placeholder="브랜드명, 상품명 검색..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ padding: '0.6rem 1rem', width: '300px', border: '1px solid #000' }}
+        />
       </div>
+
+      {brands.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          {brands.map(brand => (
+            <div key={brand.id} style={{ 
+              border: '1px solid #000', 
+              padding: '1.5rem', 
+              backgroundColor: '#fff'
+            }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'baseline',
+                borderBottom: '2px solid #eee',
+                paddingBottom: '1rem',
+                marginBottom: '1rem'
+              }}>
+                <h2 style={{ margin: 0 }}>{brand.name}</h2>
+                <span style={{ color: '#666', fontSize: '0.9rem' }}>
+                  전체 상품 <strong>{brand.productCount}</strong>개
+                </span>
+              </div>
+              
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
+                gap: '1rem' 
+              }}>
+                {brand.products.map(product => (
+                  <div key={product.id} style={{ 
+                    padding: '1rem', 
+                    border: '1px solid #eee',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    gap: '1rem',
+                    alignItems: 'center'
+                  }}>
+                    <div style={{ 
+                      width: '60px', height: '60px', backgroundColor: '#f0f0f0', 
+                      display: 'flex', alignItems: 'center', justifyContent: 'center' 
+                    }}>
+                      {product.thumbnailUrl ? (
+                        <img src={product.thumbnailUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
+                      )}
+                    </div>
+                    <div>
+                      <div style={{ color: '#999', fontSize: '0.75rem', marginBottom: '0.1rem' }}>ID: {product.id}</div>
+                      <div style={{ fontWeight: 'bold', marginBottom: '0.2rem', fontSize: '0.9rem' }}>{product.name}</div>
+                      <div style={{ color: '#d00', fontSize: '0.85rem' }}>{product.price.toLocaleString()}원</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
