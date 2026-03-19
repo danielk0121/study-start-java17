@@ -141,11 +141,16 @@ function Home() {
               <button
                 onClick={() => handleAddToCart(product)}
                 style={{ 
-                  padding: isMobile ? '0.2rem 0.4rem' : '0.3rem 0.6rem', 
+                  width: isMobile ? '1.8rem' : '2.2rem',
+                  height: isMobile ? '1.8rem' : '2.2rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 0,
                   cursor: 'pointer', 
                   border: '1px solid #000', 
                   backgroundColor: '#fff', 
-                  fontSize: isMobile ? '0.85rem' : '1rem', 
+                  fontSize: isMobile ? '0.9rem' : '1.1rem', 
                   whiteSpace: 'nowrap',
                   lineHeight: 1
                 }}
