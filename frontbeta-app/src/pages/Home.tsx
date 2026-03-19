@@ -137,10 +137,18 @@ function Home() {
               <span>판매: <strong>{product.salesCount.toLocaleString()}개</strong></span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.4rem' }}>
-              <p style={{ fontWeight: 'bold', fontSize: '1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
+              <p style={{ fontWeight: 'bold', fontSize: isMobile ? '0.95rem' : '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
               <button
                 onClick={() => handleAddToCart(product)}
-                style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '1rem', whiteSpace: 'nowrap' }}
+                style={{ 
+                  padding: isMobile ? '0.2rem 0.4rem' : '0.3rem 0.6rem', 
+                  cursor: 'pointer', 
+                  border: '1px solid #000', 
+                  backgroundColor: '#fff', 
+                  fontSize: isMobile ? '0.85rem' : '1rem', 
+                  whiteSpace: 'nowrap',
+                  lineHeight: 1
+                }}
               >
                 🛒
               </button>
