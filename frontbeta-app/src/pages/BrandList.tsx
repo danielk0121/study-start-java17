@@ -21,6 +21,7 @@ interface BrandSummary {
 function BrandList() {
   const [brands, setBrands] = useState<BrandSummary[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [finalQuery, setFinalQuery] = useState('');
 
   useEffect(() => {
     // V10 샘플 데이터를 기반으로 한 브랜드별 상품 정보 Mock 데이터
@@ -69,7 +70,7 @@ function BrandList() {
       }
     ];
 
-    const query = searchQuery.toLowerCase();
+    const query = finalQuery.toLowerCase();
     const filtered = allBrands.map(brand => {
       // 브랜드명이 일치하거나, 상품명 중 하나라도 일치하는 상품들을 찾음
       const filteredProducts = brand.products.filter(p => 
@@ -86,19 +87,36 @@ function BrandList() {
     }).filter(b => (b as any).isVisible);
 
     setBrands(filtered);
-  }, [searchQuery]);
+  }, [finalQuery]);
+
+  const handleSearch = () => {
+    setFinalQuery(searchQuery);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSearch();
+  };
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1>브랜드관</h1>
-        <input 
-          type="text" 
-          placeholder="브랜드명, 상품명 검색..." 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ padding: '0.6rem 1rem', width: '300px', border: '1px solid #000' }}
-        />
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <input 
+            type="text" 
+            placeholder="브랜드명, 상품명 검색..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            style={{ padding: '0.6rem 1rem', width: '300px', border: '1px solid #000' }}
+          />
+          <button 
+            onClick={handleSearch}
+            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}
+          >
+            검색
+          </button>
+        </div>
       </div>
 
       {brands.length === 0 ? (
