@@ -140,9 +140,9 @@ function Home() {
               <p style={{ fontWeight: 'bold', fontSize: '1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>
               <button
                 onClick={() => handleAddToCart(product)}
-                style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+                style={{ padding: '0.3rem 0.6rem', cursor: 'pointer', border: '1px solid #000', backgroundColor: '#fff', fontSize: '1rem', whiteSpace: 'nowrap' }}
               >
-                장바구니
+                🛒
               </button>
             </div>
           </div>
