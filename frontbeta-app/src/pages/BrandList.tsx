@@ -30,7 +30,7 @@ function BrandList() {
     // V10 샘플 데이터를 기반으로 한 브랜드별 상품 정보 Mock 데이터
     const allBrands: BrandSummary[] = [
       {
-        id: 1, name: 'Apple', productCount: 2,
+        id: 1, name: '애플', productCount: 2,
         thumbnailUrl: 'https://via.placeholder.com/150x150?text=Apple',
         products: [
           { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=MacBook' },
@@ -38,7 +38,7 @@ function BrandList() {
         ]
       },
       {
-        id: 2, name: 'Samsung', productCount: 2,
+        id: 2, name: '삼성', productCount: 2,
         thumbnailUrl: 'https://via.placeholder.com/150x150?text=Samsung',
         products: [
           { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=S24' },
@@ -46,7 +46,7 @@ function BrandList() {
         ]
       },
       {
-        id: 3, name: 'Sony', productCount: 2,
+        id: 3, name: '소니', productCount: 2,
         thumbnailUrl: 'https://via.placeholder.com/150x150?text=Sony',
         products: [
           { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=SonyHead' },
@@ -54,7 +54,7 @@ function BrandList() {
         ]
       },
       {
-        id: 6, name: 'Nike', productCount: 2,
+        id: 6, name: '나이키', productCount: 2,
         thumbnailUrl: 'https://via.placeholder.com/150x150?text=Nike',
         products: [
           { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=AirMax' },
@@ -62,7 +62,7 @@ function BrandList() {
         ]
       },
       {
-        id: 12, name: 'Coca-Cola', productCount: 2,
+        id: 12, name: '코카콜라', productCount: 2,
         thumbnailUrl: 'https://via.placeholder.com/150x150?text=Coke',
         products: [
           { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Coke' },
@@ -70,7 +70,7 @@ function BrandList() {
         ]
       },
       {
-        id: 16, name: 'OReilly', productCount: 2,
+        id: 16, name: '오라일리', productCount: 2,
         thumbnailUrl: 'https://via.placeholder.com/150x150?text=OReilly',
         products: [
           { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=DDIA' },

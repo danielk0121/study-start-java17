@@ -32,16 +32,16 @@ function ProductSalesList() {
     // Flyway V2, V3, V11 샘플 데이터를 기반으로 한 Mock 데이터
     // 주문번호 형식: yyMMddHHmmssNNN
     const mockSales: SalesItem[] = [
-      { id: 1, orderNo: '250902101500001', productId: 1, productName: '맥북 프로 14인치', brandName: 'Apple', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
-      { id: 2, orderNo: '250902101500001', productId: 3, productName: '무선 키보드', brandName: 'Logitech', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
-      { id: 3, orderNo: '250905143000002', productId: 2, productName: '아이폰 15 Pro', brandName: 'Apple', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },
-      { id: 4, orderNo: '250910164500003', productId: 8, productName: '클린 코드', brandName: 'Pearson', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 33000 },
-      { id: 5, orderNo: '250910164500003', productId: 9, productName: '자바 ORM 표준 JPA 프로그래밍', brandName: 'OReilly', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 38000 },
+      { id: 1, orderNo: '250902101500001', productId: 1, productName: '맥북 프로 14인치', brandName: '애플', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
+      { id: 2, orderNo: '250902101500001', productId: 3, productName: '무선 키보드', brandName: '로지텍', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
+      { id: 3, orderNo: '250905143000002', productId: 2, productName: '아이폰 15 Pro', brandName: '애플', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },
+      { id: 4, orderNo: '250910164500003', productId: 8, productName: '클린 코드', brandName: '피어슨', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 33000 },
+      { id: 5, orderNo: '250910164500003', productId: 9, productName: '자바 ORM 표준 JPA 프로그래밍', brandName: '오라일리', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 38000 },
       { id: 6, orderNo: '250914130000005', productId: 6, productName: '제주 감귤 2kg', brandName: 'CJ', quantity: 3, soldAt: '2025-09-14T13:00:00', totalPrice: 45000 },
-      { id: 7, orderNo: '250916083000006', productId: 3, productName: '무선 키보드', brandName: 'Logitech', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 89000 },
-      { id: 8, orderNo: '250916083000006', productId: 8, productName: '클린 코드', brandName: 'Pearson', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 33000 },
-      { id: 9, orderNo: '250924153000010', productId: 4, productName: '린넨 셔츠', brandName: 'Uniqlo', quantity: 2, soldAt: '2025-09-24T15:30:00', totalPrice: 98000 },
-      { id: 10, orderNo: '251003133000015', productId: 2, productName: '아이폰 15 Pro', brandName: 'Apple', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
+      { id: 7, orderNo: '250916083000006', productId: 3, productName: '무선 키보드', brandName: '로지텍', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 89000 },
+      { id: 8, orderNo: '250916083000006', productId: 8, productName: '클린 코드', brandName: '피어슨', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 33000 },
+      { id: 9, orderNo: '250924153000010', productId: 4, productName: '린넨 셔츠', brandName: '유니클로', quantity: 2, soldAt: '2025-09-24T15:30:00', totalPrice: 98000 },
+      { id: 10, orderNo: '251003133000015', productId: 2, productName: '아이폰 15 Pro', brandName: '애플', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
     ];
     setSales(mockSales);
     setFilteredSales(mockSales);
