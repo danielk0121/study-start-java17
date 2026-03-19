@@ -36,7 +36,7 @@ function App() {
         fontFamily: 'sans-serif',
         fontSize: isMobile ? '0.75rem' : '0.85rem'
       }}>
-        {/* 1행: S 로고 + 로그인/회원가입 영역 */}
+        {/* 1행: S 로고 + SHOP + 로그인/회원가입 영역 */}
         <div style={{
           padding: isMobile ? '0.3rem 0.5rem' : '0.4rem 1rem',
           display: 'flex',
@@ -45,8 +45,9 @@ function App() {
           borderBottom: '1px solid #eee',
           flexWrap: 'nowrap',
         }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: '#000' }}>
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="S" style={{ width: isMobile ? '18px' : '22px', height: isMobile ? '18px' : '22px' }} />
+            <span style={{ fontWeight: 'bold', fontSize: isMobile ? '0.9rem' : '1.1rem' }}>SHOP</span>
           </Link>
           <div style={{ flex: 1 }}></div>
           {currentUser ? (
