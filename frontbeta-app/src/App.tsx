@@ -79,6 +79,10 @@ function App() {
           alignItems: 'center',
           flexWrap: 'wrap'
         }}>
+          <Link to="/">
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="홈" style={{ width: '20px', height: '20px', verticalAlign: 'middle' }} />
+          </Link>
+          <div style={{ flex: 1 }}></div>
           <Link to="/" style={{ textDecoration: 'none', color: '#333' }}>상품목록</Link>
           <Link to="/brands" style={{ textDecoration: 'none', color: '#333' }}>브랜드관</Link>
           <Link to="/product/1" style={{ textDecoration: 'none', color: '#333' }}>상품상세(S)</Link>
