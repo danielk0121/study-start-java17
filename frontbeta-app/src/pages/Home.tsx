@@ -112,7 +112,20 @@ function Home() {
               <small style={{ color: '#999' }}>(ID: {product.id})</small>
             </div>
             <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
-              <h3 style={{ margin: '0 0 1rem 0', cursor: 'pointer' }}>{product.name}</h3>
+              <h3 style={{ 
+                margin: '0 0 1rem 0', 
+                cursor: 'pointer',
+                fontSize: isMobile ? '0.9rem' : '1.05rem',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                height: '2.4em',
+                lineHeight: '1.2em'
+              }}>
+                {product.name}
+              </h3>
             </Link>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>
               <span>재고: {product.stock}개</span>
