@@ -3,10 +3,11 @@ import type { Order } from '../types';
 
 /**
  * 주문 목록 페이지
- * PRD 2.5 요구사항 반영
+ * PRD 2.5 요구사항 반영 (주문 취소 기능 추가)
  */
 function OrderList() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
@@ -62,15 +63,28 @@ function OrderList() {
         items: [{ productId: 3, quantity: 1 }]
       }
     ];
+    setOrders(mockOrders);
+  }, []);
 
+  useEffect(() => {
     // 상품명으로 주문 필터링
-    const filtered = mockOrders.filter(order => 
+    const filtered = orders.filter(order => 
       order.items.some(item => 
-        (productInfoMap[item.productId]?.name || '').includes(searchQuery)
+        (productInfoMap[item.productId]?.name || '').toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
-    setOrders(filtered);
-  }, [searchQuery]);
+    setFilteredOrders(filtered);
+  }, [searchQuery, orders]);
+
+  const handleCancelOrder = (orderId: number) => {
+    if (!window.confirm('주문을 취소하시겠습니까?')) return;
+
+    // TODO: API 연동 (PATCH /orders/{id}/cancel)
+    setOrders(prev => prev.map(order => 
+      order.id === orderId ? { ...order, status: 'CANCELLED' } : order
+    ));
+    alert('주문이 취소되었습니다.');
+  };
 
   return (
     <div>
@@ -85,7 +99,7 @@ function OrderList() {
         />
       </div>
       
-      {orders.length === 0 ? (
+      {filteredOrders.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -96,10 +110,11 @@ function OrderList() {
               <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품</th>
               <th style={{ textAlign: 'center', padding: '1rem' }}>상태</th>
               <th style={{ textAlign: 'right', padding: '1rem' }}>주문일시</th>
+              <th style={{ textAlign: 'center', padding: '1rem' }}>관리</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
+            {filteredOrders.map(order => (
               <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
                 <td style={{ padding: '1rem' }}>
                   <div style={{ fontWeight: 'bold' }}>{order.orderNo}</div>
@@ -132,13 +147,32 @@ function OrderList() {
                   <span style={{ 
                     padding: '0.2rem 0.5rem', 
                     border: '1px solid #ccc',
-                    fontSize: '0.8rem'
+                    fontSize: '0.8rem',
+                    color: order.status === 'CANCELLED' ? '#d00' : '#333',
+                    backgroundColor: order.status === 'CANCELLED' ? '#fff0f0' : 'transparent'
                   }}>
                     {order.status}
                   </span>
                 </td>
                 <td style={{ padding: '1rem', textAlign: 'right' }}>
                   {new Date(order.createdAt).toLocaleString()}
+                </td>
+                <td style={{ padding: '1rem', textAlign: 'center' }}>
+                  {order.status === 'PENDING' && (
+                    <button 
+                      onClick={() => handleCancelOrder(order.id)}
+                      style={{ 
+                        padding: '0.3rem 0.6rem', 
+                        fontSize: '0.8rem', 
+                        cursor: 'pointer', 
+                        color: '#d00',
+                        border: '1px solid #d00',
+                        backgroundColor: '#fff'
+                      }}
+                    >
+                      주문취소
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
