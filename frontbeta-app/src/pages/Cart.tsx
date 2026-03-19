@@ -107,7 +107,9 @@ function Cart() {
           </table>
           <div style={{ textAlign: 'right', marginTop: '2rem' }}>
             <h2>총 결제 예정 금액: {totalPrice.toLocaleString()}원</h2>
-            <button style={{ padding: '1rem 2rem', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+            <button 
+              style={{ padding: '1rem 2rem', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            >
               주문하기
             </button>
           </div>
