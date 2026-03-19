@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import type { Order } from '../types';
 
 /**
@@ -117,7 +118,9 @@ function OrderList() {
             {filteredOrders.map(order => (
               <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
                 <td style={{ padding: '1rem' }}>
-                  <div style={{ fontWeight: 'bold' }}>{order.orderNo}</div>
+                  <Link to={`/order/${order.id}`} style={{ textDecoration: 'none', color: '#000' }}>
+                    <div style={{ fontWeight: 'bold', cursor: 'pointer', textDecoration: 'underline' }}>{order.orderNo}</div>
+                  </Link>
                   <small style={{ color: '#999' }}>ID: {order.id}</small>
                 </td>
                 <td style={{ padding: '1rem' }}>
