@@ -32,6 +32,7 @@ Table shipping_addresses {
 Table brands {
   id         bigint   [pk, increment, note: '브랜드 ID']
   name       varchar  [not null, unique, note: '브랜드명 (max 255)']
+  thumbnail_url varchar [note: '브랜드 썸네일 이미지']
   created_at datetime [not null, default: `now()`, note: '등록 일시']
   updated_at datetime [not null, default: `now()`, note: '최종 수정 일시']
 }
