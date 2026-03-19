@@ -1,6 +1,8 @@
 # 프로젝트 개요
 - 자바 17 기반 MSA 학습 프로젝트
 - **개발의 중심(Source of Truth)**은 `specs/` 폴더 내의 명세 문서들입니다.
+- 샘플 쇼핑몰을 통해 백엔드 API 개발을 테스트 합니다.
+  - 샘플 쇼핑몰 주소: https://danielk0121.github.io/study-start-java17/front/
 
 ---
 
