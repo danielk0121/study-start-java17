@@ -44,6 +44,9 @@ function App() {
         }}>
           <Link to="/" style={{ fontWeight: 'bold', textDecoration: 'none', color: '#000', fontSize: '1rem' }}>SHOP</Link>
           <div style={{ flex: 1 }}></div>
+          <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
+          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
+          <span style={{ color: '#ccc' }}>|</span>
           {currentUser ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
               <span style={{
@@ -80,8 +83,6 @@ function App() {
           <Link to="/brands" style={{ textDecoration: 'none', color: '#333' }}>브랜드관</Link>
           <Link to="/product/1" style={{ textDecoration: 'none', color: '#333' }}>상품상세(S)</Link>
           <Link to="/cart" style={{ textDecoration: 'none', color: '#333' }}>장바구니</Link>
-          <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
-          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
           <Link to="/orders" style={{ textDecoration: 'none', color: '#333' }}>주문목록</Link>
           <Link to="/order/1" style={{ textDecoration: 'none', color: '#333' }}>주문상세(S)</Link>
           <Link to="/addresses" style={{ textDecoration: 'none', color: '#333' }}>배송지관리</Link>
