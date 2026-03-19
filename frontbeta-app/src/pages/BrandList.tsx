@@ -4,6 +4,7 @@ interface BrandProduct {
   id: number;
   name: string;
   price: number;
+  thumbnailUrl?: string;
 }
 
 interface BrandSummary {
@@ -26,43 +27,43 @@ function BrandList() {
       { 
         id: 1, name: 'Apple', productCount: 2, 
         products: [
-          { id: 1, name: '맥북 프로 14인치', price: 2990000 },
-          { id: 2, name: '아이폰 15 Pro', price: 1550000 }
+          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=MacBook' },
+          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=iPhone' }
         ] 
       },
       { 
         id: 2, name: 'Samsung', productCount: 2, 
         products: [
-          { id: 11, name: 'Galaxy S24', price: 1150000 },
-          { id: 22, name: 'Galaxy Watch 6', price: 320000 }
+          { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=S24' },
+          { id: 22, name: 'Galaxy Watch 6', price: 320000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Watch6' }
         ] 
       },
       { 
         id: 3, name: 'Sony', productCount: 2, 
         products: [
-          { id: 12, name: 'WH-1000XM5', price: 450000 },
-          { id: 23, name: 'PlayStation 5', price: 620000 }
+          { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=SonyHead' },
+          { id: 23, name: 'PlayStation 5', price: 620000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=PS5' }
         ] 
       },
       { 
         id: 6, name: 'Nike', productCount: 2, 
         products: [
-          { id: 13, name: 'Air Max 97', price: 199000 },
-          { id: 24, name: 'Jordan 1 Retro', price: 239000 }
+          { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=AirMax' },
+          { id: 24, name: 'Jordan 1 Retro', price: 239000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Jordan' }
         ] 
       },
       { 
         id: 12, name: 'Coca-Cola', productCount: 2, 
         products: [
-          { id: 19, name: 'Coke Zero 500ml', price: 2000 },
-          { id: 26, name: 'Sprite 1.5L', price: 3000 }
+          { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Coke' },
+          { id: 26, name: 'Sprite 1.5L', price: 3000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Sprite' }
         ] 
       },
       { 
         id: 16, name: 'OReilly', productCount: 2, 
         products: [
-          { id: 18, name: 'Designing Data-Intensive Applications', price: 45000 },
-          { id: 38, name: 'Python Crash Course', price: 38000 }
+          { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=DDIA' },
+          { id: 38, name: 'Python Crash Course', price: 38000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Python' }
         ] 
       }
     ];
@@ -102,10 +103,25 @@ function BrandList() {
                 <div key={product.id} style={{ 
                   padding: '1rem', 
                   border: '1px solid #eee',
-                  borderRadius: '4px'
+                  borderRadius: '4px',
+                  display: 'flex',
+                  gap: '1rem',
+                  alignItems: 'center'
                 }}>
-                  <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>{product.name}</div>
-                  <div style={{ color: '#d00', fontSize: '0.95rem' }}>{product.price.toLocaleString()}원</div>
+                  <div style={{ 
+                    width: '60px', height: '60px', backgroundColor: '#f0f0f0', 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center' 
+                  }}>
+                    {product.thumbnailUrl ? (
+                      <img src={product.thumbnailUrl} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
+                    )}
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 'bold', marginBottom: '0.2rem', fontSize: '0.9rem' }}>{product.name}</div>
+                    <div style={{ color: '#d00', fontSize: '0.85rem' }}>{product.price.toLocaleString()}원</div>
+                  </div>
                 </div>
               ))}
             </div>

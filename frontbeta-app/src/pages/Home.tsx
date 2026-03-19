@@ -66,6 +66,16 @@ function Home() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1.5rem' }}>
         {products.map(product => (
           <div key={product.id} style={{ border: '1px solid #ddd', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+            <div style={{ 
+              width: '100%', height: '150px', backgroundColor: '#f0f0f0', marginBottom: '1rem',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
+            }}>
+              {product.thumbnailUrl1 ? (
+                <img src={product.thumbnailUrl1} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                <span style={{ color: '#ccc', fontSize: '0.8rem' }}>No Image</span>
+              )}
+            </div>
             <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>{product.brandName} | {product.category}</div>
             <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
               <h3 style={{ margin: '0 0 1rem 0', cursor: 'pointer' }}>{product.name}</h3>
