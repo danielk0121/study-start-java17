@@ -160,7 +160,7 @@ function ProductSalesList() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
                   <div>
                     <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{item.orderNo}</div>
-                    <small style={{ color: '#999' }}>ID: {item.id} | {new Date(item.soldAt).toLocaleDateString()}</small>
+                    <small style={{ color: '#999' }}>ID: {item.id} | {new Date(item.soldAt).toLocaleString()}</small>
                   </div>
                 </div>
 
