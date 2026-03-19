@@ -116,7 +116,7 @@ function Home() {
             </Link>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>
               <span>재고: {product.stock}개</span>
-              <span style={{ color: '#d00', fontWeight: 'bold' }}>판매: {product.salesCount}개</span>
+              <span style={{ fontWeight: 'bold' }}>판매: {product.salesCount}개</span>
             </div>
             <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'stretch' : 'center', gap: isMobile ? '0.4rem' : '0' }}>
               <p style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>

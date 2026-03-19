@@ -128,7 +128,7 @@ function ProductDetail() {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span style={{ color: '#666' }}>누적 판매량</span>
-              <span style={{ color: '#d00', fontWeight: 'bold' }}>{product.salesCount}개</span>
+              <span style={{ fontWeight: 'bold' }}>{product.salesCount}개</span>
             </div>
           </div>
 
