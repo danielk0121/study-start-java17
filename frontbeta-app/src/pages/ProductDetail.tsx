@@ -25,10 +25,11 @@ function ProductDetail() {
         thumbnailUrl3: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+3',
         detailUrl1: 'https://via.placeholder.com/800x600?text=MacBook+Detail+1',
         detailUrl2: 'https://via.placeholder.com/800x600?text=MacBook+Detail+2',
-        detailUrl3: 'https://via.placeholder.com/800x600?text=MacBook+Detail+3'
+        detailUrl3: 'https://via.placeholder.com/800x600?text=MacBook+Detail+3',
+        salesCount: 15
       },
-      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A' },
-      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L' }
+      { id: 2, name: '아이폰 15 Pro', price: 1550000, stock: 25, category: 'ELECTRONICS', brandName: 'Apple', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
+      { id: 3, name: '무선 키보드', price: 89000, stock: 50, category: 'ELECTRONICS', brandName: 'Logitech', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 }
     ];
 
     const found = mockProducts.find(p => p.id === Number(id));
@@ -121,9 +122,13 @@ function ProductDetail() {
               <span style={{ color: '#666' }}>판매가</span>
               <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{product.price.toLocaleString()}원</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
               <span style={{ color: '#666' }}>재고수량</span>
               <span>{product.stock}개</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span style={{ color: '#666' }}>누적 판매량</span>
+              <span style={{ color: '#d00', fontWeight: 'bold' }}>{product.salesCount}개</span>
             </div>
           </div>
 

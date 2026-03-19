@@ -28,6 +28,7 @@ export interface Product {
   detailUrl1?: string;
   detailUrl2?: string;
   detailUrl3?: string;
+  salesCount: number;
 }
 
 export interface OrderItem {
