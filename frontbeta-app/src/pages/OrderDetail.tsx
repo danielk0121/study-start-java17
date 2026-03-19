@@ -162,7 +162,7 @@ function OrderDetail() {
                         <td style={{ padding: '1rem 0', display: 'flex', gap: '1rem', alignItems: 'center' }}>
                           <img src={info?.thumb} alt={info?.name} style={{ width: '50px', height: '50px', objectFit: 'cover', border: '1px solid #eee' }} />
                           <div>
-                            <div style={{ fontSize: '0.8rem', color: '#999' }}>#{item.productId}</div>
+                            <div style={{ fontSize: '0.8rem', color: '#999', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</div>
                             <div style={{ fontWeight: 'bold' }}>{info?.name || '알 수 없는 상품'}</div>
                           </div>
                         </td>

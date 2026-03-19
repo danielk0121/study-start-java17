@@ -12,16 +12,16 @@ VALUES ('admin@example.com', '관리자', 'ADMIN', NOW(6), NOW(6)),
 
 -- products
 INSERT INTO products (name, price, stock, category, created_at, updated_at)
-VALUES ('맥북 프로 14인치', 2990000.00, 10, 'ELECTRONICS', NOW(6), NOW(6)),
-       ('아이폰 15 Pro', 1550000.00, 25, 'ELECTRONICS', NOW(6), NOW(6)),
-       ('무선 키보드', 89000.00, 50, 'ELECTRONICS', NOW(6), NOW(6)),
-       ('린넨 셔츠', 49000.00, 100, 'CLOTHING', NOW(6), NOW(6)),
-       ('청바지 슬림핏', 79000.00, 80, 'CLOTHING', NOW(6), NOW(6)),
-       ('제주 감귤 2kg', 15000.00, 200, 'FOOD', NOW(6), NOW(6)),
-       ('유기농 아메리카노 원두 500g', 22000.00, 150, 'FOOD', NOW(6), NOW(6)),
-       ('클린 코드', 33000.00, 60, 'BOOKS', NOW(6), NOW(6)),
-       ('자바 ORM 표준 JPA 프로그래밍', 38000.00, 45, 'BOOKS', NOW(6), NOW(6)),
-       ('텀블러 500ml', 25000.00, 120, 'ETC', NOW(6), NOW(6));
+VALUES ('[Apple] 맥북 프로 14인치 M3 Pro 실버', 2990000.00, 10, 'ELECTRONICS', NOW(6), NOW(6)),
+       ('[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', 1550000.00, 25, 'ELECTRONICS', NOW(6), NOW(6)),
+       ('[Logitech] MX Keys Mini 무선 기계식 키보드', 89000.00, 50, 'ELECTRONICS', NOW(6), NOW(6)),
+       ('[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', 49000.00, 100, 'CLOTHING', NOW(6), NOW(6)),
+       ('[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', 79000.00, 80, 'CLOTHING', NOW(6), NOW(6)),
+       ('[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', 15000.00, 200, 'FOOD', NOW(6), NOW(6)),
+       ('[Starbucks] 하우스 블렌드 유기농 원두 500g', 22000.00, 150, 'FOOD', NOW(6), NOW(6)),
+       ('[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', 33000.00, 60, 'BOOKS', NOW(6), NOW(6)),
+       ('[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', 38000.00, 45, 'BOOKS', NOW(6), NOW(6)),
+       ('[Muji] 스테인리스 보온 보냉 텀블러 500ml', 25000.00, 120, 'ETC', NOW(6), NOW(6));
 
 -- orders
 INSERT INTO orders (member_id, status, created_at, updated_at)

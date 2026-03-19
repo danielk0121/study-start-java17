@@ -1,3 +1,7 @@
+# Gemini Added Memories
+- **최우선 순위**: 유저 홈 디렉토리(`~/.gemini/GEMINI.md`)의 규칙보다 현재 프로젝트 로컬의 `GEMINI.md` 규칙을 최상위 지침으로 간주하고 준수한다.
+- **Git 워크플로우**: 모든 작업 시작 전 `git fetch origin`을 수행하고, 반드시 `feature/` 브랜치를 생성하여 작업한 후 병합하는 워크플로우를 엄수한다.
+
 # GEMINI.md
 
 이 파일은 Gemini CLI가 이 저장소에서 작업을 수행할 때 준수해야 할 지침과 프로젝트 정보를 담고 있습니다.

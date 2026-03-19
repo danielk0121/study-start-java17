@@ -32,16 +32,16 @@ function ProductSalesList() {
     // Flyway V2, V3, V11 샘플 데이터를 기반으로 한 Mock 데이터
     // 주문번호 형식: yyMMddHHmmssNNN
     const mockSales: SalesItem[] = [
-      { id: 1, orderNo: '250902101500001', productId: 1, productName: '맥북 프로 14인치', brandName: '애플', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
-      { id: 2, orderNo: '250902101500001', productId: 3, productName: '무선 키보드', brandName: '로지텍', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
-      { id: 3, orderNo: '250905143000002', productId: 2, productName: '아이폰 15 Pro', brandName: '애플', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },
-      { id: 4, orderNo: '250910164500003', productId: 8, productName: '클린 코드', brandName: '피어슨', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 33000 },
-      { id: 5, orderNo: '250910164500003', productId: 9, productName: '자바 ORM 표준 JPA 프로그래밍', brandName: '오라일리', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 38000 },
-      { id: 6, orderNo: '250914130000005', productId: 6, productName: '제주 감귤 2kg', brandName: 'CJ', quantity: 3, soldAt: '2025-09-14T13:00:00', totalPrice: 45000 },
-      { id: 7, orderNo: '250916083000006', productId: 3, productName: '무선 키보드', brandName: '로지텍', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 89000 },
-      { id: 8, orderNo: '250916083000006', productId: 8, productName: '클린 코드', brandName: '피어슨', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 33000 },
-      { id: 9, orderNo: '250924153000010', productId: 4, productName: '린넨 셔츠', brandName: '유니클로', quantity: 2, soldAt: '2025-09-24T15:30:00', totalPrice: 98000 },
-      { id: 10, orderNo: '251003133000015', productId: 2, productName: '아이폰 15 Pro', brandName: '애플', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
+      { id: 1, orderNo: '250902101500001', productId: 1, productName: '[Apple] 맥북 프로 14인치 M3 Pro 실버', brandName: '애플', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
+      { id: 2, orderNo: '250902101500001', productId: 3, productName: '[Logitech] MX Keys Mini 무선 기계식 키보드', brandName: '로지텍', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
+      { id: 3, orderNo: '250905143000002', productId: 2, productName: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', brandName: '애플', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },
+      { id: 4, orderNo: '250910164500003', productId: 8, productName: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', brandName: '피어슨', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 33000 },
+      { id: 5, orderNo: '250910164500003', productId: 9, productName: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', brandName: '오라일리', quantity: 1, soldAt: '2025-09-10T16:45:00', totalPrice: 38000 },
+      { id: 6, orderNo: '250914130000005', productId: 6, productName: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', brandName: 'CJ', quantity: 3, soldAt: '2025-09-14T13:00:00', totalPrice: 45000 },
+      { id: 7, orderNo: '250916083000006', productId: 3, productName: '[Logitech] MX Keys Mini 무선 기계식 키보드', brandName: '로지텍', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 89000 },
+      { id: 8, orderNo: '250916083000006', productId: 8, productName: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', brandName: '피어슨', quantity: 1, soldAt: '2025-09-16T08:30:00', totalPrice: 33000 },
+      { id: 9, orderNo: '250924153000010', productId: 4, productName: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', brandName: '유니클로', quantity: 2, soldAt: '2025-09-24T15:30:00', totalPrice: 98000 },
+      { id: 10, orderNo: '251003133000015', productId: 2, productName: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', brandName: '애플', quantity: 1, soldAt: '2025-10-03T13:30:00', totalPrice: 1550000 }
     ];
     setSales(mockSales);
     setFilteredSales(mockSales);
@@ -77,6 +77,10 @@ function ProductSalesList() {
     setFilteredSales(result);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSearch();
+  };
+
   const resetFilters = () => {
     setSearchName('');
     setStartDate('');
@@ -108,23 +112,24 @@ function ProductSalesList() {
               placeholder="상품명 또는 브랜드 입력..."
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
+              onKeyDown={handleKeyDown}
               style={{ padding: '0.4rem', border: '1px solid #ccc', width: '100%' }}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>판매기간</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: '120px' }} />
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} onKeyDown={handleKeyDown} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: '120px' }} />
               <span>~</span>
-              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: '120px' }} />
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} onKeyDown={handleKeyDown} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: '120px' }} />
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
             <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>금액 범위 (원)</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <input type="number" placeholder="최소" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: 0 }} />
+              <input type="number" placeholder="최소" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} onKeyDown={handleKeyDown} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: 0 }} />
               <span>~</span>
-              <input type="number" placeholder="최대" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: 0 }} />
+              <input type="number" placeholder="최대" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} onKeyDown={handleKeyDown} style={{ padding: '0.4rem', border: '1px solid #ccc', flex: 1, minWidth: 0 }} />
             </div>
           </div>
         </div>
@@ -132,6 +137,17 @@ function ProductSalesList() {
           <button onClick={resetFilters} style={{ padding: '0.5rem 1rem', cursor: 'pointer', border: '1px solid #ccc', background: '#fff' }}>초기화</button>
           <button onClick={handleSearch} style={{ padding: '0.5rem 1.5rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer' }}>검색</button>
         </div>
+      </div>
+
+      <div style={{ 
+        marginBottom: '1.5rem', 
+        padding: '1rem', 
+        backgroundColor: '#f9f9f9', 
+        border: '1px solid #ddd', 
+        textAlign: isMobile ? 'center' : 'right',
+        fontSize: '1.1rem'
+      }}>
+        <strong>검색 결과 총 매출:</strong> <span style={{ color: '#d00', fontWeight: 'bold' }}>{filteredSales.reduce((acc, curr) => acc + curr.totalPrice, 0).toLocaleString()}원</span>
       </div>
 
       {isMobile ? (
@@ -151,7 +167,11 @@ function ProductSalesList() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '0.85rem', color: '#666' }}>상품명</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{item.productName} (ID: #{item.productId})</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{item.productName}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '0.85rem', color: '#666' }}>상품ID</span>
+                    <span style={{ fontSize: '0.9rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '0.85rem', color: '#666' }}>브랜드</span>
@@ -193,7 +213,7 @@ function ProductSalesList() {
                 filteredSales.map(item => (
                   <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: '1rem', fontWeight: 'bold' }}>{item.orderNo}</td>
-                    <td style={{ padding: '1rem', color: '#999' }}>#{item.productId}</td>
+                    <td style={{ padding: '1rem', color: '#999', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</td>
                     <td style={{ padding: '1rem' }}>{item.productName}</td>
                     <td style={{ padding: '1rem' }}>{item.brandName}</td>
                     <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
@@ -208,10 +228,6 @@ function ProductSalesList() {
           </table>
         </div>
       )}
-
-      <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f9f9f9', border: '1px solid #ddd', textAlign: isMobile ? 'center' : 'right' }}>
-        <strong>검색 결과 총 매출:</strong> {filteredSales.reduce((acc, curr) => acc + curr.totalPrice, 0).toLocaleString()}원
-      </div>
     </div>
   );
 }

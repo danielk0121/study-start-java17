@@ -176,7 +176,7 @@ function OrderList() {
                           )}
                         </div>
                         <div style={{ flex: 1, fontSize: '0.85rem' }}>
-                          <div style={{ color: '#999', fontSize: '0.7rem' }}>#{item.productId}</div>
+                          <div style={{ color: '#999', fontSize: '0.7rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</div>
                           <div>{productInfoMap[item.productId]?.name || '기타 상품'} <span style={{ fontWeight: 'bold' }}>x {item.quantity}</span></div>
                         </div>
                       </li>
@@ -243,7 +243,7 @@ function OrderList() {
                               )}
                             </div>
                             <span>
-                              <small style={{ color: '#999', marginRight: '0.3rem' }}>#{item.productId}</small>
+                              <small style={{ color: '#999', marginRight: '0.3rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</small>
                               {productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)
                             </span>
                           </li>
