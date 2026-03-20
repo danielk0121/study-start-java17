@@ -26,6 +26,9 @@ function Home() {
       { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png`, salesCount: 4000, createdAt: '2024-01-11' 
       },
+      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-pearson.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, salesCount: 3800, createdAt: '2023-10-01' 
+      },
       { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 3500, createdAt: '2024-03-02'
       },
@@ -52,9 +55,6 @@ function Home() {
       },
       { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '자라', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-zara.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/pants.png`, salesCount: 600, createdAt: '2023-11-10' 
-      },
-      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-pearson.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, salesCount: 400, createdAt: '2023-10-01' 
       },
       { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, stock: 45, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-jpa.png`, salesCount: 350, createdAt: '2023-10-05' 
