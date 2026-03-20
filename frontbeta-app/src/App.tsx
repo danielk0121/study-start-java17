@@ -14,6 +14,7 @@ import AddressManagement from './pages/AddressManagement';
 import ProductSalesList from './pages/ProductSalesList';
 import BrandList from './pages/BrandList';
 import ProductDetail from './pages/ProductDetail';
+import SellerStore from './pages/SellerStore';
 import type { Member } from './types';
 import { useIsMobile } from './hooks/useIsMobile';
 
@@ -101,8 +102,8 @@ function App() {
           <Link to="/" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품목록</Link>
           <Link to="/product/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품상세(S)</Link>
           <Link to="/brands" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
-          <Link to="/cart" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>
-        </div>
+          <Link to="/seller/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어</Link>
+          <Link to="/cart" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>        </div>
 
         {/* 4행: 내비게이션 메뉴 (주문 및 관리 관련) */}
         <div style={{
@@ -125,6 +126,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/brands" element={<BrandList />} />
+          <Route path="/seller/:id" element={<SellerStore />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
