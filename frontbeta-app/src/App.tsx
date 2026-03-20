@@ -63,7 +63,7 @@ function App() {
   const menuGroupStyle: React.CSSProperties = {
     display: 'flex',
     gap: isMobile ? '0.5rem' : '1.2rem',
-    marginLeft: 'auto', // 우측 정렬 핵심
+    marginLeft: 'auto',
     overflowX: 'auto',
     flexWrap: 'nowrap'
   };
@@ -102,11 +102,11 @@ function App() {
           </div>
         </div>
 
-        {/* 3행: 상품 및 전시 (상품목록, 상품상세(S), 카테고리관, 브랜드관) */}
+        {/* 3행: 상품 및 전시 (상품목록, 상품상세, 카테고리관, 브랜드관) */}
         <div style={rowContainerStyle}>
           <div style={menuGroupStyle}>
             <Link to="/" style={navLinkStyle}>상품목록</Link>
-            <Link to="/product/1" style={navLinkStyle}>상품상세(S)</Link>
+            <Link to="/product/1" style={navLinkStyle}>상품상세</Link>
             <Link to="/categories" style={navLinkStyle}>카테고리관</Link>
             <Link to="/brands" style={navLinkStyle}>브랜드관</Link>
           </div>
@@ -121,12 +121,12 @@ function App() {
           </div>
         </div>
 
-        {/* 5행: 구매 및 주문 관리 (장바구니, 주문목록, 주문상세(S), 배송지관리) */}
+        {/* 5행: 구매 및 주문 관리 (장바구니, 주문목록, 주문상세, 배송지관리) */}
         <div style={{ ...rowContainerStyle, borderBottom: 'none' }}>
           <div style={menuGroupStyle}>
             <Link to="/cart" style={navLinkStyle}>장바구니</Link>
             <Link to="/orders" style={navLinkStyle}>주문목록</Link>
-            <Link to="/order/1" style={navLinkStyle}>주문상세(S)</Link>
+            <Link to="/order/1" style={navLinkStyle}>주문상세</Link>
             <Link to="/addresses" style={navLinkStyle}>배송지관리</Link>
           </div>
         </div>
