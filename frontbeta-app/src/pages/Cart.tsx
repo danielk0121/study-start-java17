@@ -7,7 +7,7 @@ interface CartItem {
   price: number;
   quantity: number;
   itemTotal: number;
-  thumbnailUrl?: string;
+  thumbnailUrl1?: string;
 }
 
 /**
@@ -24,15 +24,15 @@ function Cart() {
     const mockCartItems: CartItem[] = [
       { 
         productId: 1, productName: '맥북 프로 14인치', price: 2990000, quantity: 1, itemTotal: 2990000,
-        thumbnailUrl: 'https://via.placeholder.com/80x80?text=MacBook'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`
       },
       { 
         productId: 3, productName: '무선 키보드', price: 89000, quantity: 2, itemTotal: 178000,
-        thumbnailUrl: 'https://via.placeholder.com/80x80?text=KBD'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`
       },
       { 
         productId: 8, productName: '클린 코드', price: 33000, quantity: 1, itemTotal: 33000,
-        thumbnailUrl: 'https://via.placeholder.com/80x80?text=Book'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`
       }
     ];
     setCartItems(mockCartItems);
@@ -78,8 +78,8 @@ function Cart() {
                       width: '80px', height: '80px', backgroundColor: '#f0f0f0',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', flexShrink: 0
                     }}>
-                      {item.thumbnailUrl ? (
-                        <img src={item.thumbnailUrl} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      {item.thumbnailUrl1 ? (
+                        <img src={item.thumbnailUrl1} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
                         <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
                       )}
@@ -136,8 +136,8 @@ function Cart() {
                             width: '60px', height: '60px', backgroundColor: '#f0f0f0',
                             display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
                           }}>
-                            {item.thumbnailUrl ? (
-                              <img src={item.thumbnailUrl} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            {item.thumbnailUrl1 ? (
+                              <img src={item.thumbnailUrl1} alt={item.productName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
                               <span style={{ color: '#ccc', fontSize: '0.6rem' }}>No Img</span>
                             )}

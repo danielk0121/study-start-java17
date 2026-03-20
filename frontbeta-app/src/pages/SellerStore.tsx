@@ -10,8 +10,11 @@ import { useIsMobile } from '../hooks/useIsMobile';
 function SellerStore() {
   const { id } = useParams<{ id: string }>();
   const isMobile = useIsMobile();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [storeInfo, setStoreInfo] = useState<{ name: string; logoUrl: string; description: string } | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [finalQuery, setFinalQuery] = useState('');
 
   useEffect(() => {
     // 판매자 정보 Mock
@@ -40,8 +43,27 @@ function SellerStore() {
         });
       });
     }
-    setProducts(extendedProducts);
+    setAllProducts(extendedProducts);
+    setFilteredProducts(extendedProducts);
   }, [id]);
+
+  useEffect(() => {
+    const query = finalQuery.toLowerCase();
+    const filtered = allProducts.filter(p =>
+      p.name.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query) ||
+      (p.brandName ?? '').toLowerCase().includes(query)
+    );
+    setFilteredProducts(filtered);
+  }, [finalQuery, allProducts]);
+
+  const handleSearch = () => {
+    setFinalQuery(searchQuery);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') handleSearch();
+  };
 
   if (!storeInfo) return null;
 
@@ -64,86 +86,115 @@ function SellerStore() {
         </div>
       </div>
 
-      <h2 style={{ marginBottom: '1.5rem' }}>판매 상품 목록 ({products.length})</h2>
+      <div style={{
+        display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
+        justifyContent: 'space-between',
+        alignItems: isMobile ? 'stretch' : 'center',
+        gap: isMobile ? '0.75rem' : '0',
+        marginBottom: '1.5rem'
+      }}>
+        <h2 style={{ margin: 0 }}>판매 상품 목록 ({filteredProducts.length})</h2>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <input
+            type="text"
+            placeholder="상점 내 상품 검색..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            style={{ padding: '0.5rem', flex: 1, minWidth: 0, border: '1px solid #000' }}
+          />
+          <button
+            onClick={handleSearch}
+            style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
+          >
+            검색
+          </button>
+        </div>
+      </div>
 
       {/* 상품 목록 (Home.tsx와 동일한 카드 레이아웃, 모바일 2열) */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(280px, 1fr))',
-        gap: isMobile ? '0.5rem' : '1.5rem'
-      }}>
-        {products.map(product => (
-          <div key={product.id} style={{ 
-            border: '1px solid #eee', 
-            padding: isMobile ? '0.5rem' : '1rem', 
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column'
-          }}>
-            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <div style={{ color: '#999', fontSize: '0.7rem', marginBottom: '0.3rem' }}>
-                ID: {String(product.id).padStart(8, '0')}
-              </div>
-              
-              <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: '#f9f9f9', marginBottom: '0.75rem', overflow: 'hidden', position: 'relative' }}>
-                {product.thumbnailUrl1 && (
-                  <img src={product.thumbnailUrl1} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                )}
-              </div>
-
-              {/* 브랜드 및 카테고리 정보 (Home.tsx 스타일) */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
-                {product.brandThumbnailUrl && (
-                  <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '16px', height: '16px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
-                )}
-                <span style={{ fontSize: '0.75rem', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {product.brandName}
-                </span>
-              </div>
-
-              <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: '0.4rem' }}>
-                {product.category} · {product.sellerName}
-              </div>
-
-              <div style={{ 
-                fontWeight: 'bold', 
-                fontSize: isMobile ? '0.85rem' : '1rem', 
-                marginBottom: '0.75rem', 
-                height: isMobile ? '2.4rem' : '2.8rem', 
-                overflow: 'hidden', 
-                display: '-webkit-box', 
-                WebkitLineClamp: 2, 
-                WebkitBoxOrient: 'vertical',
-                lineHeight: 1.4
-              }}>
-                {product.name}
-              </div>
-
-              <div style={{ marginTop: 'auto' }}>
-                <div style={{ fontSize: '0.75rem', color: '#888', marginBottom: '0.3rem' }}>
-                  재고: {product.stock}개 <span style={{ marginLeft: '0.5rem' }}>판매: {product.salesCount}개</span>
+      {filteredProducts.length === 0 ? (
+        <p style={{ textAlign: 'center', padding: '3rem', color: '#666' }}>검색 결과가 없습니다.</p>
+      ) : (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: isMobile ? '0.5rem' : '1.5rem'
+        }}>
+          {filteredProducts.map(product => (
+            <div key={product.id} style={{ 
+              border: '1px solid #eee', 
+              padding: isMobile ? '0.5rem' : '1rem', 
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column'
+            }}>
+              <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <div style={{ color: '#999', fontSize: '0.7rem', marginBottom: '0.3rem' }}>
+                  ID: {String(product.id).padStart(8, '0')}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontWeight: 'bold', fontSize: isMobile ? '1rem' : '1.2rem' }}>{product.price.toLocaleString()}원</span>
-                  <button 
-                    onClick={(e) => { e.preventDefault(); alert('장바구니에 담겼습니다.'); }}
-                    style={{ 
-                      padding: '0.3rem', 
-                      backgroundColor: '#fff', 
-                      border: '1px solid #ccc', 
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <img src={`${import.meta.env.BASE_URL}icons.svg#cart`} alt="cart" style={{ width: '16px', height: '16px' }} />
-                  </button>
+                
+                <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: '#f9f9f9', marginBottom: '0.75rem', overflow: 'hidden', position: 'relative' }}>
+                  {product.thumbnailUrl1 && (
+                    <img src={product.thumbnailUrl1} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  )}
                 </div>
-              </div>
-            </Link>
-          </div>
-        ))}
-      </div>
+
+                {/* 브랜드 및 카테고리 정보 (Home.tsx 스타일) */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                  {product.brandThumbnailUrl && (
+                    <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '16px', height: '16px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
+                  )}
+                  <span style={{ fontSize: '0.75rem', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {product.brandName}
+                  </span>
+                </div>
+
+                <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: '0.4rem' }}>
+                  {product.category} · {product.sellerName}
+                </div>
+
+                <div style={{ 
+                  fontWeight: 'bold', 
+                  fontSize: isMobile ? '0.85rem' : '1rem', 
+                  marginBottom: '0.75rem', 
+                  height: isMobile ? '2.4rem' : '2.8rem', 
+                  overflow: 'hidden', 
+                  display: '-webkit-box', 
+                  WebkitLineClamp: 2, 
+                  WebkitBoxOrient: 'vertical',
+                  lineHeight: 1.4
+                }}>
+                  {product.name}
+                </div>
+
+                <div style={{ marginTop: 'auto' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#888', marginBottom: '0.3rem' }}>
+                    재고: {product.stock}개 <span style={{ marginLeft: '0.5rem' }}>판매: {product.salesCount}개</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 'bold', fontSize: isMobile ? '1rem' : '1.2rem' }}>{product.price.toLocaleString()}원</span>
+                    <button 
+                      onClick={(e) => { e.preventDefault(); alert('장바구니에 담겼습니다.'); }}
+                      style={{ 
+                        padding: '0.3rem', 
+                        backgroundColor: '#fff', 
+                        border: '1px solid #ccc', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <img src={`${import.meta.env.BASE_URL}icons.svg#cart`} alt="cart" style={{ width: '16px', height: '16px' }} />
+                    </button>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 interface SalesItem {
@@ -165,11 +166,11 @@ function ProductSalesList() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '0.85rem', color: '#666' }}>상품명</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{item.productName}</span>
+                    <Link to={`/product/${item.productId}`} style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#000', textDecoration: 'underline' }}>{item.productName}</Link>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '0.85rem', color: '#666' }}>상품ID</span>
-                    <span style={{ fontSize: '0.9rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</span>
+                    <Link to={`/product/${item.productId}`} style={{ fontSize: '0.9rem', fontFamily: 'monospace', color: '#999', textDecoration: 'underline' }}>{item.productId.toString().padStart(8, '0')}</Link>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '0.85rem', color: '#666' }}>수량</span>
@@ -206,8 +207,16 @@ function ProductSalesList() {
                 filteredSales.map(item => (
                   <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: '1rem', fontWeight: 'bold' }}>{item.orderNo}</td>
-                    <td style={{ padding: '1rem', color: '#999', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</td>
-                    <td style={{ padding: '1rem' }}>{item.productName}</td>
+                    <td style={{ padding: '1rem' }}>
+                      <Link to={`/product/${item.productId}`} style={{ color: '#999', fontFamily: 'monospace', textDecoration: 'underline' }}>
+                        {item.productId.toString().padStart(8, '0')}
+                      </Link>
+                    </td>
+                    <td style={{ padding: '1rem' }}>
+                      <Link to={`/product/${item.productId}`} style={{ color: '#000', textDecoration: 'underline' }}>
+                        {item.productName}
+                      </Link>
+                    </td>
                     <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
                     <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
                     <td style={{ padding: '1rem', textAlign: 'right' }}>

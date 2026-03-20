@@ -16,11 +16,11 @@ function OrderDetail() {
 
   // 상품 ID -> 상품 정보 매핑 (상세용)
   const productInfoMap: Record<number, { name: string, price: number, thumb: string }> = {
-    1: { name: '맥북 프로 14인치', price: 2990000, thumb: 'https://via.placeholder.com/100x100?text=MBP' },
-    2: { name: '아이폰 15 Pro', price: 1550000, thumb: 'https://via.placeholder.com/100x100?text=iPhone' },
-    3: { name: '무선 키보드', price: 89000, thumb: 'https://via.placeholder.com/100x100?text=KBD' },
-    4: { name: '린넨 셔츠', price: 49000, thumb: 'https://via.placeholder.com/100x100?text=Shirt' },
-    8: { name: '클린 코드', price: 33000, thumb: 'https://via.placeholder.com/100x100?text=Book' }
+    1: { name: '맥북 프로 14인치', price: 2990000, thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
+    2: { name: '아이폰 15 Pro', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
+    3: { name: '무선 키보드', price: 89000, thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
+    4: { name: '린넨 셔츠', price: 49000, thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png` },
+    8: { name: '클린 코드', price: 33000, thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` }
   };
 
   useEffect(() => {

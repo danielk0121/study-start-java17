@@ -193,7 +193,7 @@ function BrandList() {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
                 gap: '1rem'
               }}>
-                {brand.products.map(product => (
+                {brand.products.slice(0, 4).map(product => (
                   <div key={product.id} style={{
                     padding: '1rem',
                     border: '1px solid #eee',

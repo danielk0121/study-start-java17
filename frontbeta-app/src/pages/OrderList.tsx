@@ -16,11 +16,11 @@ function OrderList() {
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
   const productInfoMap: Record<number, { name: string, thumb: string }> = {
-    1: { name: '맥북 프로 14인치', thumb: 'https://via.placeholder.com/50x50?text=MBP' },
-    2: { name: '아이폰 15 Pro', thumb: 'https://via.placeholder.com/50x50?text=iPhone' },
-    3: { name: '무선 키보드', thumb: 'https://via.placeholder.com/50x50?text=KBD' },
-    4: { name: '린넨 셔츠', thumb: 'https://via.placeholder.com/50x50?text=Shirt' },
-    8: { name: '클린 코드', thumb: 'https://via.placeholder.com/50x50?text=Book' }
+    1: { name: '맥북 프로 14인치', thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
+    2: { name: '아이폰 15 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
+    3: { name: '무선 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
+    4: { name: '린넨 셔츠', thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png` },
+    8: { name: '클린 코드', thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` }
   };
 
   useEffect(() => {
