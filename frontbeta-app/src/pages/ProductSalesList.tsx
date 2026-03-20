@@ -162,8 +162,10 @@ function ProductSalesList() {
               <div key={item.id} style={{ border: '1px solid #eee', borderRadius: '8px', padding: '1rem' }}>
                 <div style={{ marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
                   <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.25rem' }}>{item.orderNo}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.15rem' }}>
+                    주문ID: <span style={{ fontFamily: 'monospace' }}>{item.id.toString().padStart(8, '0')}</span>
+                  </div>
                   <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.25rem' }}>
-                    주문ID: <span style={{ fontFamily: 'monospace' }}>{item.id.toString().padStart(8, '0')}</span>, 
                     구매자ID: <span style={{ fontFamily: 'monospace' }}>{item.buyerId.toString().padStart(8, '0')}</span>
                   </div>
                   <div style={{ fontSize: '0.8rem', color: '#999' }}>{new Date(item.soldAt).toLocaleString()}</div>
@@ -212,8 +214,10 @@ function ProductSalesList() {
                   <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: '1rem' }}>
                       <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>{item.orderNo}</div>
+                      <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.15rem' }}>
+                        주문ID: <span style={{ fontFamily: 'monospace' }}>{item.id.toString().padStart(8, '0')}</span>
+                      </div>
                       <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.25rem' }}>
-                        주문ID: <span style={{ fontFamily: 'monospace' }}>{item.id.toString().padStart(8, '0')}</span>, 
                         구매자ID: <span style={{ fontFamily: 'monospace' }}>{item.buyerId.toString().padStart(8, '0')}</span>
                       </div>
                       <div style={{ fontSize: '0.8rem', color: '#999' }}>
