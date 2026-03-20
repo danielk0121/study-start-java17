@@ -41,6 +41,7 @@ function ScrollToTopAndBg() {
 
 /**
  * 프론트엔드 메인 진입점
+ * 상단바 5행 구성 (로고 좌측, 메뉴 우측 정렬)
  */
 function App() {
   const isMobile = useIsMobile();
@@ -51,15 +52,20 @@ function App() {
     whiteSpace: 'nowrap'
   };
 
-  const navRowStyle: React.CSSProperties = {
-    padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 1rem',
+  const rowContainerStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: isMobile ? '0.5rem' : '1.2rem',
+    padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 1rem',
     borderBottom: '1px solid #eee',
-    flexWrap: 'nowrap',
-    overflowX: 'auto'
+    backgroundColor: 'transparent'
+  };
+
+  const menuGroupStyle: React.CSSProperties = {
+    display: 'flex',
+    gap: isMobile ? '0.5rem' : '1.2rem',
+    marginLeft: 'auto', // 우측 정렬 핵심
+    overflowX: 'auto',
+    flexWrap: 'nowrap'
   };
 
   return (
@@ -69,51 +75,60 @@ function App() {
         borderBottom: '1px solid #000',
         fontFamily: 'sans-serif',
         fontSize: isMobile ? '0.75rem' : '0.85rem',
-        backgroundColor: 'transparent'
       }}>
-        {/* 1행: 인증 관련 (로그인, 회원가입, 판매자로그인, 판매자가입) */}
-        <div style={navRowStyle}>
-          <Link to="/" style={{ ...navLinkStyle, display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#000', fontWeight: 'bold', marginRight: 'auto' }}>
+        {/* 1행: 로고(좌) + 인증 관련(우) (로그인, 회원가입, 판매자로그인, 판매자가입) */}
+        <div style={rowContainerStyle}>
+          <Link to="/" style={{ ...navLinkStyle, display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#000', fontWeight: 'bold' }}>
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="S" style={{ width: '16px', height: '16px' }} />
             SHOP
           </Link>
-          <Link to="/login" style={navLinkStyle}>로그인</Link>
-          <Link to="/register" style={navLinkStyle}>회원가입</Link>
-          <span style={{ color: '#ccc' }}>|</span>
-          <Link to="/manager/login" style={{ ...navLinkStyle, color: '#d00' }}>판매자로그인</Link>
-          <Link to="/manager/register" style={{ ...navLinkStyle, color: '#d00' }}>판매자가입</Link>
+          <div style={menuGroupStyle}>
+            <Link to="/login" style={navLinkStyle}>로그인</Link>
+            <Link to="/register" style={navLinkStyle}>회원가입</Link>
+            <span style={{ color: '#ccc' }}>|</span>
+            <Link to="/manager/login" style={{ ...navLinkStyle, color: '#d00' }}>판매자로그인</Link>
+            <Link to="/manager/register" style={{ ...navLinkStyle, color: '#d00' }}>판매자가입</Link>
+          </div>
         </div>
 
         {/* 2행: 정보 관리 (내정보(B), 정보수정(B), 내정보(S), 정보수정(S)) */}
-        <div style={navRowStyle}>
-          <Link to="/mypage" style={navLinkStyle}>내정보(B)</Link>
-          <Link to="/mypage/edit" style={navLinkStyle}>정보수정(B)</Link>
-          <span style={{ color: '#ccc' }}>|</span>
-          <Link to="/manager/mypage" style={{ ...navLinkStyle, color: '#d00' }}>내정보(S)</Link>
-          <Link to="/manager/mypage/edit" style={{ ...navLinkStyle, color: '#d00' }}>정보수정(S)</Link>
+        <div style={rowContainerStyle}>
+          <div style={menuGroupStyle}>
+            <Link to="/mypage" style={navLinkStyle}>내정보(B)</Link>
+            <Link to="/mypage/edit" style={navLinkStyle}>정보수정(B)</Link>
+            <span style={{ color: '#ccc' }}>|</span>
+            <Link to="/manager/mypage" style={{ ...navLinkStyle, color: '#d00' }}>내정보(S)</Link>
+            <Link to="/manager/mypage/edit" style={{ ...navLinkStyle, color: '#d00' }}>정보수정(S)</Link>
+          </div>
         </div>
 
         {/* 3행: 상품 및 전시 (상품목록, 상품상세(S), 카테고리관, 브랜드관) */}
-        <div style={navRowStyle}>
-          <Link to="/" style={navLinkStyle}>상품목록</Link>
-          <Link to="/product/1" style={navLinkStyle}>상품상세(S)</Link>
-          <Link to="/categories" style={navLinkStyle}>카테고리관</Link>
-          <Link to="/brands" style={navLinkStyle}>브랜드관</Link>
+        <div style={rowContainerStyle}>
+          <div style={menuGroupStyle}>
+            <Link to="/" style={navLinkStyle}>상품목록</Link>
+            <Link to="/product/1" style={navLinkStyle}>상품상세(S)</Link>
+            <Link to="/categories" style={navLinkStyle}>카테고리관</Link>
+            <Link to="/brands" style={navLinkStyle}>브랜드관</Link>
+          </div>
         </div>
 
         {/* 4행: 판매자 및 판매관리 (판매자스토어(공식), 판매자스토어(일반), 판매내역(S)) */}
-        <div style={navRowStyle}>
-          <Link to="/seller/2" style={navLinkStyle}>판매자스토어(공식)</Link>
-          <Link to="/seller/4" style={navLinkStyle}>판매자스토어(일반)</Link>
-          <Link to="/manager/sales" style={{ ...navLinkStyle, color: '#d00', fontWeight: 'bold' }}>판매내역(S)</Link>
+        <div style={rowContainerStyle}>
+          <div style={menuGroupStyle}>
+            <Link to="/seller/2" style={navLinkStyle}>판매자스토어(공식)</Link>
+            <Link to="/seller/4" style={navLinkStyle}>판매자스토어(일반)</Link>
+            <Link to="/manager/sales" style={{ ...navLinkStyle, color: '#d00', fontWeight: 'bold' }}>판매내역(S)</Link>
+          </div>
         </div>
 
         {/* 5행: 구매 및 주문 관리 (장바구니, 주문목록, 주문상세(S), 배송지관리) */}
-        <div style={{ ...navRowStyle, borderBottom: 'none' }}>
-          <Link to="/cart" style={navLinkStyle}>장바구니</Link>
-          <Link to="/orders" style={navLinkStyle}>주문목록</Link>
-          <Link to="/order/1" style={navLinkStyle}>주문상세(S)</Link>
-          <Link to="/addresses" style={navLinkStyle}>배송지관리</Link>
+        <div style={{ ...rowContainerStyle, borderBottom: 'none' }}>
+          <div style={menuGroupStyle}>
+            <Link to="/cart" style={navLinkStyle}>장바구니</Link>
+            <Link to="/orders" style={navLinkStyle}>주문목록</Link>
+            <Link to="/order/1" style={navLinkStyle}>주문상세(S)</Link>
+            <Link to="/addresses" style={navLinkStyle}>배송지관리</Link>
+          </div>
         </div>
       </nav>
 

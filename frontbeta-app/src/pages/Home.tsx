@@ -18,27 +18,29 @@ function Home() {
     // TODO: 백엔드 API 연동 (GET /products)
     const baseProducts: Product[] = [
       { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150, createdAt: '2024-03-01'
-      },
-      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230, createdAt: '2024-03-02'
-      },
-      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320, createdAt: '2024-03-03'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 500, createdAt: '2024-03-01'
       },
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15, createdAt: '2023-12-01'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 480, createdAt: '2023-12-01'
+      },
+      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 450, createdAt: '2024-03-02'
+      },
+      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 420, createdAt: '2023-12-20' },
+      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 400, createdAt: '2024-03-03'
       },
       { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 42, createdAt: '2023-12-05' },
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 380, createdAt: '2023-12-05' },
+      { id: 15, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 350, createdAt: '2023-12-30' },
       { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-logitech.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 120, createdAt: '2023-11-20' },
       { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '유니클로', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-uniqlo.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, salesCount: 85, createdAt: '2023-11-15' },
       { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '자라', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-zara.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/pants.png`, salesCount: 60, createdAt: '2023-11-10' },
-      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 350, createdAt: '2023-12-20' },
       { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: '스타벅스', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-starbucks.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/coffee.png`, salesCount: 210, createdAt: '2023-12-25' },
       { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-pearson.png`, 
@@ -48,9 +50,7 @@ function Home() {
       { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '무지', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-muji.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tumbler.png`, salesCount: 45, createdAt: '2023-09-01' },
       { id: 14, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '소니', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-sony.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/sony.png`, salesCount: 18, createdAt: '2023-08-01' },
-      { id: 15, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 112, createdAt: '2023-12-30' }
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/sony.png`, salesCount: 18, createdAt: '2023-08-01' }
     ];
 
     // 데이터 뻥튀기 (60개 이상으로 만들기)
@@ -62,13 +62,11 @@ function Home() {
           id: p.id + (i * 1000), // ID 중복 방지
           name: i === 0 ? p.name : `${p.name} (Lot ${i + 1})`,
           stock: p.stock + (i * 10),
-          salesCount: p.salesCount + (i * 5)
+          // 판매량을 약간씩 다르게 하여 셔플 효과 극대화
+          salesCount: Math.max(0, p.salesCount + (i * 10) - Math.floor(Math.random() * 20))
         });
       });
     }
-
-    // 무작위 셔플 (최초 화면에서 여러 브랜드가 섞여서 나오도록)
-    mockProducts.sort(() => Math.random() - 0.5);
 
     // 검색 필터링
     const query = finalQuery.toLowerCase();
@@ -83,7 +81,14 @@ function Home() {
     filtered.sort((a, b) => {
       if (sortBy === 'priceHigh') return b.price - a.price;
       if (sortBy === 'priceLow') return a.price - b.price;
-      if (sortBy === 'sales') return b.salesCount - a.salesCount;
+      if (sortBy === 'sales') {
+        const diff = b.salesCount - a.salesCount;
+        if (diff !== 0) return diff;
+        // 판매량이 같으면 삼성 브랜드 우선
+        if (a.brandName === '삼성' && b.brandName !== '삼성') return -1;
+        if (a.brandName !== '삼성' && b.brandName === '삼성') return 1;
+        return 0;
+      }
       if (sortBy === 'latest') {
         const dateA = new Date(a.createdAt || '2000-01-01').getTime();
         const dateB = new Date(b.createdAt || '2000-01-01').getTime();
