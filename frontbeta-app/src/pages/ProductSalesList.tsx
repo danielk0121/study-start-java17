@@ -32,6 +32,9 @@ function ProductSalesList() {
     // Flyway V2, V3, V11 샘플 데이터를 기반으로 한 Mock 데이터
     // 주문번호 형식: yyMMddHHmmssNNN
     const mockSales: SalesItem[] = [
+      { id: 11, orderNo: '250902101500001', productId: 11, productName: '삼성 갤럭시 북4 Pro', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 1850000 },
+      { id: 12, orderNo: '250902101500001', productId: 12, productName: '삼성 갤럭시 S24 Ultra', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 1550000 },
+      { id: 13, orderNo: '250902101500001', productId: 13, productName: '삼성 커스텀 기계식 키보드', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 150000 },
       { id: 1, orderNo: '250902101500001', productId: 1, productName: '[Apple] 맥북 프로 14인치 M3 Pro 실버', quantity: 1, soldAt: '2025-09-02T10:15:00', totalPrice: 2990000 },
       { id: 2, orderNo: '250902101500001', productId: 3, productName: '[Logitech] MX Keys Mini 무선 기계식 키보드', quantity: 2, soldAt: '2025-09-02T10:15:00', totalPrice: 178000 },
       { id: 3, orderNo: '250905143000002', productId: 2, productName: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', quantity: 1, soldAt: '2025-09-05T14:30:00', totalPrice: 1550000 },

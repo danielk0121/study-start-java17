@@ -24,11 +24,15 @@ function Cart() {
     // TODO: API 연동 (GET /carts/me)
     const mockCartItems: CartItem[] = [
       { 
-        productId: 11, productName: '삼성 노트북 갤럭시 북4 Pro', price: 1850000, quantity: 1, itemTotal: 1850000,
+        productId: 11, productName: '삼성 갤럭시 북4 Pro', price: 1850000, quantity: 1, itemTotal: 1850000,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`
       },
       { 
-        productId: 12, productName: '삼성 키보드 MX 기계식', price: 125000, quantity: 1, itemTotal: 125000,
+        productId: 12, productName: '삼성 갤럭시 S24 Ultra', price: 1550000, quantity: 1, itemTotal: 1550000,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`
+      },
+      { 
+        productId: 13, productName: '삼성 커스텀 기계식 키보드', price: 150000, quantity: 1, itemTotal: 150000,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`
       },
       { 
@@ -86,7 +90,9 @@ function Cart() {
                       )}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color: '#999', fontSize: '0.75rem', fontFamily: 'monospace' }}>ID: {item.productId.toString().padStart(8, '0')}</div>
+                      <Link to={`/product/${item.productId}`} style={{ textDecoration: 'underline', color: '#999', fontSize: '0.75rem', fontFamily: 'monospace', display: 'block' }}>
+                        ID: {item.productId.toString().padStart(8, '0')}
+                      </Link>
                       <Link to={`/product/${item.productId}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
                         <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.3rem' }}>{item.productName}</div>
                       </Link>
@@ -146,7 +152,9 @@ function Cart() {
                             )}
                           </div>
                           <div>
-                            <div style={{ color: '#999', fontSize: '0.8rem', fontFamily: 'monospace' }}>ID: {item.productId.toString().padStart(8, '0')}</div>
+                            <Link to={`/product/${item.productId}`} style={{ textDecoration: 'underline', color: '#999', fontSize: '0.8rem', fontFamily: 'monospace', display: 'block' }}>
+                              ID: {item.productId.toString().padStart(8, '0')}
+                            </Link>
                             <Link to={`/product/${item.productId}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
                               <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
                             </Link>

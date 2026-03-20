@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Order, OrderStatusHistory } from '../types';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -19,7 +19,10 @@ function OrderDetail() {
     2: { name: '아이폰 15 Pro', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
     3: { name: '무선 키보드', price: 89000, thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
     4: { name: '린넨 셔츠', price: 49000, thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png` },
-    8: { name: '클린 코드', price: 33000, thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` }
+    8: { name: '클린 코드', price: 33000, thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` },
+    11: { name: '삼성 갤럭시 북4 Pro', price: 1850000, thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
+    12: { name: '삼성 갤럭시 S24 Ultra', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
+    13: { name: '삼성 커스텀 기계식 키보드', price: 150000, thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` }
   };
 
   useEffect(() => {
@@ -35,7 +38,7 @@ function OrderDetail() {
         shippingZipCode: '06123',
         shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
-        items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
+        items: [{ productId: 11, quantity: 1 }, { productId: 12, quantity: 1 }, { productId: 13, quantity: 1 }]
       },
       {
         id: 105,
@@ -156,8 +159,12 @@ function OrderDetail() {
                         <td style={{ padding: '1rem 0', display: 'flex', gap: '1rem', alignItems: 'center' }}>
                           <img src={info?.thumb} alt={info?.name} style={{ width: '50px', height: '50px', objectFit: 'cover', border: '1px solid #eee' }} />
                           <div>
-                            <div style={{ fontSize: '0.8rem', color: '#999', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</div>
-                            <div style={{ fontWeight: 'bold' }}>{info?.name || '알 수 없는 상품'}</div>
+                            <Link to={`/product/${item.productId}`} style={{ fontSize: '0.8rem', color: '#999', fontFamily: 'monospace', textDecoration: 'underline', display: 'block' }}>
+                              {item.productId.toString().padStart(8, '0')}
+                            </Link>
+                            <Link to={`/product/${item.productId}`} style={{ fontWeight: 'bold', color: 'inherit', textDecoration: 'underline' }}>
+                              {info?.name || '알 수 없는 상품'}
+                            </Link>
                           </div>
                         </td>
                         <td style={{ textAlign: 'right' }}>{item.quantity}개</td>

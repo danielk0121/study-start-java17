@@ -20,7 +20,10 @@ function OrderList() {
     2: { name: '아이폰 15 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, price: 1550000 },
     3: { name: '무선 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, price: 120000 },
     4: { name: '린넨 셔츠', thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, price: 45000 },
-    8: { name: '클린 코드', thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, price: 29000 }
+    8: { name: '클린 코드', thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, price: 29000 },
+    11: { name: '삼성 갤럭시 북4 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, price: 1850000 },
+    12: { name: '삼성 갤럭시 S24 Ultra', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, price: 1550000 },
+    13: { name: '삼성 커스텀 기계식 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, price: 150000 }
   };
 
   useEffect(() => {
@@ -36,7 +39,7 @@ function OrderList() {
         shippingZipCode: '06123',
         shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
-        items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
+        items: [{ productId: 11, quantity: 1 }, { productId: 12, quantity: 1 }, { productId: 13, quantity: 1 }]
       },
       {
         id: 4,
@@ -179,9 +182,13 @@ function OrderList() {
                             )}
                           </div>
                           <div style={{ flex: 1, fontSize: '0.85rem' }}>
-                            <div style={{ color: '#999', fontSize: '0.7rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</div>
+                            <Link to={`/product/${item.productId}`} style={{ color: '#999', fontSize: '0.7rem', fontFamily: 'monospace', textDecoration: 'underline', display: 'block' }}>
+                              {item.productId.toString().padStart(8, '0')}
+                            </Link>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                              <div>{info?.name || '기타 상품'} <span style={{ fontWeight: 'bold' }}>x {item.quantity}</span></div>
+                              <Link to={`/product/${item.productId}`} style={{ color: 'inherit', textDecoration: 'underline' }}>
+                                <div>{info?.name || '기타 상품'} <span style={{ fontWeight: 'bold' }}>x {item.quantity}</span></div>
+                              </Link>
                               <div style={{ fontSize: '0.8rem', color: '#666' }}>{info ? (info.price * item.quantity).toLocaleString() + '원' : ''}</div>
                             </div>
                             <div style={{ fontSize: '0.75rem', color: '#999' }}>개당 {info?.price.toLocaleString() || 0}원</div>
@@ -247,8 +254,13 @@ function OrderList() {
                               </div>
                               <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <span>
-                                  <small style={{ color: '#999', marginRight: '0.3rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</small>
-                                  {info?.name || '기타 상품'} ({item.quantity}개)
+                                  <Link to={`/product/${item.productId}`} style={{ color: '#999', marginRight: '0.3rem', fontFamily: 'monospace', textDecoration: 'underline' }}>
+                                    {item.productId.toString().padStart(8, '0')}
+                                  </Link>
+                                  <Link to={`/product/${item.productId}`} style={{ color: '#000', textDecoration: 'underline' }}>
+                                    {info?.name || '기타 상품'}
+                                  </Link>
+                                  <span style={{ marginLeft: '0.3rem' }}>({item.quantity}개)</span>
                                 </span>
                                 <small style={{ color: '#999' }}>개당 {info?.price.toLocaleString() || 0}원</small>
                               </div>
