@@ -15,13 +15,13 @@ function OrderDetail() {
 
   // 상품 ID -> 상품 정보 매핑 (상세용)
   const productInfoMap: Record<number, { name: string, price: number, thumb: string }> = {
-    1: { name: '맥북 프로 14인치', price: 2990000, thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
-    2: { name: '아이폰 15 Pro', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
+    1: { name: '맥북 프로 14인치', price: 2990000, thumb: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png` },
+    2: { name: '아이폰 15 Pro', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png` },
     3: { name: '무선 키보드', price: 89000, thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
     4: { name: '린넨 셔츠', price: 49000, thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png` },
     8: { name: '클린 코드', price: 33000, thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` },
-    11: { name: '삼성 갤럭시 북4 Pro', price: 1850000, thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
-    12: { name: '삼성 갤럭시 S24 Ultra', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
+    11: { name: '삼성 갤럭시 북4 Pro', price: 1850000, thumb: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png` },
+    12: { name: '삼성 갤럭시 S24 Ultra', price: 1550000, thumb: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png` },
     13: { name: '삼성 커스텀 기계식 키보드', price: 150000, thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` }
   };
 

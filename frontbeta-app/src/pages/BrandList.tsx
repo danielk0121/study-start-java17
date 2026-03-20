@@ -35,17 +35,17 @@ function BrandList() {
         id: 2, name: '삼성', productCount: 10, sellerCount: 3,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
         products: [
-          { id: 11, name: '삼성 노트북 갤럭시 북4 Pro', price: 1850000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
+          { id: 11, name: '삼성 노트북 갤럭시 북4 Pro', price: 1850000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png` },
           { id: 22, name: '삼성 키보드 MX 기계식', price: 125000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
-          { id: 33, name: '삼성 갤럭시 S24 Ultra', price: 1450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.png` }
+          { id: 33, name: '삼성 갤럭시 S24 Ultra', price: 1450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png` }
         ]
       },
       {
         id: 1, name: '애플', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
         products: [
-          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
-          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/iphone.png` }
+          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png` },
+          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png` }
         ]
       },
       {

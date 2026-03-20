@@ -25,11 +25,11 @@ function Cart() {
     const mockCartItems: CartItem[] = [
       { 
         productId: 11, productName: '삼성 갤럭시 북4 Pro', price: 1850000, quantity: 1, itemTotal: 1850000,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png`
       },
       { 
         productId: 12, productName: '삼성 갤럭시 S24 Ultra', price: 1550000, quantity: 1, itemTotal: 1550000,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png`
       },
       { 
         productId: 13, productName: '삼성 커스텀 기계식 키보드', price: 150000, quantity: 1, itemTotal: 150000,
@@ -37,7 +37,7 @@ function Cart() {
       },
       { 
         productId: 1, productName: '맥북 프로 14인치', price: 2990000, quantity: 1, itemTotal: 2990000,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`
       }
     ];
     setCartItems(mockCartItems);

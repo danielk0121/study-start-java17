@@ -30,10 +30,10 @@ function CategoryList() {
       {
         id: 1, name: '전자기기', productCount: 0,
         products: [
-          { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
-          { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.png` },
+          { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png` },
+          { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png` },
           { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
-          { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` }
+          { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png` }
         ]
       },
       {

@@ -16,15 +16,14 @@ function OrderList() {
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
   const productInfoMap: Record<number, { name: string, thumb: string, price: number }> = {
-    1: { name: '맥북 프로 14인치', thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, price: 2990000 },
-    2: { name: '아이폰 15 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, price: 1550000 },
+    1: { name: '맥북 프로 14인치', thumb: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`, price: 2990000 },
+    2: { name: '아이폰 15 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png`, price: 1550000 },
     3: { name: '무선 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, price: 120000 },
     4: { name: '린넨 셔츠', thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, price: 45000 },
     8: { name: '클린 코드', thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, price: 29000 },
-    11: { name: '삼성 갤럭시 북4 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, price: 1850000 },
-    12: { name: '삼성 갤럭시 S24 Ultra', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, price: 1550000 },
-    13: { name: '삼성 커스텀 기계식 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, price: 150000 }
-  };
+    11: { name: '삼성 갤럭시 북4 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png`, price: 1850000 },
+    12: { name: '삼성 갤럭시 S24 Ultra', thumb: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png`, price: 1550000 },
+    13: { name: '삼성 커스텀 기계식 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, price: 150000 }  };
 
   useEffect(() => {
     // TODO: API 연동 (GET /orders)

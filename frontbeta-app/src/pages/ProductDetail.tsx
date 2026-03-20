@@ -17,31 +17,30 @@ function ProductDetail() {
   useEffect(() => {
     // Home.tsx와 SellerStore.tsx의 ID 생성 규칙을 반영하여 Mock 데이터 확장
     const baseProducts: Product[] = [
-      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150
+      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png`, salesCount: 150
       },
-      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230
       },
-      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320
+      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png`, salesCount: 320
       },
-      {
-        id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기',
-        sellerId: 1, sellerName: '애플공식몰', brandName: '애플',
+      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플',
         brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`,
-        thumbnailUrl2: `${import.meta.env.BASE_URL}assets/sample/macbook.png`,
-        thumbnailUrl3: `${import.meta.env.BASE_URL}assets/sample/macbook.png`,
-        detailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`,
-        detailUrl2: `${import.meta.env.BASE_URL}assets/sample/macbook.png`,
-        detailUrl3: `${import.meta.env.BASE_URL}assets/sample/macbook.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`,
+        thumbnailUrl2: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`,
+        thumbnailUrl3: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`,
+        detailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`,
+        detailUrl2: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`,
+        detailUrl3: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`,
         salesCount: 15
       },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, 
-        thumbnailUrl2: `${import.meta.env.BASE_URL}assets/sample/iphone.png`,
-        salesCount: 42 },
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png`,
+        thumbnailUrl2: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png`,
+        salesCount: 42
+      },
       { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-logitech.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`,
         thumbnailUrl2: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`,

@@ -17,10 +17,9 @@ function Home() {
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
     const baseProducts: Product[] = [
-      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 1000, createdAt: '2024-03-01'
-      },
-      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
+      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png`, salesCount: 1000, createdAt: '2024-03-01'
+      },      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png`, salesCount: 950, createdAt: '2024-01-11' },
       { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 900, createdAt: '2024-03-02'
@@ -29,17 +28,16 @@ function Home() {
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 850, createdAt: '2023-12-30' },
       { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '유니클로', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-uniqlo.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, salesCount: 800, createdAt: '2023-11-15' },
-      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 750, createdAt: '2024-03-03'
+      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png`, salesCount: 750, createdAt: '2024-03-03'
       },
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 700, createdAt: '2023-12-01'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`, salesCount: 700, createdAt: '2023-12-01'
       },
-      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`, 
+      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 650, createdAt: '2023-12-20' },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 600, createdAt: '2023-12-05' },
-      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-logitech.png`, 
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png`, salesCount: 600, createdAt: '2023-12-05' },      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-logitech.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 550, createdAt: '2023-11-20' },
       { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '자라', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-zara.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/pants.png`, salesCount: 500, createdAt: '2023-11-10' },
