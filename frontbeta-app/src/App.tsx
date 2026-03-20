@@ -15,6 +15,8 @@ import ProductSalesList from './pages/ProductSalesList';
 import BrandList from './pages/BrandList';
 import ProductDetail from './pages/ProductDetail';
 import SellerStore from './pages/SellerStore';
+import EditProfileBuyer from './pages/EditProfileBuyer';
+import EditProfileSeller from './pages/EditProfileSeller';
 import type { Member } from './types';
 import { useIsMobile } from './hooks/useIsMobile';
 
@@ -85,7 +87,9 @@ function App() {
         }}>
           <div style={{ flex: 1 }}></div>
           <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
+          <Link to="/mypage/edit" style={{ textDecoration: 'none', color: '#333' }}>정보수정(B)</Link>
           <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(S)</Link>
+          <Link to="/manager/mypage/edit" style={{ textDecoration: 'none', color: '#d00' }}>정보수정(S)</Link>
           <span style={{ color: '#ccc' }}>|</span>
         </div>
 
@@ -131,12 +135,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/mypage" element={<BuyerMyPage />} />
+          <Route path="/mypage/edit" element={<EditProfileBuyer />} />
           <Route path="/orders" element={<OrderList />} />
           <Route path="/order/:id" element={<OrderDetail />} />
           <Route path="/addresses" element={<AddressManagement />} />
           <Route path="/manager/login" element={<ManagerLogin />} />
           <Route path="/manager/register" element={<ManagerRegister />} />
           <Route path="/manager/mypage" element={<ManagerMyPage />} />
+          <Route path="/manager/mypage/edit" element={<EditProfileSeller />} />
           <Route path="/manager/sales" element={<ProductSalesList />} />
 
         </Routes>

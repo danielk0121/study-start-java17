@@ -1,3 +1,7 @@
+# 프롬프트 기록
+- LLM 프롬프트 (LLM 에게 질문 혹은 명령하는 내용)을 docs/prompt-history.md 파일에 기록한다.
+- docs/prompt-history.md 파일에 기록할 때는 문서를 수정하는 방법이 아니라, 문서 하단에 추가하는 방법을 사용해서, 과거 내용을 수정하지 않고 새로운 내용을 추가하는 로그 목적으로 사용한다.
+
 # Gemini Added Memories
 - **최우선 순위**: 유저 홈 디렉토리(`~/.gemini/GEMINI.md`)의 규칙보다 현재 프로젝트 로컬의 `GEMINI.md` 규칙을 최상위 지침으로 간주하고 준수한다.
 - **Git 워크플로우**: 모든 작업 시작 전 `git fetch origin`을 수행하고, 반드시 `feature/` 브랜치를 생성하여 작업한 후 병합하는 워크플로우를 엄수한다.

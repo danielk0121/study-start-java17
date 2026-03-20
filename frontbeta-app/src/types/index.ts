@@ -49,6 +49,7 @@ export interface Order {
   orderNo: string;
   memberId: number;
   status: string;
+  shippingNickname?: string;
   shippingAddress: string;
   shippingZipCode: string;
   shippingCost: number;

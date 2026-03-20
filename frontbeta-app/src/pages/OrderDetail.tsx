@@ -31,6 +31,7 @@ function OrderDetail() {
         orderNo: '250902101500001',
         memberId: 2,
         status: 'CONFIRMED',
+        shippingNickname: '우리집',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
         shippingCost: 2500,
@@ -42,6 +43,7 @@ function OrderDetail() {
         orderNo: '260226130000105',
         memberId: 8,
         status: 'PENDING',
+        shippingNickname: undefined, // 별명 없음 표현
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
         shippingCost: 3000,
@@ -183,7 +185,10 @@ function OrderDetail() {
             <div style={{ padding: '1.5rem', border: '1px solid #eee', borderRadius: '8px', marginTop: '1rem' }}>
               <div style={{ marginBottom: '0.5rem' }}>
                 <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송 주소</span>
-                <span>{order.shippingAddress}</span>
+                <span>
+                  {order.shippingAddress} 
+                  {order.shippingNickname && <strong style={{ color: '#000', marginLeft: '0.5rem' }}>[{order.shippingNickname}]</strong>}
+                </span>
               </div>
               <div>
                 <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>우편번호</span>
