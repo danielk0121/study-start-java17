@@ -11,20 +11,20 @@ function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [finalQuery, setFinalQuery] = useState('');
-  const [sortBy, setSortBy] = useState('latest');
+  const [sortBy, setSortBy] = useState('sales');
   const isMobile = useIsMobile();
 
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
     const baseProducts: Product[] = [
-      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150, createdAt: '2024-01-01'
+      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150, createdAt: '2024-03-01'
       },
-      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230, createdAt: '2024-01-02'
+      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230, createdAt: '2024-03-02'
       },
-      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320, createdAt: '2024-01-03'
+      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320, createdAt: '2024-03-03'
       },
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15, createdAt: '2023-12-01'
@@ -67,6 +67,9 @@ function Home() {
       });
     }
 
+    // 무작위 셔플 (최초 화면에서 여러 브랜드가 섞여서 나오도록)
+    mockProducts.sort(() => Math.random() - 0.5);
+
     // 검색 필터링
     const query = finalQuery.toLowerCase();
     let filtered = mockProducts.filter(p =>
@@ -78,25 +81,15 @@ function Home() {
 
     // 정렬 로직
     filtered.sort((a, b) => {
-      let result = 0;
-      if (sortBy === 'priceHigh') result = b.price - a.price;
-      else if (sortBy === 'priceLow') result = a.price - b.price;
-      else if (sortBy === 'sales') result = b.salesCount - a.salesCount;
-      else if (sortBy === 'latest') {
+      if (sortBy === 'priceHigh') return b.price - a.price;
+      if (sortBy === 'priceLow') return a.price - b.price;
+      if (sortBy === 'sales') return b.salesCount - a.salesCount;
+      if (sortBy === 'latest') {
         const dateA = new Date(a.createdAt || '2000-01-01').getTime();
         const dateB = new Date(b.createdAt || '2000-01-01').getTime();
-        result = dateB - dateA;
+        return dateB - dateA;
       }
-      
-      // 만약 주 정렬 기준값이 같다면 삼성 제품 우선 배치 (Secondary sort)
-      if (result === 0) {
-        const aIsSamsung = (a.name || '').includes('삼성');
-        const bIsSamsung = (b.name || '').includes('삼성');
-        if (aIsSamsung && !bIsSamsung) return -1;
-        if (!aIsSamsung && bIsSamsung) return 1;
-      }
-      
-      return result;
+      return 0;
     });
 
     setProducts(filtered);

@@ -17,7 +17,7 @@ interface CategorySummary {
 }
 
 /**
- * 카테고리관 페이지
+ * 카테고리관 페이지 (BrandList와 유사한 가로 스크롤 레이아웃)
  */
 function CategoryList() {
   const [categories, setCategories] = useState<CategorySummary[]>([]);
@@ -30,37 +30,40 @@ function CategoryList() {
       {
         id: 1, name: '전자기기', productCount: 0,
         products: [
-          { id: 101, name: '삼성 노트북', price: 1500000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
-          { id: 102, name: '삼성 갤럭시 S24', price: 1200000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.png` },
-          { id: 103, name: '삼성 키보드', price: 150000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/sony.png` },
-          { id: 104, name: '애플 아이폰 15', price: 1550000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/iphone.png` }
+          { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
+          { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.png` },
+          { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
+          { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` }
         ]
       },
       {
         id: 2, name: '의류', productCount: 0,
         products: [
-          { id: 201, name: '나이키 에어맥스', price: 189000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/nike.png` },
-          { id: 202, name: '후드 티셔츠', price: 59000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/nike.png` }
+          { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/shirt.png` },
+          { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/pants.png` },
+          { id: 15, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/nike.png` }
         ]
       },
       {
         id: 3, name: '식품', productCount: 0,
         products: [
-          { id: 301, name: '제주 감귤 5kg', price: 25000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tangerine.png` },
-          { id: 302, name: '제로 콜라 24캔', price: 21000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tangerine.png` }
+          { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tangerine.png` },
+          { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/coffee.png` }
         ]
       },
       {
         id: 4, name: '도서', productCount: 0,
         products: [
-          { id: 401, name: '데이터 지향 애플리케이션 설계', price: 45000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png` },
-          { id: 402, name: '자바 ORM 표준 JPA 프로그래밍', price: 38000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-jpa.png` }
+          { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png` },
+          { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` },
+          { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-jpa.png` }
         ]
       },
       {
         id: 5, name: '기타', productCount: 0,
         products: [
-          { id: 501, name: '캐릭터 문구 세트', price: 12000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/sony.png` }
+          { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tumbler.png` },
+          { id: 155, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/lego.png` }
         ]
       }
     ];

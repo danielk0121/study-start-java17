@@ -108,7 +108,8 @@ function App() {
           <Link to="/product/1" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>상품상세(S)</Link>
           <Link to="/categories" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>카테고리관</Link>
           <Link to="/brands" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
-          <Link to="/seller/2" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어</Link>
+          <Link to="/seller/2" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어(공식)</Link>
+          <Link to="/seller/4" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어(일반)</Link>
           <Link to="/cart" style={{ textDecoration: 'underline', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>        </div>
 
         {/* 4행: 내비게이션 메뉴 (주문 및 관리 관련) */}
