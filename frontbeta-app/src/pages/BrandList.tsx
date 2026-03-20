@@ -197,12 +197,15 @@ function BrandList() {
               </div>
 
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-                gap: '1rem'
+                display: 'flex',
+                overflowX: 'auto',
+                gap: '1rem',
+                paddingBottom: '0.5rem'
               }}>
-                {brand.products.slice(0, 4).map(product => (
+                {brand.products.slice(0, 10).map(product => (
                   <div key={product.id} style={{
+                    flexShrink: 0,
+                    width: '260px',
                     padding: '1rem',
                     border: '1px solid #eee',
                     borderRadius: '4px',

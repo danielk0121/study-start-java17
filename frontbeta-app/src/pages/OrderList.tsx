@@ -15,12 +15,12 @@ function OrderList() {
   const isMobile = useIsMobile();
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
-  const productInfoMap: Record<number, { name: string, thumb: string }> = {
-    1: { name: '맥북 프로 14인치', thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
-    2: { name: '아이폰 15 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png` },
-    3: { name: '무선 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png` },
-    4: { name: '린넨 셔츠', thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png` },
-    8: { name: '클린 코드', thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png` }
+  const productInfoMap: Record<number, { name: string, thumb: string, price: number }> = {
+    1: { name: '맥북 프로 14인치', thumb: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, price: 2990000 },
+    2: { name: '아이폰 15 Pro', thumb: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, price: 1550000 },
+    3: { name: '무선 키보드', thumb: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, price: 120000 },
+    4: { name: '린넨 셔츠', thumb: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, price: 45000 },
+    8: { name: '클린 코드', thumb: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, price: 29000 }
   };
 
   useEffect(() => {
@@ -156,22 +156,36 @@ function OrderList() {
                 <div style={{ marginBottom: '1rem' }}>
                   <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem' }}>주문 상품</div>
                   <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    {order.items.map((item, idx) => (
-                      <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', backgroundColor: '#f9f9f9', padding: '0.5rem', borderRadius: '4px' }}>
-                        <div style={{ width: '40px', height: '40px', backgroundColor: '#fff', border: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          {productInfoMap[item.productId]?.thumb ? (
-                            <img src={productInfoMap[item.productId].thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          ) : (
-                            <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
-                          )}
-                        </div>
-                        <div style={{ flex: 1, fontSize: '0.85rem' }}>
-                          <div style={{ color: '#999', fontSize: '0.7rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</div>
-                          <div>{productInfoMap[item.productId]?.name || '기타 상품'} <span style={{ fontWeight: 'bold' }}>x {item.quantity}</span></div>
-                        </div>
-                      </li>
-                    ))}
+                    {order.items.map((item, idx) => {
+                      const info = productInfoMap[item.productId];
+                      return (
+                        <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', backgroundColor: '#f9f9f9', padding: '0.5rem', borderRadius: '4px' }}>
+                          <div style={{ width: '40px', height: '40px', backgroundColor: '#fff', border: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            {info?.thumb ? (
+                              <img src={info.thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
+                            )}
+                          </div>
+                          <div style={{ flex: 1, fontSize: '0.85rem' }}>
+                            <div style={{ color: '#999', fontSize: '0.7rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                              <div>{info?.name || '기타 상품'} <span style={{ fontWeight: 'bold' }}>x {item.quantity}</span></div>
+                              <div style={{ fontSize: '0.8rem', color: '#666' }}>{info ? (info.price * item.quantity).toLocaleString() + '원' : ''}</div>
+                            </div>
+                            <div style={{ fontSize: '0.75rem', color: '#999' }}>개당 {info?.price.toLocaleString() || 0}원</div>
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
+                </div>
+
+                <div style={{ borderTop: '1px dashed #eee', paddingTop: '0.8rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>총 주문 금액</span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#d00' }}>
+                    {(order.items.reduce((sum, item) => sum + (productInfoMap[item.productId]?.price || 0) * item.quantity, 0) + order.shippingCost).toLocaleString()}원
+                  </span>
                 </div>
               </div>
             ))}
@@ -183,7 +197,8 @@ function OrderList() {
                 <tr style={{ borderBottom: '2px solid #000' }}>
                   <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
                   <th style={{ textAlign: 'left', padding: '1rem' }}>배송지</th>
-                  <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품</th>
+                  <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상품 (단가)</th>
+                  <th style={{ textAlign: 'right', padding: '1rem' }}>총 주문 금액</th>
                   <th style={{ textAlign: 'center', padding: '1rem' }}>상태</th>
                   <th style={{ textAlign: 'right', padding: '1rem' }}>주문일시</th>
                 </tr>
@@ -203,22 +218,34 @@ function OrderList() {
                     </td>
                     <td style={{ padding: '1rem' }}>
                       <ul style={{ margin: 0, padding: 0, listStyle: 'none', fontSize: '0.9rem', color: '#333' }}>
-                        {order.items.map((item, idx) => (
-                          <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-                            <div style={{ width: '30px', height: '30px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              {productInfoMap[item.productId]?.thumb ? (
-                                <img src={productInfoMap[item.productId].thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                              ) : (
-                                <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
-                              )}
-                            </div>
-                            <span>
-                              <small style={{ color: '#999', marginRight: '0.3rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</small>
-                              {productInfoMap[item.productId]?.name || '기타 상품'} ({item.quantity}개)
-                            </span>
-                          </li>
-                        ))}
+                        {order.items.map((item, idx) => {
+                          const info = productInfoMap[item.productId];
+                          return (
+                            <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
+                              <div style={{ width: '30px', height: '30px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {info?.thumb ? (
+                                  <img src={info.thumb} alt="item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                ) : (
+                                  <span style={{ fontSize: '0.5rem', color: '#ccc' }}>N/A</span>
+                                )}
+                              </div>
+                              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <span>
+                                  <small style={{ color: '#999', marginRight: '0.3rem', fontFamily: 'monospace' }}>{item.productId.toString().padStart(8, '0')}</small>
+                                  {info?.name || '기타 상품'} ({item.quantity}개)
+                                </span>
+                                <small style={{ color: '#999' }}>개당 {info?.price.toLocaleString() || 0}원</small>
+                              </div>
+                            </li>
+                          );
+                        })}
                       </ul>
+                    </td>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontWeight: 'bold' }}>
+                      <div style={{ fontSize: '1.1rem', color: '#d00' }}>
+                        {(order.items.reduce((sum, item) => sum + (productInfoMap[item.productId]?.price || 0) * item.quantity, 0) + order.shippingCost).toLocaleString()}원
+                      </div>
+                      <small style={{ color: '#999', fontWeight: 'normal' }}>배송비 {order.shippingCost.toLocaleString()}원 포함</small>
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'center' }}>
                       <span style={{
