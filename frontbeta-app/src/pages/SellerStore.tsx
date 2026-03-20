@@ -24,8 +24,8 @@ function SellerStore() {
 
     // 해당 판매자의 상품 목록 Mock
     const mockProducts: Product[] = [
-      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.jpg`, salesCount: 15 },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.jpg`, salesCount: 42 },
+      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15 },
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 42 },
     ];
     setProducts(mockProducts);
   }, [id]);
