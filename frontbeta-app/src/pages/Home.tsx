@@ -16,59 +16,65 @@ function Home() {
 
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
+    // 요청된 순서대로 baseProducts 정의: 노트북, 커피, 책, 키보드, 신발, 티셔츠, 기타
     const baseProducts: Product[] = [
       { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png`, salesCount: 5000, createdAt: '2024-03-01'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-laptop.png`, salesCount: 0, createdAt: '2024-03-01'
       },
       { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: '스타벅스', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-starbucks.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/coffee.png`, salesCount: 4500, createdAt: '2024-01-07' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/coffee.png`, salesCount: 0, createdAt: '2024-01-07' 
       },
       { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png`, salesCount: 4000, createdAt: '2024-01-11' 
-      },
-      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-pearson.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, salesCount: 3800, createdAt: '2023-10-01' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png`, salesCount: 0, createdAt: '2024-01-11' 
       },
       { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 3500, createdAt: '2024-03-02'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 0, createdAt: '2024-03-02'
       },
       { id: 15, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 3000, createdAt: '2023-12-30' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 0, createdAt: '2023-12-30' 
       },
       { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '유니클로', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-uniqlo.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, salesCount: 2500, createdAt: '2023-11-15' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/shirt.png`, salesCount: 0, createdAt: '2023-11-15' 
       },
+      // 기타 나머지들
       { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png`, salesCount: 2000, createdAt: '2024-03-03'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/samsung-phone.png`, salesCount: 0, createdAt: '2024-03-03'
       },
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`, salesCount: 1500, createdAt: '2023-12-01'
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-laptop.png`, salesCount: 0, createdAt: '2023-12-01'
       },
       { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 1200, createdAt: '2023-12-20' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 0, createdAt: '2023-12-20' 
       },
       { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png`, salesCount: 1000, createdAt: '2023-12-05' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/apple-phone.png`, salesCount: 0, createdAt: '2023-12-05' 
       },
       { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-logitech.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 800, createdAt: '2023-11-20' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 0, createdAt: '2023-11-20' 
       },
       { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '자라', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-zara.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/pants.png`, salesCount: 600, createdAt: '2023-11-10' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/pants.png`, salesCount: 0, createdAt: '2023-11-10' 
+      },
+      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-pearson.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`, salesCount: 0, createdAt: '2023-10-01' 
       },
       { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, stock: 45, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-jpa.png`, salesCount: 350, createdAt: '2023-10-05' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-jpa.png`, salesCount: 0, createdAt: '2023-10-05' 
       },
       { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '무지', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-muji.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tumbler.png`, salesCount: 300, createdAt: '2023-09-01' 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tumbler.png`, salesCount: 0, createdAt: '2023-09-01' 
       },
       { id: 140, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '소니', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-sony.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/sony.png`, salesCount: 250, createdAt: '2023-08-01' 
-      }
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/sony.png`, salesCount: 0, createdAt: '2023-08-01' 
+      },
+      { id: 155, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '레고', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-lego.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/lego.png`, salesCount: 0, createdAt: '2024-01-12' }
     ];
 
-    // 데이터 뻥튀기 (60개 이상으로 만들기)
-    const mockProducts: any[] = [];
+    // 데이터 뻥튀기 및 판매량 교차 배정 로직
+    const mockProducts: Product[] = [];
+    let globalSalesSeed = 10000;
+
     for (let i = 0; i < 4; i++) {
       baseProducts.forEach(p => {
         mockProducts.push({
@@ -76,8 +82,8 @@ function Home() {
           id: p.id + (i * 1000), // ID 중복 방지
           name: i === 0 ? p.name : `${p.name} (Lot ${i + 1})`,
           stock: p.stock + (i * 10),
-          // 판매량을 약간씩 다르게 하되 순위 역전 방지
-          salesCount: Math.max(0, p.salesCount - (i * 10))
+          // 전체 리스트에서 1씩 차감하여 완벽하게 요청 순서대로 교차 노출되도록 함
+          salesCount: globalSalesSeed--
         });
       });
     }
