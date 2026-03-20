@@ -75,7 +75,11 @@ function OrderList() {
         items: [{ productId: 3, quantity: 1 }]
       }
     ];
-    setOrders(mockOrders);
+    // Sort by createdAt ascending (oldest first)
+    const sortedOrders = [...mockOrders].sort((a, b) => 
+      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+    setOrders(sortedOrders);
   }, []);
 
   useEffect(() => {

@@ -106,7 +106,7 @@ function App() {
           <Link to="/" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품목록</Link>
           <Link to="/product/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품상세(S)</Link>
           <Link to="/brands" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
-          <Link to="/seller/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어</Link>
+          <Link to="/seller/2" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어</Link>
           <Link to="/cart" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>        </div>
 
         {/* 4행: 내비게이션 메뉴 (주문 및 관리 관련) */}

@@ -183,12 +183,15 @@ function OrderDetail() {
           <section>
             <h3>배송 정보</h3>
             <div style={{ padding: '1.5rem', border: '1px solid #eee', borderRadius: '8px', marginTop: '1rem' }}>
+              {order.shippingNickname && (
+                <div style={{ marginBottom: '0.8rem', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.5rem' }}>
+                  <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송지 별명</span>
+                  <strong style={{ color: '#000', fontSize: '1.1rem' }}>{order.shippingNickname}</strong>
+                </div>
+              )}
               <div style={{ marginBottom: '0.5rem' }}>
                 <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송 주소</span>
-                <span>
-                  {order.shippingAddress} 
-                  {order.shippingNickname && <strong style={{ color: '#000', marginLeft: '0.5rem' }}>[{order.shippingNickname}]</strong>}
-                </span>
+                <span>{order.shippingAddress}</span>
               </div>
               <div>
                 <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>우편번호</span>

@@ -157,20 +157,20 @@ function BrandList() {
           {brands.map(brand => (
             <div key={brand.id} style={{
               border: '1px solid #000',
-              padding: isMobile ? '1rem' : '2rem',
+              padding: isMobile ? '0.75rem' : '1.25rem',
               backgroundColor: '#fff'
             }}>
               <div style={{
                 display: 'flex',
-                gap: '1rem',
+                gap: '0.75rem',
                 alignItems: 'center',
-                borderBottom: '2px solid #eee',
-                paddingBottom: '1.5rem',
-                marginBottom: '1.5rem'
+                borderBottom: '1px solid #eee',
+                paddingBottom: '0.75rem',
+                marginBottom: '1rem'
               }}>
                 <div style={{
-                  width: isMobile ? '70px' : '100px',
-                  height: isMobile ? '70px' : '100px',
+                  width: isMobile ? '40px' : '60px',
+                  height: isMobile ? '40px' : '60px',
                   flexShrink: 0,
                   backgroundColor: '#f0f0f0',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
@@ -182,15 +182,15 @@ function BrandList() {
                   )}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <h2 style={{ margin: '0 0 0.5rem 0' }}>
+                  <h2 style={{ margin: 0, fontSize: isMobile ? '1.1rem' : '1.3rem' }}>
                     {brand.name}
                     {brand.sellerCount && (
-                      <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: '#666', marginLeft: '0.5rem' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: '#666', marginLeft: '0.5rem' }}>
                         (판매자 {brand.sellerCount}곳 입점 중)
                       </span>
                     )}
                   </h2>
-                  <span style={{ color: '#666', fontSize: '0.9rem' }}>
+                  <span style={{ color: '#666', fontSize: '0.8rem' }}>
                     등록 상품 <strong>{brand.productCount}</strong>개
                   </span>
                 </div>
