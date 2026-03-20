@@ -9,6 +9,7 @@ function BuyerMyPage() {
 
   // Mock 데이터
   const userInfo = {
+    id: 1001,
     name: '김철수',
     email: 'chulsu@example.com',
     role: 'BUYER',
@@ -21,6 +22,10 @@ function BuyerMyPage() {
       <h1>내 정보 (구매자)</h1>
       <div style={{ marginTop: '2rem', border: '1px solid #000', padding: '1.5rem', maxWidth: '600px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>회원 ID</span>
+            <strong style={{ fontFamily: 'monospace' }}>{userInfo.id.toString().padStart(8, '0')}</strong>
+          </div>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>이름</span>
             <strong>{userInfo.name}</strong>
