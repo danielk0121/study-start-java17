@@ -117,7 +117,7 @@ function Home() {
               <div style={{ fontSize: '0.72rem', color: '#888', paddingLeft: '20px' }}>{product.category}</div>
               {product.sellerId && product.sellerName && (
                 <div style={{ fontSize: '0.72rem', paddingLeft: '20px', marginTop: '0.1rem' }}>
-                  <Link to={`/seller/${product.sellerId}`} style={{ color: '#d00', textDecoration: 'none' }}>
+                  <Link to={`/seller/${product.sellerId}`} style={{ color: '#333', textDecoration: 'none' }}>
                     {product.sellerName}
                   </Link>
                 </div>

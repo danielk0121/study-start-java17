@@ -57,7 +57,7 @@ function App() {
                 padding: '0.1rem 0.4rem',
                 border: '1px solid #ccc',
                 fontSize: '0.75rem',
-                color: currentUser.role === 'MANAGER' ? '#d00' : '#333'
+                color: '#333'
               }}>
                 {currentUser.role === 'MANAGER' ? 'SELLER' : 'USER'}
               </span>
@@ -85,7 +85,7 @@ function App() {
         }}>
           <div style={{ flex: 1 }}></div>
           <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
-          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(S)</Link>
+          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(S)</Link>
           <span style={{ color: '#ccc' }}>|</span>
         </div>
 
@@ -118,7 +118,7 @@ function App() {
           <Link to="/orders" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문목록</Link>
           <Link to="/order/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문상세(S)</Link>
           <Link to="/addresses" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>배송지관리</Link>
-          <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold', whiteSpace: 'nowrap' }}>판매내역(S)</Link>
+          <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>판매내역(S)</Link>
         </div>
       </nav>
 

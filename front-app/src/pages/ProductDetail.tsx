@@ -119,7 +119,7 @@ function ProductDetail() {
           {product.sellerId && product.sellerName && (
             <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.5rem' }}>
               판매자:{' '}
-              <Link to={`/seller/${product.sellerId}`} style={{ color: '#d00', textDecoration: 'underline', fontWeight: 'bold' }}>
+              <Link to={`/seller/${product.sellerId}`} style={{ color: '#333', textDecoration: 'underline' }}>
                 {product.sellerName}
               </Link>
             </div>
