@@ -1,52 +1,45 @@
 import { useNavigate } from 'react-router-dom';
 
 /**
- * 관리자용 내 정보 페이지
- * UC_MEM_02 구현 (Prototype)
+ * 판매자용 내 정보 페이지
+ * UC_MEM_03 구현 (Prototype) - SELLER는 상점명 및 사업자번호 정보 노출
  */
 function ManagerMyPage() {
   const navigate = useNavigate();
 
   // Mock 데이터
-  const managerInfo = {
-    name: '박관리',
-    email: 'admin@example.com',
-    role: 'MANAGER',
-    department: '상품운영팀',
-    managedBrands: ['Apple', 'Samsung', 'Sony']
+  const sellerInfo = {
+    name: '김판매',
+    email: 'seller@example.com',
+    role: 'SELLER',
+    storeName: '테크마트',
+    businessNumber: '123-45-67890'
   };
 
   return (
     <div>
-      <h1>내 정보 (관리자)</h1>
+      <h1>내 정보 (판매자)</h1>
       <div style={{ marginTop: '2rem', border: '1px solid #d00', padding: '1.5rem', maxWidth: '600px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>이름</span>
-            <strong>{managerInfo.name}</strong>
+            <strong>{sellerInfo.name}</strong>
           </div>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>이메일</span>
-            <span>{managerInfo.email}</span>
+            <span>{sellerInfo.email}</span>
           </div>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>권한</span>
-            <span style={{ color: '#d00', fontWeight: 'bold' }}>{managerInfo.role}</span>
+            <span style={{ color: '#d00', fontWeight: 'bold' }}>{sellerInfo.role}</span>
           </div>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
-            <span style={{ width: '120px', color: '#666' }}>담당 부서</span>
-            <span>{managerInfo.department}</span>
+            <span style={{ width: '120px', color: '#666' }}>상점명</span>
+            <span style={{ fontWeight: 'bold' }}>{sellerInfo.storeName}</span>
           </div>
-        </div>
-
-        <div style={{ marginTop: '2rem' }}>
-          <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem' }}>담당 브랜드</div>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {managerInfo.managedBrands.map(brand => (
-              <span key={brand} style={{ padding: '0.3rem 0.8rem', backgroundColor: '#f5f5f5', border: '1px solid #ddd', fontSize: '0.85rem' }}>
-                {brand}
-              </span>
-            ))}
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>사업자번호</span>
+            <span>{sellerInfo.businessNumber}</span>
           </div>
         </div>
 
@@ -58,7 +51,7 @@ function ManagerMyPage() {
         </div>
 
         <button style={{ marginTop: '2rem', padding: '0.8rem', width: '100%', border: '1px solid #d00', color: '#d00', backgroundColor: '#fff', cursor: 'pointer' }}>
-          관리자 설정 변경
+          판매자 설정 변경
         </button>
       </div>
     </div>
