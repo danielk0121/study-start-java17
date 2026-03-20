@@ -76,7 +76,7 @@ function SellerStore() {
   if (!storeInfo) return null;
 
   return (
-    <div style={{ backgroundColor: '#fffef0', minHeight: '100vh', margin: '-2rem', padding: '2rem' }}>
+    <div style={{ backgroundColor: '#f0f7ff', minHeight: '100vh', margin: '-2rem', padding: '2rem' }}>
       {/* 상점 헤더 */}
       <div style={{ 
         padding: '2rem', 
