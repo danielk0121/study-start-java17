@@ -18,7 +18,12 @@ function SellerStore() {
 
   useEffect(() => {
     // 판매자 정보 Mock
-    const mockStore = {
+    const isSamsung = id === '2';
+    const mockStore = isSamsung ? {
+      name: '삼성공식몰',
+      logoUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
+      description: '함께 가요 미래로! 삼성 공식 판매 상점입니다.'
+    } : {
       name: '애플공식몰',
       logoUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
       description: '혁신적인 기술과 디자인의 애플 공식 판매 상점입니다.'
@@ -26,7 +31,10 @@ function SellerStore() {
     setStoreInfo(mockStore);
 
     // 해당 판매자의 상품 목록 Mock (50개 이상으로 확장)
-    const baseProducts: Product[] = [
+    const baseProducts: Product[] = isSamsung ? [
+      { id: 11, name: '[Samsung] Galaxy S24 Ultra 512GB', price: 1690000, stock: 15, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 38 },
+      { id: 22, name: '[Samsung] Galaxy Watch 6 44mm', price: 369000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 55 },
+    ] : [
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15 },
       { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 42 },
     ];
@@ -184,10 +192,11 @@ function SellerStore() {
                         border: '1px solid #ccc', 
                         cursor: 'pointer',
                         display: 'flex',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        fontSize: '1rem'
                       }}
                     >
-                      <img src={`${import.meta.env.BASE_URL}icons.svg#cart`} alt="cart" style={{ width: '16px', height: '16px' }} />
+                      🛒
                     </button>
                   </div>
                 </div>
