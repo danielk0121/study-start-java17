@@ -31,50 +31,50 @@ function BrandList() {
     const allBrands: BrandSummary[] = [
       {
         id: 1, name: '애플', productCount: 2,
-        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Apple',
+        thumbnailUrl: 'https://ui-avatars.com/api/?name=Apple&background=000&color=fff',
         products: [
-          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=MacBook' },
-          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=iPhone' }
+          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: 'https://images.unsplash.com/photo-1517336714460-4c50d91ec330?auto=format&fit=crop&q=80&w=300' },
+          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&q=80&w=300' }
         ]
       },
       {
         id: 2, name: '삼성', productCount: 2,
-        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Samsung',
+        thumbnailUrl: 'https://ui-avatars.com/api/?name=Samsung&background=000&color=fff',
         products: [
-          { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=S24' },
-          { id: 22, name: 'Galaxy Watch 6', price: 320000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Watch6' }
+          { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=300' },
+          { id: 22, name: 'Galaxy Watch 6', price: 320000, thumbnailUrl: 'https://images.unsplash.com/photo-1544117518-29057b97bb65?auto=format&fit=crop&q=80&w=300' }
         ]
       },
       {
         id: 3, name: '소니', productCount: 2,
-        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Sony',
+        thumbnailUrl: 'https://ui-avatars.com/api/?name=Sony&background=000&color=fff',
         products: [
-          { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=SonyHead' },
-          { id: 23, name: 'PlayStation 5', price: 620000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=PS5' }
+          { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=300' },
+          { id: 23, name: 'PlayStation 5', price: 620000, thumbnailUrl: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&q=80&w=300' }
         ]
       },
       {
         id: 6, name: '나이키', productCount: 2,
-        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Nike',
+        thumbnailUrl: 'https://ui-avatars.com/api/?name=Nike&background=000&color=fff',
         products: [
-          { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=AirMax' },
-          { id: 24, name: 'Jordan 1 Retro', price: 239000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Jordan' }
+          { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=300' },
+          { id: 24, name: 'Jordan 1 Retro', price: 239000, thumbnailUrl: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=300' }
         ]
       },
       {
         id: 12, name: '코카콜라', productCount: 2,
-        thumbnailUrl: 'https://via.placeholder.com/150x150?text=Coke',
+        thumbnailUrl: 'https://ui-avatars.com/api/?name=Coke&background=000&color=fff',
         products: [
-          { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Coke' },
-          { id: 26, name: 'Sprite 1.5L', price: 3000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Sprite' }
+          { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&q=80&w=300' },
+          { id: 26, name: 'Sprite 1.5L', price: 3000, thumbnailUrl: 'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&q=80&w=300' }
         ]
       },
       {
         id: 16, name: '오라일리', productCount: 2,
-        thumbnailUrl: 'https://via.placeholder.com/150x150?text=OReilly',
+        thumbnailUrl: 'https://ui-avatars.com/api/?name=OReilly&background=000&color=fff',
         products: [
-          { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=DDIA' },
-          { id: 38, name: 'Python Crash Course', price: 38000, thumbnailUrl: 'https://via.placeholder.com/100x100?text=Python' }
+          { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: 'https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80&w=300' },
+          { id: 38, name: 'Python Crash Course', price: 38000, thumbnailUrl: 'https://images.unsplash.com/photo-1532012197367-6309011b7142?auto=format&fit=crop&q=80&w=300' }
         ]
       }
     ];

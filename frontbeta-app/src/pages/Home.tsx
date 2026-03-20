@@ -16,23 +16,37 @@ function Home() {
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
     const mockProducts: Product[] = [
-      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
-        thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1', salesCount: 15
+      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Apple&background=000&color=fff',
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1517336714460-4c50d91ec330?auto=format&fit=crop&q=80&w=800', salesCount: 15
       },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
-      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 },
-      { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '유니클로', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=U', salesCount: 85 },
-      { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '자라', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=Z', salesCount: 60 },
-      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=C', salesCount: 350 },
-      { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: '스타벅스', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 210 },
-      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=P', salesCount: 95 },
-      { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, stock: 45, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 78 },
-      { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '무지', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=M', salesCount: 45 },
-      { id: 11, name: '[Samsung] Galaxy S24 Ultra 512GB 블랙', price: 1150000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 33 },
-      { id: 12, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '소니', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 18 },
-      { id: 13, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=N', salesCount: 112 },
-      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 54 },
-      { id: 15, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '레고', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 29 }
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Apple&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&q=80&w=800', salesCount: 42 },
+      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '로지텍', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Logitech&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&q=80&w=800', salesCount: 120 },
+      { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '유니클로', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Uniqlo&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1596755094514-f87034a26cc1?auto=format&fit=crop&q=80&w=800', salesCount: 85 },
+      { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '자라', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Zara&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=800', salesCount: 60 },
+      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=CJ&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&q=80&w=800', salesCount: 350 },
+      { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: '스타벅스', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Starbucks&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800', salesCount: 210 },
+      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '피어슨', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Pearson&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800', salesCount: 95 },
+      { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, stock: 45, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=OReilly&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1532012197367-6309011b7142?auto=format&fit=crop&q=80&w=800', salesCount: 78 },
+      { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '무지', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Muji&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1517254456976-ee8682099819?auto=format&fit=crop&q=80&w=800', salesCount: 45 },
+      { id: 11, name: '[Samsung] Galaxy S24 Ultra 512GB 블랙', price: 1150000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Samsung&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800', salesCount: 33 },
+      { id: 12, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '소니', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Sony&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800', salesCount: 18 },
+      { id: 13, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=Nike&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=800', salesCount: 112 },
+      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=OReilly&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&q=80&w=800', salesCount: 54 },
+      { id: 15, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '레고', brandThumbnailUrl: 'https://ui-avatars.com/api/?name=LEGO&background=000&color=fff', 
+        thumbnailUrl1: 'https://images.unsplash.com/photo-1585366119957-e9730b6d0f60?auto=format&fit=crop&q=80&w=800', salesCount: 29 }
     ];
 
     // 검색 필터링
