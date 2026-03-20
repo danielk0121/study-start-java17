@@ -21,19 +21,42 @@ import EditProfileSeller from './pages/EditProfileSeller';
 import { useIsMobile } from './hooks/useIsMobile';
 
 /**
- * 전역 배경색 제어를 위한 컴포넌트
+ * 전역 배경색 및 스크롤바 제어를 위한 컴포넌트
  */
 function ScrollToTopAndBg() {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // 판매자 스토어(/seller/...)인 경우 배경색 적용 (짙은 파란색)
-    if (pathname.includes('/seller/')) {
-      document.body.style.backgroundColor = '#8bbdfa';
+    
+    // 판매자 스토어 배경색 분기
+    if (pathname.includes('/seller/2')) {
+      document.body.style.backgroundColor = '#f0f7ff'; // 옅은 파란색 (공식)
+    } else if (pathname.includes('/seller/4')) {
+      document.body.style.backgroundColor = '#f0fff0'; // 옅은 초록색 (일반)
+    } else if (pathname.includes('/seller/')) {
+      document.body.style.backgroundColor = '#8bbdfa'; // 기본 판매자 배경
     } else {
       document.body.style.backgroundColor = '#fff';
     }
+
+    // 모바일 스크롤바 숨기기 스타일 주입
+    const style = document.createElement('style');
+    style.innerHTML = `
+      /* 전체 요소에 대해 스크롤바 숨기기 (기능은 유지) */
+      * {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      *::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
   }, [pathname]);
 
   return null;
