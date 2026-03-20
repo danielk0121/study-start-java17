@@ -12,7 +12,7 @@ function SellerStore() {
   const isMobile = useIsMobile();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [storeInfo, setStoreInfo] = useState<{ name: string; logoUrl: string; description: string } | null>(null);
+  const [storeInfo, setStoreInfo] = useState<{ name: string; logoUrl?: string; logoEmoji?: string; description: string } | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [finalQuery, setFinalQuery] = useState('');
 
@@ -27,7 +27,7 @@ function SellerStore() {
       description: '함께 가요 미래로! 삼성 공식 판매 상점입니다.'
     } : isFood ? {
       name: '먹거리세상',
-      logoUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`,
+      logoEmoji: '🍎',
       description: '신선하고 건강한 먹거리를 제공하는 일반 판매 상점입니다.'
     } : {
       name: '애플공식몰',
@@ -38,15 +38,15 @@ function SellerStore() {
 
     // 해당 판매자의 상품 목록 Mock (50개 이상으로 확장)
     const baseProducts: Product[] = isSamsung ? [
-      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150 },
-      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230 },
-      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320 },
+      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150, createdAt: '2024-03-01' },
+      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230, createdAt: '2024-03-02' },
+      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '삼성공식몰', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320, createdAt: '2024-03-03' },
     ] : isFood ? [
-      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 350 },
-      { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: '스타벅스', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-starbucks.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/coffee.png`, salesCount: 210 },
+      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: 'CJ', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tangerine.png`, salesCount: 350, createdAt: '2024-01-01' },
+      { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', sellerId: 4, sellerName: '먹거리세상', brandName: '스타벅스', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-starbucks.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/coffee.png`, salesCount: 210, createdAt: '2024-01-02' },
     ] : [
-      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15 },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 42 },
+      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15, createdAt: '2024-02-01' },
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 42, createdAt: '2024-02-02' },
     ];
 
     const extendedProducts: Product[] = [];
@@ -86,7 +86,7 @@ function SellerStore() {
   if (!storeInfo) return null;
 
   return (
-    <div style={{ backgroundColor: '#b0d4ff', minHeight: '100vh', margin: '-2rem', padding: '2rem' }}>
+    <div style={{ minHeight: '80vh' }}>
       {/* 상점 헤더 */}
       <div style={{ 
         padding: '2rem', 
@@ -98,7 +98,13 @@ function SellerStore() {
         alignItems: 'center', 
         gap: '2rem' 
       }}>
-        <img src={storeInfo.logoUrl} alt={storeInfo.name} style={{ width: '100px', height: '100px', border: '1px solid #eee' }} />
+        {storeInfo.logoUrl ? (
+          <img src={storeInfo.logoUrl} alt={storeInfo.name} style={{ width: '100px', height: '100px', border: '1px solid #eee', objectFit: 'contain' }} />
+        ) : (
+          <div style={{ width: '100px', height: '100px', border: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', backgroundColor: '#f9f9f9' }}>
+            {storeInfo.logoEmoji}
+          </div>
+        )}
         <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
           <h1 style={{ margin: '0 0 0.5rem 0' }}>{storeInfo.name}</h1>
           <p style={{ margin: 0, color: '#666' }}>{storeInfo.description}</p>
@@ -147,6 +153,7 @@ function SellerStore() {
               padding: isMobile ? '0.5rem' : '1rem', 
               position: 'relative',
               display: 'flex',
+              backgroundColor: '#fff',
               flexDirection: 'column'
             }}>
               <Link to={`/product/${product.id}`} style={{ textDecoration: 'underline', color: 'inherit', display: 'flex', flexDirection: 'column', height: '100%' }}>
