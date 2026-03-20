@@ -29,6 +29,7 @@ function ManagerRegister() {
           value={formData.email} 
           onChange={e => setFormData({...formData, email: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="text" 
@@ -36,6 +37,7 @@ function ManagerRegister() {
           value={formData.name} 
           onChange={e => setFormData({...formData, name: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="password" 
@@ -43,6 +45,7 @@ function ManagerRegister() {
           value={formData.password} 
           onChange={e => setFormData({...formData, password: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="text" 
@@ -50,8 +53,9 @@ function ManagerRegister() {
           value={formData.authCode} 
           onChange={e => setFormData({...formData, authCode: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
-        <button type="submit" style={{ backgroundColor: '#333', color: 'white', border: 'none', padding: '0.7rem', cursor: 'pointer' }}>
+        <button type="submit" style={{ backgroundColor: '#d00', color: 'white', border: 'none', padding: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
           관리자 가입 신청
         </button>
       </form>

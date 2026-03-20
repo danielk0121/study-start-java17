@@ -57,12 +57,21 @@ function EditProfileSeller() {
           </div>
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>사업자 등록번호</label>
-            <input 
-              type="text" 
-              value={formData.businessNo} 
-              onChange={e => setFormData({...formData, businessNo: e.target.value})}
-              style={{ width: '100%', padding: '0.8rem', border: '1px solid #ccc' }} 
-            />
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <input 
+                type="text" 
+                value={formData.businessNo} 
+                onChange={e => setFormData({...formData, businessNo: e.target.value})}
+                style={{ flex: 1, padding: '0.8rem', border: '1px solid #ccc' }} 
+              />
+              <button 
+                type="button" 
+                onClick={() => alert('사업자 인증이 완료되었습니다.')}
+                style={{ padding: '0.5rem 1rem', backgroundColor: '#000', color: '#fff', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}
+              >
+                인증하기
+              </button>
+            </div>
           </div>
           <div>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>상점 설명</label>

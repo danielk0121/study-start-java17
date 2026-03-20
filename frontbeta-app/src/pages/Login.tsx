@@ -56,6 +56,7 @@ function Login() {
           value={email} 
           onChange={e => setEmail(e.target.value)} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="password" 
@@ -63,8 +64,9 @@ function Login() {
           value={password} 
           onChange={e => setPassword(e.target.value)} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
-        <button type="submit">로그인</button>
+        <button type="submit" style={{ padding: '1rem', border: 'none', backgroundColor: '#000', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>로그인</button>
       </form>
     </div>
   );
