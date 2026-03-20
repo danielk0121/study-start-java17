@@ -112,13 +112,6 @@ function ProductDetail() {
 
   return (
     <div>
-      <button
-        onClick={() => navigate(-1)}
-        style={{ marginBottom: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
-      >
-        &lt; 뒤로가기
-      </button>
-
       <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '1.5rem' : '3rem', alignItems: 'start' }}>
         {/* 이미지 영역 */}
         <div style={{ width: imageSize, flexShrink: 0 }}>

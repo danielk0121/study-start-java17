@@ -203,7 +203,7 @@ function BrandList() {
                 gap: '1rem',
                 paddingBottom: '0.5rem'
               }}>
-                {brand.products.slice(0, 10).map(product => (
+                {brand.products.slice(0, 4).map(product => (
                   <Link 
                     key={product.id} 
                     to={`/product/${product.id}`}
@@ -217,7 +217,10 @@ function BrandList() {
                       gap: '1rem',
                       alignItems: 'center',
                       textDecoration: 'none',
-                      color: 'inherit'
+                      color: 'inherit',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      zIndex: 1
                     }}
                   >
                     <div style={{
