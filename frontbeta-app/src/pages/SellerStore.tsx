@@ -22,25 +22,25 @@ function SellerStore() {
     };
     setStoreInfo(mockStore);
 
-    // 해당 판매자의 상품 목록 Mock
+    // 해당 판매자의 상품 목록 Mock (50개 이상으로 확장)
     const baseProducts: Product[] = [
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15 },
       { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`, thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/iphone.png`, salesCount: 42 },
     ];
 
-    const mockProducts: Product[] = [];
+    const extendedProducts: Product[] = [];
     for (let i = 0; i < 25; i++) {
       baseProducts.forEach(p => {
-        mockProducts.push({
+        extendedProducts.push({
           ...p,
-          id: p.id + (i * 1000),
-          name: i === 0 ? p.name : `${p.name} (#${i + 1})`,
+          id: p.id + (i * 100),
+          name: `${p.name} #${i + 1}`,
           stock: p.stock + i,
-          salesCount: p.salesCount + i
+          salesCount: p.salesCount + (i * 2)
         });
       });
     }
-    setProducts(mockProducts);
+    setProducts(extendedProducts);
   }, [id]);
 
   if (!storeInfo) return null;
@@ -66,29 +66,79 @@ function SellerStore() {
 
       <h2 style={{ marginBottom: '1.5rem' }}>판매 상품 목록 ({products.length})</h2>
 
-      {/* 상품 목록 (Home.tsx와 동일한 카드 레이아웃) */}
+      {/* 상품 목록 (Home.tsx와 동일한 카드 레이아웃, 모바일 2열) */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(280px, 1fr))',
-        gap: '1.5rem'
+        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fill, minmax(280px, 1fr))',
+        gap: isMobile ? '0.5rem' : '1.5rem'
       }}>
         {products.map(product => (
-          <div key={product.id} style={{ border: '1px solid #eee', padding: '1rem', position: 'relative' }}>
-            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div style={{ color: '#999', fontSize: '0.8rem', marginBottom: '0.5rem' }}>
+          <div key={product.id} style={{ 
+            border: '1px solid #eee', 
+            padding: isMobile ? '0.5rem' : '1rem', 
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <div style={{ color: '#999', fontSize: '0.7rem', marginBottom: '0.3rem' }}>
                 ID: {String(product.id).padStart(8, '0')}
               </div>
-              <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: '#f9f9f9', marginBottom: '1rem', overflow: 'hidden' }}>
+              
+              <div style={{ width: '100%', aspectRatio: '1/1', backgroundColor: '#f9f9f9', marginBottom: '0.75rem', overflow: 'hidden', position: 'relative' }}>
                 {product.thumbnailUrl1 && (
                   <img src={product.thumbnailUrl1} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 )}
               </div>
-              <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.5rem', height: '2.8rem', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+
+              {/* 브랜드 및 카테고리 정보 (Home.tsx 스타일) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.4rem' }}>
+                {product.brandThumbnailUrl && (
+                  <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '16px', height: '16px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
+                )}
+                <span style={{ fontSize: '0.75rem', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {product.brandName}
+                </span>
+              </div>
+
+              <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: '0.4rem' }}>
+                {product.category} · {product.sellerName}
+              </div>
+
+              <div style={{ 
+                fontWeight: 'bold', 
+                fontSize: isMobile ? '0.85rem' : '1rem', 
+                marginBottom: '0.75rem', 
+                height: isMobile ? '2.4rem' : '2.8rem', 
+                overflow: 'hidden', 
+                display: '-webkit-box', 
+                WebkitLineClamp: 2, 
+                WebkitBoxOrient: 'vertical',
+                lineHeight: 1.4
+              }}>
                 {product.name}
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{product.price.toLocaleString()}원</span>
-                <span style={{ fontSize: '0.9rem', color: '#666' }}>재고: {product.stock}개</span>
+
+              <div style={{ marginTop: 'auto' }}>
+                <div style={{ fontSize: '0.75rem', color: '#888', marginBottom: '0.3rem' }}>
+                  재고: {product.stock}개 <span style={{ marginLeft: '0.5rem' }}>판매: {product.salesCount}개</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontWeight: 'bold', fontSize: isMobile ? '1rem' : '1.2rem' }}>{product.price.toLocaleString()}원</span>
+                  <button 
+                    onClick={(e) => { e.preventDefault(); alert('장바구니에 담겼습니다.'); }}
+                    style={{ 
+                      padding: '0.3rem', 
+                      backgroundColor: '#fff', 
+                      border: '1px solid #ccc', 
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <img src={`${import.meta.env.BASE_URL}icons.svg#cart`} alt="cart" style={{ width: '16px', height: '16px' }} />
+                  </button>
+                </div>
               </div>
             </Link>
           </div>
