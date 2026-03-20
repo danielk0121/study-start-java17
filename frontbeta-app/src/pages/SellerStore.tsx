@@ -89,25 +89,25 @@ function SellerStore() {
     <div style={{ minHeight: '80vh' }}>
       {/* 상점 헤더 */}
       <div style={{ 
-        padding: '2rem', 
+        padding: '1rem', 
         border: '1px solid #000', 
         backgroundColor: '#fff',
-        marginBottom: '2rem', 
+        marginBottom: '1.5rem', 
         display: 'flex', 
         flexDirection: isMobile ? 'column' : 'row',
         alignItems: 'center', 
-        gap: '2rem' 
+        gap: '1.5rem' 
       }}>
         {storeInfo.logoUrl ? (
-          <img src={storeInfo.logoUrl} alt={storeInfo.name} style={{ width: '100px', height: '100px', border: '1px solid #eee', objectFit: 'contain' }} />
+          <img src={storeInfo.logoUrl} alt={storeInfo.name} style={{ width: '60px', height: '60px', border: '1px solid #eee', objectFit: 'contain' }} />
         ) : (
-          <div style={{ width: '100px', height: '100px', border: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', backgroundColor: '#f9f9f9' }}>
+          <div style={{ width: '60px', height: '60px', border: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', backgroundColor: '#f9f9f9' }}>
             {storeInfo.logoEmoji}
           </div>
         )}
         <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
-          <h1 style={{ margin: '0 0 0.5rem 0' }}>{storeInfo.name}</h1>
-          <p style={{ margin: 0, color: '#666' }}>{storeInfo.description}</p>
+          <h1 style={{ margin: '0 0 0.25rem 0', fontSize: '1.5rem' }}>{storeInfo.name}</h1>
+          <p style={{ margin: 0, color: '#666', fontSize: '0.9rem' }}>{storeInfo.description}</p>
         </div>
       </div>
 
