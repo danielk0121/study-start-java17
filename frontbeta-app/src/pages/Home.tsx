@@ -171,15 +171,20 @@ function Home() {
               </div>
               <div style={{ marginBottom: '0.5rem' }}>
                 <div style={{ fontSize: '0.72rem', color: '#888', marginBottom: '0.2rem', fontWeight: 500 }}>
-                  {product.sellerName}
+                  <Link to={`/seller/${product.sellerId}`} style={{ color: 'inherit', textDecoration: 'underline' }}>
+                    {product.sellerName}
+                  </Link>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginBottom: '0.2rem' }}>
                   {product.brandThumbnailUrl && (
                     <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '14px', height: '14px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
                   )}
                   <span style={{ fontSize: '0.72rem', color: '#666' }}>
-                    {product.brandName}, {product.category}
+                    {product.brandName}
                   </span>
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#888' }}>
+                  {product.category}
                 </div>
               </div>
               <Link to={`/product/${product.id}`} style={{ textDecoration: 'underline', color: '#000' }}>
@@ -198,9 +203,9 @@ function Home() {
                   {product.name}
                 </h3>
               </Link>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', fontSize: '0.72rem', color: '#666', marginBottom: '0.5rem', gap: '0.1rem 0.25rem' }}>
-                <span>재고: <strong>{product.stock.toLocaleString()}개</strong></span>
-                <span>판매: <strong>{product.salesCount.toLocaleString()}개</strong></span>
+              <div style={{ fontSize: '0.72rem', color: '#666', marginBottom: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                <div>재고: <strong>{product.stock.toLocaleString()}개</strong></div>
+                <div>판매: <strong>{product.salesCount.toLocaleString()}개</strong></div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.4rem' }}>
                 <p style={{ fontWeight: 'bold', fontSize: isMobile ? '0.95rem' : '1.1rem', margin: 0 }}>{product.price.toLocaleString()}원</p>

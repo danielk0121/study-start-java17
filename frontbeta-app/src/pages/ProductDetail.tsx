@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Product } from '../types';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -169,7 +169,11 @@ function ProductDetail() {
             <small style={{ color: '#999', fontFamily: 'monospace' }}>(ID: {product.id.toString().padStart(8, '0')})</small>
           </div>
           <div style={{ fontSize: '0.9rem', color: '#888', marginBottom: '0.5rem' }}>
-            판매자: <strong style={{ color: '#333' }}>{product.sellerName}</strong>
+            판매자: <strong style={{ color: '#333' }}>
+              <Link to={`/seller/${product.sellerId}`} style={{ color: 'inherit', textDecoration: 'underline' }}>
+                {product.sellerName}
+              </Link>
+            </strong>
           </div>
           <h1 style={{ margin: '0 0 1.5rem 0', fontSize: isMobile ? '1.6rem' : '2.5rem' }}>{product.name}</h1>
 
