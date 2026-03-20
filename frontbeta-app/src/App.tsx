@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -18,7 +18,6 @@ import ProductDetail from './pages/ProductDetail';
 import SellerStore from './pages/SellerStore';
 import EditProfileBuyer from './pages/EditProfileBuyer';
 import EditProfileSeller from './pages/EditProfileSeller';
-import type { Member } from './types';
 import { useIsMobile } from './hooks/useIsMobile';
 
 /**
@@ -42,14 +41,25 @@ function ScrollToTopAndBg() {
 
 /**
  * 프론트엔드 메인 진입점
- * PRD-FRONTAPP 요구사항 반영 (메뉴 5줄 구성)
  */
 function App() {
-  const [currentUser, setCurrentUser] = useState<Member | null>(null);
   const isMobile = useIsMobile();
 
-  const handleLogout = () => {
-    setCurrentUser(null);
+  const navLinkStyle: React.CSSProperties = {
+    textDecoration: 'underline',
+    color: 'inherit',
+    whiteSpace: 'nowrap'
+  };
+
+  const navRowStyle: React.CSSProperties = {
+    padding: isMobile ? '0.4rem 0.5rem' : '0.5rem 1rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: isMobile ? '0.5rem' : '1.2rem',
+    borderBottom: '1px solid #eee',
+    flexWrap: 'nowrap',
+    overflowX: 'auto'
   };
 
   return (
@@ -61,87 +71,49 @@ function App() {
         fontSize: isMobile ? '0.75rem' : '0.85rem',
         backgroundColor: 'transparent'
       }}>
-        {/* 1행: 로고 및 로그인 상태 */}
-        <div style={{
-          padding: isMobile ? '0.3rem 0.5rem' : '0.4rem 1rem',
-          display: 'flex',
-          alignItems: 'center',
-          borderBottom: '1px solid #eee',
-        }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'underline', color: '#000' }}>
-            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="S" style={{ width: isMobile ? '18px' : '22px', height: isMobile ? '18px' : '22px' }} />
-            <span style={{ fontWeight: 'bold', fontSize: isMobile ? '0.9rem' : '1.1rem' }}>SHOP</span>
+        {/* 1행: 인증 관련 (로그인, 회원가입, 판매자로그인, 판매자가입) */}
+        <div style={navRowStyle}>
+          <Link to="/" style={{ ...navLinkStyle, display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#000', fontWeight: 'bold', marginRight: 'auto' }}>
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="S" style={{ width: '16px', height: '16px' }} />
+            SHOP
           </Link>
-          <div style={{ flex: 1 }}></div>
-          {currentUser ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.7rem', border: '1px solid #ccc', padding: '0 0.2rem' }}>{currentUser.role}</span>
-              <span>{currentUser.name}</span>
-              <button onClick={handleLogout} style={{ fontSize: '0.75rem', cursor: 'pointer' }}>로그아웃</button>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <Link to="/login" style={{ textDecoration: 'underline', color: '#333' }}>로그인</Link>
-              <Link to="/register" style={{ textDecoration: 'underline', color: '#333' }}>가입</Link>
-            </div>
-          )}
-        </div>
-
-        {/* 2행: 판매자 가입/로그인 (모바일 분리) */}
-        <div style={{
-          padding: '0.3rem 0.5rem',
-          display: isMobile ? 'flex' : 'none',
-          justifyContent: 'flex-end',
-          gap: '0.8rem',
-          borderBottom: '1px solid #eee',
-          backgroundColor: 'rgba(255,255,255,0.3)'
-        }}>
-          <Link to="/manager/login" style={{ textDecoration: 'underline', color: '#d00' }}>판매자로그인</Link>
-          <Link to="/manager/register" style={{ textDecoration: 'underline', color: '#d00' }}>판매자가입</Link>
-        </div>
-
-        {/* 3행: 회원/판매자 정보수정 */}
-        <div style={{
-          padding: '0.3rem 0.5rem',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: isMobile ? '0.5rem' : '1rem',
-          borderBottom: '1px solid #eee',
-        }}>
-          <Link to="/mypage" style={{ textDecoration: 'underline', color: '#333' }}>내정보(B)</Link>
-          <Link to="/mypage/edit" style={{ textDecoration: 'underline', color: '#333' }}>수정(B)</Link>
+          <Link to="/login" style={navLinkStyle}>로그인</Link>
+          <Link to="/register" style={navLinkStyle}>회원가입</Link>
           <span style={{ color: '#ccc' }}>|</span>
-          <Link to="/manager/mypage" style={{ textDecoration: 'underline', color: '#d00' }}>내정보(S)</Link>
-          <Link to="/manager/mypage/edit" style={{ textDecoration: 'underline', color: '#d00' }}>수정(S)</Link>
+          <Link to="/manager/login" style={{ ...navLinkStyle, color: '#d00' }}>판매자로그인</Link>
+          <Link to="/manager/register" style={{ ...navLinkStyle, color: '#d00' }}>판매자가입</Link>
         </div>
 
-        {/* 4행: 주요 관 서비스 */}
-        <div style={{
-          padding: '0.4rem 0.5rem',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: isMobile ? '0.5rem' : '1.2rem',
-          borderBottom: '1px solid #eee',
-        }}>
-          <Link to="/" style={{ textDecoration: 'underline', color: '#333' }}>상품목록</Link>
-          <Link to="/categories" style={{ textDecoration: 'underline', color: '#333' }}>카테고리</Link>
-          <Link to="/brands" style={{ textDecoration: 'underline', color: '#333' }}>브랜드</Link>
-          <Link to="/cart" style={{ textDecoration: 'underline', color: '#333' }}>장바구니</Link>
+        {/* 2행: 정보 관리 (내정보(B), 정보수정(B), 내정보(S), 정보수정(S)) */}
+        <div style={navRowStyle}>
+          <Link to="/mypage" style={navLinkStyle}>내정보(B)</Link>
+          <Link to="/mypage/edit" style={navLinkStyle}>정보수정(B)</Link>
+          <span style={{ color: '#ccc' }}>|</span>
+          <Link to="/manager/mypage" style={{ ...navLinkStyle, color: '#d00' }}>내정보(S)</Link>
+          <Link to="/manager/mypage/edit" style={{ ...navLinkStyle, color: '#d00' }}>정보수정(S)</Link>
         </div>
 
-        {/* 5행: 스토어 및 주문 관리 */}
-        <div style={{
-          padding: '0.4rem 0.5rem',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: isMobile ? '0.4rem' : '1.2rem',
-          backgroundColor: 'rgba(0,0,0,0.03)'
-        }}>
-          <Link to="/seller/2" style={{ textDecoration: 'underline', color: '#333' }}>스토어(공)</Link>
-          <Link to="/seller/4" style={{ textDecoration: 'underline', color: '#333' }}>스토어(일)</Link>
-          <Link to="/orders" style={{ textDecoration: 'underline', color: '#333' }}>주문</Link>
-          <Link to="/addresses" style={{ textDecoration: 'underline', color: '#333' }}>배송지</Link>
-          <Link to="/manager/sales" style={{ textDecoration: 'underline', color: '#d00', fontWeight: 'bold' }}>판매내역</Link>
+        {/* 3행: 상품 및 전시 (상품목록, 상품상세(S), 카테고리관, 브랜드관) */}
+        <div style={navRowStyle}>
+          <Link to="/" style={navLinkStyle}>상품목록</Link>
+          <Link to="/product/1" style={navLinkStyle}>상품상세(S)</Link>
+          <Link to="/categories" style={navLinkStyle}>카테고리관</Link>
+          <Link to="/brands" style={navLinkStyle}>브랜드관</Link>
+        </div>
+
+        {/* 4행: 판매자 및 판매관리 (판매자스토어(공식), 판매자스토어(일반), 판매내역(S)) */}
+        <div style={navRowStyle}>
+          <Link to="/seller/2" style={navLinkStyle}>판매자스토어(공식)</Link>
+          <Link to="/seller/4" style={navLinkStyle}>판매자스토어(일반)</Link>
+          <Link to="/manager/sales" style={{ ...navLinkStyle, color: '#d00', fontWeight: 'bold' }}>판매내역(S)</Link>
+        </div>
+
+        {/* 5행: 구매 및 주문 관리 (장바구니, 주문목록, 주문상세(S), 배송지관리) */}
+        <div style={{ ...navRowStyle, borderBottom: 'none' }}>
+          <Link to="/cart" style={navLinkStyle}>장바구니</Link>
+          <Link to="/orders" style={navLinkStyle}>주문목록</Link>
+          <Link to="/order/1" style={navLinkStyle}>주문상세(S)</Link>
+          <Link to="/addresses" style={navLinkStyle}>배송지관리</Link>
         </div>
       </nav>
 
