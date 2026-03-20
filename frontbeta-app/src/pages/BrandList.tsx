@@ -14,6 +14,7 @@ interface BrandSummary {
   thumbnailUrl?: string;
   productCount: number;
   products: BrandProduct[];
+  sellerCount?: number;
 }
 
 /**
@@ -38,7 +39,7 @@ function BrandList() {
         ]
       },
       {
-        id: 2, name: '삼성', productCount: 10,
+        id: 2, name: '삼성', productCount: 10, sellerCount: 3,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
         products: [
           { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.png` },
@@ -181,7 +182,14 @@ function BrandList() {
                   )}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <h2 style={{ margin: '0 0 0.5rem 0' }}>{brand.name}</h2>
+                  <h2 style={{ margin: '0 0 0.5rem 0' }}>
+                    {brand.name}
+                    {brand.sellerCount && (
+                      <span style={{ fontSize: '0.9rem', fontWeight: 'normal', color: '#666', marginLeft: '0.5rem' }}>
+                        (판매자 {brand.sellerCount}곳 입점 중)
+                      </span>
+                    )}
+                  </h2>
                   <span style={{ color: '#666', fontSize: '0.9rem' }}>
                     등록 상품 <strong>{brand.productCount}</strong>개
                   </span>

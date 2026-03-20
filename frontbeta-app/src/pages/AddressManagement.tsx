@@ -12,7 +12,17 @@ function AddressManagement() {
     // TODO: API 연동 (GET /members/{id}/addresses)
     const mockAddresses: Address[] = [
       { id: 1, nickname: '우리집', address: '서울시 강남구 역삼동 123-45', zipCode: '06123' },
-      { id: 2, nickname: '회사', address: '서울시 서초구 서초동 678-90', zipCode: '06543' }
+      { id: 2, nickname: '회사', address: '서울시 서초구 서초동 678-90', zipCode: '06543' },
+      { id: 3, nickname: '친구집', address: '경기도 성남시 분당구 정자동 12-3', zipCode: '13561' },
+      { id: 4, nickname: '본가', address: '부산광역시 해운대구 우동 456-7', zipCode: '48058' },
+      { id: 5, nickname: '처가', address: '대구광역시 수성구 범어동 890-1', zipCode: '42012' },
+      { id: 6, nickname: '운동센터', address: '서울시 송파구 잠실동 333-22', zipCode: '05551' },
+      { id: 7, nickname: '스터디카페', address: '서울시 마포구 서교동 111-9', zipCode: '04032' },
+      { id: 8, nickname: '자취방', address: '서울시 관악구 신림동 555-44', zipCode: '08821' },
+      { id: 9, nickname: '비밀장소', address: '제주특별자치도 제주시 노형동 777', zipCode: '63092' },
+      { id: 10, nickname: '작업실', address: '경기도 고양시 일산동구 장항동 222', zipCode: '10401' },
+      { id: 11, nickname: '카페', address: '서울시 종로구 가회동 33-1', zipCode: '03052' },
+      { id: 12, nickname: '도서관', address: '서울시 서초구 반포동 1-1', zipCode: '06593' }
     ];
     setAddresses(mockAddresses);
   }, []);
