@@ -175,17 +175,26 @@ function OrderDetail() {
           <section>
             <h3>배송 정보</h3>
             <div style={{ padding: '1.5rem', border: '1px solid #eee', borderRadius: '8px', marginTop: '1rem' }}>
+              <div style={{ marginBottom: '0.8rem' }}>
+                <span style={{ color: '#666', width: '120px', display: 'inline-block' }}>배송지 별명</span>
+                <span style={{ 
+                  fontWeight: 'bold', 
+                  color: order.shippingNickname ? '#000' : '#999',
+                  backgroundColor: order.shippingNickname ? '#f0f0f0' : 'transparent',
+                  padding: order.shippingNickname ? '0.2rem 0.5rem' : '0',
+                  borderRadius: '4px'
+                }}>
+                  {order.shippingNickname || '(별명 없음)'}
+                </span>
+              </div>
               <div style={{ marginBottom: '0.5rem' }}>
-                <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송 정보</span>
+                <span style={{ color: '#666', width: '120px', display: 'inline-block' }}>배송 주소</span>
                 <div style={{ display: 'inline-block', verticalAlign: 'top' }}>
-                  {order.shippingNickname && (
-                    <div style={{ fontWeight: 'bold', color: '#000', marginBottom: '0.2rem' }}>[{order.shippingNickname}]</div>
-                  )}
-                  <div>{order.shippingAddress}</div>
+                  {order.shippingAddress}
                 </div>
               </div>
               <div>
-                <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>우편번호</span>
+                <span style={{ color: '#666', width: '120px', display: 'inline-block' }}>우편번호</span>
                 <span>{order.shippingZipCode}</span>
               </div>
             </div>
