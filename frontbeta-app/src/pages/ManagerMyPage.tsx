@@ -56,6 +56,14 @@ function ManagerMyPage() {
             <span style={{ width: '120px', color: '#666' }}>상점 설명</span>
             <span style={{ fontSize: '0.9rem' }}>{sellerInfo.description}</span>
           </div>
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>월간 판매량</span>
+            <span style={{ fontWeight: 'bold', color: '#d00' }}>1,250 개</span>
+          </div>
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>누적 판매량</span>
+            <span style={{ fontWeight: 'bold' }}>45,800 개</span>
+          </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginTop: '2rem' }}>

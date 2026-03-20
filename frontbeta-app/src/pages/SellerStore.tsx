@@ -107,7 +107,12 @@ function SellerStore() {
         )}
         <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
           <h1 style={{ margin: '0 0 0.25rem 0', fontSize: '1.5rem' }}>{storeInfo.name}</h1>
-          <p style={{ margin: 0, color: '#666', fontSize: '0.9rem' }}>{storeInfo.description}</p>
+          <p style={{ margin: '0 0 0.5rem 0', color: '#666', fontSize: '0.9rem' }}>{storeInfo.description}</p>
+          <div style={{ display: 'flex', gap: '1rem', fontSize: '0.85rem', justifyContent: isMobile ? 'center' : 'flex-start' }}>
+            <span>월간판매량 <strong style={{ color: '#d00' }}>{id === '2' ? '2,400' : '1,250'}개</strong></span>
+            <span style={{ color: '#ccc' }}>|</span>
+            <span>누적판매량 <strong>{id === '2' ? '85,000' : '45,800'}개</strong></span>
+          </div>
         </div>
       </div>
 
