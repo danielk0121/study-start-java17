@@ -36,6 +36,7 @@ function OrderList() {
         shippingNickname: '우리집',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
+        shippingPhoneNumber: '010-1234-5678',
         shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 11, quantity: 1 }, { productId: 12, quantity: 1 }, { productId: 13, quantity: 1 }]
@@ -48,6 +49,7 @@ function OrderList() {
         shippingNickname: '회사',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
+        shippingPhoneNumber: '02-555-9876',
         shippingCost: 3000,
         createdAt: '2025-09-29T14:00:00',
         items: [{ productId: 4, quantity: 2 }]
@@ -60,6 +62,7 @@ function OrderList() {
         shippingNickname: undefined, // 별명 없음 표현
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
+        shippingPhoneNumber: '010-1234-5678',
         shippingCost: 2000,
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 3, quantity: 1 }, { productId: 8, quantity: 1 }]
@@ -72,6 +75,7 @@ function OrderList() {
         shippingNickname: '친구집',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
+        shippingPhoneNumber: '010-9999-8888',
         shippingCost: 3000,
         createdAt: '2026-02-26T13:00:00',
         items: [{ productId: 3, quantity: 1 }]
@@ -160,10 +164,11 @@ function OrderList() {
 
                 <div style={{ marginBottom: '1rem' }}>
                   <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.3rem' }}>배송지</div>
-                  <div style={{ fontSize: '0.9rem' }}>
+                  <div style={{ fontSize: '0.9rem', marginBottom: '0.2rem' }}>
                     {order.shippingNickname && <strong style={{ color: '#000', marginRight: '0.4rem' }}>[{order.shippingNickname}]</strong>}
                     {order.shippingAddress} ({order.shippingZipCode})
                   </div>
+                  <div style={{ fontSize: '0.85rem', color: '#333' }}>연락처: {order.shippingPhoneNumber}</div>
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
@@ -237,6 +242,7 @@ function OrderList() {
                       )}
                       <div>{order.shippingAddress}</div>
                       <small style={{ color: '#666' }}>({order.shippingZipCode})</small>
+                      <div style={{ fontSize: '0.8rem', color: '#333', marginTop: '0.2rem' }}>{order.shippingPhoneNumber}</div>
                     </td>
                     <td style={{ padding: '1rem' }}>
                       <ul style={{ margin: 0, padding: 0, listStyle: 'none', fontSize: '0.9rem', color: '#333' }}>

@@ -12,6 +12,8 @@ export interface Address {
   nickname: string;
   address: string;
   zipCode: string;
+  phoneNumber?: string;
+  isDefault: boolean;
 }
 
 export interface Product {
@@ -53,6 +55,7 @@ export interface Order {
   shippingNickname?: string;
   shippingAddress: string;
   shippingZipCode: string;
+  shippingPhoneNumber?: string;
   shippingCost: number;
   createdAt: string;
   items: OrderItem[];

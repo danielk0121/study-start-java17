@@ -36,6 +36,7 @@ function OrderDetail() {
         shippingNickname: '우리집',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
+        shippingPhoneNumber: '010-1234-5678',
         shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
         items: [{ productId: 11, quantity: 1 }, { productId: 12, quantity: 1 }, { productId: 13, quantity: 1 }]
@@ -45,9 +46,10 @@ function OrderDetail() {
         orderNo: '260226130000105',
         memberId: 8,
         status: 'PENDING',
-        shippingNickname: undefined, // 별명 없음 표현
+        shippingNickname: undefined,
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
+        shippingPhoneNumber: '010-9999-8888',
         shippingCost: 3000,
         createdAt: '2026-02-26T13:00:00',
         items: [{ productId: 3, quantity: 1 }]
@@ -203,6 +205,10 @@ function OrderDetail() {
               <div>
                 <span style={{ color: '#666', width: '120px', display: 'inline-block' }}>우편번호</span>
                 <span>{order.shippingZipCode}</span>
+              </div>
+              <div style={{ marginTop: '0.5rem' }}>
+                <span style={{ color: '#666', width: '120px', display: 'inline-block' }}>연락처</span>
+                <span style={{ fontWeight: 500 }}>{order.shippingPhoneNumber}</span>
               </div>
             </div>
           </section>
