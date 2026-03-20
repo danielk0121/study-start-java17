@@ -59,6 +59,10 @@ function ManagerMyPage() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginTop: '2rem' }}>
+          <div onClick={() => navigate('/seller/4')} style={{ padding: '1.5rem', border: '1px solid #eee', textAlign: 'center', cursor: 'pointer', backgroundColor: '#f0fff0' }}>
+            <div style={{ fontSize: '0.9rem', color: '#2e7d32' }}>상점 프론트</div>
+            <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>내 스토어 바로가기 (🍎)</div>
+          </div>
           <div onClick={() => navigate('/manager/sales')} style={{ padding: '1.5rem', border: '1px solid #eee', textAlign: 'center', cursor: 'pointer', backgroundColor: '#fff5f5' }}>
             <div style={{ fontSize: '0.9rem', color: '#d00' }}>판매 실적 확인</div>
             <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>전체 판매 내역 바로가기</div>
