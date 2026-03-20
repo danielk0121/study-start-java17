@@ -170,18 +170,16 @@ function Home() {
                 )}
               </div>
               <div style={{ marginBottom: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.15rem' }}>
-                  {product.brandThumbnailUrl && (
-                    <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '16px', height: '16px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
-                  )}
-                  {product.brandName && (
-                    <span style={{ fontSize: '0.75rem', color: '#555', fontWeight: 600 }}>{product.brandName}</span>
-                  )}
+                <div style={{ fontSize: '0.72rem', color: '#888', marginBottom: '0.2rem', fontWeight: 500 }}>
+                  {product.sellerName}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <span style={{ fontSize: '0.72rem', color: '#888', paddingLeft: '20px' }}>{product.category}</span>
-                  <span style={{ fontSize: '0.72rem', color: '#aaa' }}>·</span>
-                  <span style={{ fontSize: '0.72rem', color: '#888' }}>{product.sellerName}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                  {product.brandThumbnailUrl && (
+                    <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '14px', height: '14px', border: '1px solid #eee', objectFit: 'contain', flexShrink: 0 }} />
+                  )}
+                  <span style={{ fontSize: '0.72rem', color: '#666' }}>
+                    {product.brandName}, {product.category}
+                  </span>
                 </div>
               </div>
               <Link to={`/product/${product.id}`} style={{ textDecoration: 'underline', color: '#000' }}>
