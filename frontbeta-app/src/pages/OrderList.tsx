@@ -31,6 +31,7 @@ function OrderList() {
         orderNo: '250902101500001',
         memberId: 2,
         status: 'CONFIRMED',
+        shippingNickname: '우리집',
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
         shippingCost: 2500,
@@ -42,6 +43,7 @@ function OrderList() {
         orderNo: '250929140000004',
         memberId: 4,
         status: 'CANCELLED',
+        shippingNickname: '회사',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
         shippingCost: 3000,
@@ -53,6 +55,7 @@ function OrderList() {
         orderNo: '250902101500006',
         memberId: 2,
         status: 'CONFIRMED',
+        shippingNickname: undefined, // 별명 없음 표현
         shippingAddress: '서울시 강남구 역삼동 123-45',
         shippingZipCode: '06123',
         shippingCost: 2000,
@@ -64,6 +67,7 @@ function OrderList() {
         orderNo: '260226130000105',
         memberId: 8,
         status: 'PENDING',
+        shippingNickname: '친구집',
         shippingAddress: '서울시 서초구 서초동 678-90',
         shippingZipCode: '06543',
         shippingCost: 3000,
@@ -150,7 +154,10 @@ function OrderList() {
 
                 <div style={{ marginBottom: '1rem' }}>
                   <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.3rem' }}>배송지</div>
-                  <div style={{ fontSize: '0.9rem' }}>{order.shippingAddress} ({order.shippingZipCode})</div>
+                  <div style={{ fontSize: '0.9rem' }}>
+                    {order.shippingNickname && <strong style={{ color: '#000', marginRight: '0.4rem' }}>[{order.shippingNickname}]</strong>}
+                    {order.shippingAddress} ({order.shippingZipCode})
+                  </div>
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
@@ -213,6 +220,11 @@ function OrderList() {
                       <small style={{ color: '#999' }}>ID: {order.id}</small>
                     </td>
                     <td style={{ padding: '1rem' }}>
+                      {order.shippingNickname && (
+                        <div style={{ fontWeight: 'bold', fontSize: '0.8rem', color: '#000', marginBottom: '0.2rem' }}>
+                          [{order.shippingNickname}]
+                        </div>
+                      )}
                       <div>{order.shippingAddress}</div>
                       <small style={{ color: '#666' }}>({order.shippingZipCode})</small>
                     </td>
