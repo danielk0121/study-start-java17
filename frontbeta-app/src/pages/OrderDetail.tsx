@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Order, OrderStatusHistory } from '../types';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -9,7 +9,6 @@ import { useIsMobile } from '../hooks/useIsMobile';
  */
 function OrderDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [order, setOrder] = useState<Order | null>(null);
   const [histories, setHistories] = useState<OrderStatusHistory[]>([]);
   const isMobile = useIsMobile();
@@ -25,7 +24,7 @@ function OrderDetail() {
 
   useEffect(() => {
     // Flyway 샘플 데이터를 기반으로 한 Mock 데이터
-    const mockOrders: Order[] = [
+    const baseOrders: Order[] = [
       {
         id: 1,
         orderNo: '250902101500001',
@@ -52,7 +51,7 @@ function OrderDetail() {
       }
     ];
 
-    const foundOrder = mockOrders.find(o => o.id === Number(id)) || mockOrders[0];
+    const foundOrder = baseOrders.find(o => o.id === Number(id)) || baseOrders[0];
     setOrder(foundOrder);
 
     // 상태 변경 이력 Mock
@@ -89,19 +88,12 @@ function OrderDetail() {
 
   return (
     <div>
-      <button
-        onClick={() => navigate(-1)}
-        style={{ marginBottom: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
-      >
-        &lt; 뒤로가기
-      </button>
-
       <div style={{
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
         justifyContent: 'space-between',
-        alignItems: isMobile ? 'flex-start' : 'center',
-        gap: isMobile ? '1rem' : '0',
+        alignItems: isMobile ? 'stretch' : 'center',
+        gap: '1rem',
         borderBottom: '2px solid #000',
         paddingBottom: '1rem',
         marginBottom: '2rem'
@@ -115,8 +107,8 @@ function OrderDetail() {
 
         {/* 주문 취소 버튼: 항상 노출하되 PENDING 상태일 때만 활성화 */}
         <button
-          onClick={handleCancelOrder}
           disabled={order.status !== 'PENDING'}
+          onClick={handleCancelOrder}
           style={{
             padding: '0.6rem 1.2rem',
             backgroundColor: order.status === 'PENDING' ? '#fff' : '#eee',
@@ -183,15 +175,14 @@ function OrderDetail() {
           <section>
             <h3>배송 정보</h3>
             <div style={{ padding: '1.5rem', border: '1px solid #eee', borderRadius: '8px', marginTop: '1rem' }}>
-              {order.shippingNickname && (
-                <div style={{ marginBottom: '0.8rem', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.5rem' }}>
-                  <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송지 별명</span>
-                  <strong style={{ color: '#000', fontSize: '1.1rem' }}>{order.shippingNickname}</strong>
-                </div>
-              )}
               <div style={{ marginBottom: '0.5rem' }}>
-                <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송 주소</span>
-                <span>{order.shippingAddress}</span>
+                <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>배송 정보</span>
+                <div style={{ display: 'inline-block', verticalAlign: 'top' }}>
+                  {order.shippingNickname && (
+                    <div style={{ fontWeight: 'bold', color: '#000', marginBottom: '0.2rem' }}>[{order.shippingNickname}]</div>
+                  )}
+                  <div>{order.shippingAddress}</div>
+                </div>
               </div>
               <div>
                 <span style={{ color: '#666', width: '100px', display: 'inline-block' }}>우편번호</span>
