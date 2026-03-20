@@ -28,9 +28,9 @@ function BrandList() {
 
   useEffect(() => {
     // V10 샘플 데이터를 기반으로 한 브랜드별 상품 정보 Mock 데이터
-    const allBrands: BrandSummary[] = [
+    const baseBrands: BrandSummary[] = [
       {
-        id: 1, name: '애플', productCount: 2,
+        id: 1, name: '애플', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
         products: [
           { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.png` },
@@ -38,7 +38,7 @@ function BrandList() {
         ]
       },
       {
-        id: 2, name: '삼성', productCount: 2,
+        id: 2, name: '삼성', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
         products: [
           { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.png` },
@@ -46,7 +46,7 @@ function BrandList() {
         ]
       },
       {
-        id: 3, name: '소니', productCount: 2,
+        id: 3, name: '소니', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-sony.png`,
         products: [
           { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/sony.png` },
@@ -54,7 +54,7 @@ function BrandList() {
         ]
       },
       {
-        id: 6, name: '나이키', productCount: 2,
+        id: 6, name: '나이키', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`,
         products: [
           { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/nike.png` },
@@ -62,7 +62,7 @@ function BrandList() {
         ]
       },
       {
-        id: 12, name: '코카콜라', productCount: 2,
+        id: 12, name: '코카콜라', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`,
         products: [
           { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tangerine.png` },
@@ -70,7 +70,7 @@ function BrandList() {
         ]
       },
       {
-        id: 16, name: '오라일리', productCount: 2,
+        id: 16, name: '오라일리', productCount: 10,
         thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`,
         products: [
           { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png` },
@@ -78,6 +78,22 @@ function BrandList() {
         ]
       }
     ];
+
+    // 브랜드별 상품 10개씩으로 확장 (총 60개)
+    const allBrands: BrandSummary[] = baseBrands.map(brand => {
+      const expandedProducts: BrandProduct[] = [];
+      for (let i = 0; i < 5; i++) {
+        brand.products.forEach(p => {
+          expandedProducts.push({
+            ...p,
+            id: p.id + (i * 1000),
+            name: i === 0 ? p.name : `${p.name} (Mod ${i})`,
+            price: p.price + (i * 100)
+          });
+        });
+      }
+      return { ...brand, products: expandedProducts, productCount: expandedProducts.length };
+    });
 
     const query = finalQuery.toLowerCase();
     const filtered = allBrands.map(brand => {

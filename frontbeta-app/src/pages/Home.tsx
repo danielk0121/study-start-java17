@@ -15,7 +15,7 @@ function Home() {
 
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
-    const mockProducts: Product[] = [
+    const baseProducts: Product[] = [
       { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', sellerId: 1, sellerName: '애플공식몰', brandName: '애플', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 15
       },
@@ -48,6 +48,20 @@ function Home() {
       { id: 15, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '레고', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-lego.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/lego.png`, salesCount: 29 }
     ];
+
+    // 데이터 뻥튀기 (60개 이상으로 만들기)
+    const mockProducts: Product[] = [];
+    for (let i = 0; i < 4; i++) {
+      baseProducts.forEach(p => {
+        mockProducts.push({
+          ...p,
+          id: p.id + (i * 1000), // ID 중복 방지
+          name: i === 0 ? p.name : `${p.name} (Lot ${i + 1})`,
+          stock: p.stock + (i * 10),
+          salesCount: p.salesCount + (i * 5)
+        });
+      });
+    }
 
     // 검색 필터링
     const query = finalQuery.toLowerCase();
