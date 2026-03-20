@@ -12,14 +12,24 @@ function ManagerMyPage() {
     name: '김판매',
     email: 'seller@example.com',
     role: 'SELLER',
-    storeName: '테크마트',
-    businessNumber: '123-45-67890'
+    storeName: '먹거리세상',
+    businessNumber: '123-45-67890',
+    logoEmoji: '🍎'
   };
 
   return (
     <div>
       <h1>내 정보 (판매자)</h1>
-      <div style={{ marginTop: '2rem', border: '1px solid #d00', padding: '1.5rem', maxWidth: '600px' }}>
+      <div style={{ marginTop: '2rem', border: '1px solid #d00', padding: '1.5rem', maxWidth: '600px', backgroundColor: '#fff' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem', borderBottom: '2px solid #eee', paddingBottom: '1.5rem' }}>
+          <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', border: '1px solid #ddd' }}>
+            {sellerInfo.logoEmoji}
+          </div>
+          <div>
+            <h2 style={{ margin: 0 }}>{sellerInfo.storeName}</h2>
+            <p style={{ margin: '0.2rem 0 0 0', color: '#666' }}>{sellerInfo.name} 대표님, 안녕하세요!</p>
+          </div>
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>이름</span>
