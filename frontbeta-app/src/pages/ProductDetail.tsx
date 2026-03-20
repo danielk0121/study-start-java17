@@ -17,6 +17,15 @@ function ProductDetail() {
   useEffect(() => {
     // Home.tsx와 SellerStore.tsx의 ID 생성 규칙을 반영하여 Mock 데이터 확장
     const baseProducts: Product[] = [
+      { id: 11, name: '[Samsung] 삼성 노트북 갤럭시 북4 Pro', price: 1850000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`, salesCount: 150
+      },
+      { id: 12, name: '[Samsung] 삼성 키보드 MX 기계식 유선', price: 125000, stock: 45, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`, salesCount: 230
+      },
+      { id: 13, name: '[Samsung] 삼성 갤럭시 S24 Ultra 512GB', price: 1450000, stock: 25, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 320
+      },
       {
         id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기',
         sellerId: 1, sellerName: '애플공식몰', brandName: '애플',
@@ -51,17 +60,12 @@ function ProductDetail() {
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-jpa.png`, salesCount: 78 },
       { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '무지', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-muji.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/tumbler.png`, salesCount: 45 },
-      { id: 11, name: '[Samsung] Galaxy S24 Ultra 512GB 블랙', price: 1150000, stock: 30, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '삼성', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/galaxy.png`, salesCount: 33 },
-      { id: 12, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '소니', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-sony.png`, 
+      { id: 14, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', sellerId: 2, sellerName: '테크마트', brandName: '소니', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-sony.png`, 
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/sony.png`, salesCount: 18 },
-      { id: 13, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 112 },
-      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', sellerId: 5, sellerName: '책방골목', brandName: '오라일리', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-ddia.png`, salesCount: 54 },
-      { id: 15, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', sellerId: 6, sellerName: '라이프스토어', brandName: '레고', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-lego.png`, 
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/lego.png`, salesCount: 29 }
+      { id: 15, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', sellerId: 3, sellerName: '패션창고', brandName: '나이키', brandThumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`, 
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/nike.png`, salesCount: 112 }
     ];
+
 
     const mockProducts: Product[] = [];
     // Home.tsx 대응 (i * 1000)

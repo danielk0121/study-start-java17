@@ -31,6 +31,7 @@ export interface Product {
   detailUrl2?: string;
   detailUrl3?: string;
   salesCount: number;
+  createdAt?: string;
 }
 
 export interface OrderItem {

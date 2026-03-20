@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 interface CartItem {
@@ -23,16 +24,16 @@ function Cart() {
     // TODO: API 연동 (GET /carts/me)
     const mockCartItems: CartItem[] = [
       { 
-        productId: 1, productName: '맥북 프로 14인치', price: 2990000, quantity: 1, itemTotal: 2990000,
+        productId: 11, productName: '삼성 노트북 갤럭시 북4 Pro', price: 1850000, quantity: 1, itemTotal: 1850000,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`
       },
       { 
-        productId: 3, productName: '무선 키보드', price: 89000, quantity: 2, itemTotal: 178000,
+        productId: 12, productName: '삼성 키보드 MX 기계식', price: 125000, quantity: 1, itemTotal: 125000,
         thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/keyboard.png`
       },
       { 
-        productId: 8, productName: '클린 코드', price: 33000, quantity: 1, itemTotal: 33000,
-        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/book-clean.png`
+        productId: 1, productName: '맥북 프로 14인치', price: 2990000, quantity: 1, itemTotal: 2990000,
+        thumbnailUrl1: `${import.meta.env.BASE_URL}assets/sample/macbook.png`
       }
     ];
     setCartItems(mockCartItems);
@@ -86,7 +87,9 @@ function Cart() {
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ color: '#999', fontSize: '0.75rem', fontFamily: 'monospace' }}>ID: {item.productId.toString().padStart(8, '0')}</div>
-                      <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.3rem' }}>{item.productName}</div>
+                      <Link to={`/product/${item.productId}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
+                        <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.3rem' }}>{item.productName}</div>
+                      </Link>
                       <div style={{ fontSize: '0.9rem', color: '#666' }}>{item.price.toLocaleString()}원</div>
                     </div>
                   </div>
@@ -144,7 +147,9 @@ function Cart() {
                           </div>
                           <div>
                             <div style={{ color: '#999', fontSize: '0.8rem', fontFamily: 'monospace' }}>ID: {item.productId.toString().padStart(8, '0')}</div>
-                            <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
+                            <Link to={`/product/${item.productId}`} style={{ textDecoration: 'underline', color: 'inherit' }}>
+                              <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
+                            </Link>
                           </div>
                         </div>
                       </td>

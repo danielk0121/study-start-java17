@@ -16,10 +16,10 @@ function OrderList() {
 
   // 상품 ID -> 상품 정보 매핑 (검색 및 UI용)
   const productInfoMap: Record<number, { name: string, thumb: string }> = {
-    1: { name: '맥북 프로 14인치', thumb: 'https://via.placeholder.com/50x50?text=MBP' },
-    2: { name: '아이폰 15 Pro', thumb: 'https://via.placeholder.com/50x50?text=iPhone' },
-    3: { name: '무선 키보드', thumb: 'https://via.placeholder.com/50x50?text=KBD' },
-    4: { name: '린넨 셔츠', thumb: 'https://via.placeholder.com/50x50?text=Shirt' },
+    1: { name: '삼성 갤럭시 북4 Pro', thumb: 'https://via.placeholder.com/50x50?text=SAMSUNG' },
+    2: { name: '삼성 갤럭시 S24 Ultra', thumb: 'https://via.placeholder.com/50x50?text=SAMSUNG' },
+    3: { name: '삼성 갤럭시 버즈3 Pro', thumb: 'https://via.placeholder.com/50x50?text=SAMSUNG' },
+    4: { name: '삼성 무선 충전기', thumb: 'https://via.placeholder.com/50x50?text=SAMSUNG' },
     8: { name: '클린 코드', thumb: 'https://via.placeholder.com/50x50?text=Book' }
   };
 
@@ -35,7 +35,18 @@ function OrderList() {
         shippingZipCode: '06123',
         shippingCost: 2500,
         createdAt: '2025-09-02T10:15:00',
-        items: [{ productId: 1, quantity: 1 }, { productId: 3, quantity: 2 }]
+        items: [{ productId: 1, quantity: 1 }, { productId: 2, quantity: 1 }]
+      },
+      {
+        id: 105,
+        orderNo: '260226130000105',
+        memberId: 8,
+        status: 'PENDING',
+        shippingAddress: '서울시 서초구 서초동 678-90',
+        shippingZipCode: '06543',
+        shippingCost: 3000,
+        createdAt: '2026-02-26T13:00:00',
+        items: [{ productId: 3, quantity: 1 }]
       },
       {
         id: 4,
@@ -57,18 +68,7 @@ function OrderList() {
         shippingZipCode: '06123',
         shippingCost: 2000,
         createdAt: '2025-09-02T10:15:00',
-        items: [{ productId: 3, quantity: 1 }, { productId: 8, quantity: 1 }]
-      },
-      {
-        id: 105,
-        orderNo: '260226130000105',
-        memberId: 8,
-        status: 'PENDING',
-        shippingAddress: '서울시 서초구 서초동 678-90',
-        shippingZipCode: '06543',
-        shippingCost: 3000,
-        createdAt: '2026-02-26T13:00:00',
-        items: [{ productId: 3, quantity: 1 }]
+        items: [{ productId: 1, quantity: 1 }, { productId: 8, quantity: 1 }]
       }
     ];
     setOrders(mockOrders);

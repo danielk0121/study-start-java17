@@ -16,9 +16,9 @@ function OrderDetail() {
 
   // 상품 ID -> 상품 정보 매핑 (상세용)
   const productInfoMap: Record<number, { name: string, price: number, thumb: string }> = {
-    1: { name: '맥북 프로 14인치', price: 2990000, thumb: 'https://via.placeholder.com/100x100?text=MBP' },
-    2: { name: '아이폰 15 Pro', price: 1550000, thumb: 'https://via.placeholder.com/100x100?text=iPhone' },
-    3: { name: '무선 키보드', price: 89000, thumb: 'https://via.placeholder.com/100x100?text=KBD' },
+    1: { name: '삼성 갤럭시 북4 Pro', price: 1890000, thumb: 'https://via.placeholder.com/100x100?text=SAMSUNG' },
+    2: { name: '삼성 갤럭시 S24 Ultra', price: 1550000, thumb: 'https://via.placeholder.com/100x100?text=SAMSUNG' },
+    3: { name: '삼성 갤럭시 버즈3 Pro', price: 299000, thumb: 'https://via.placeholder.com/100x100?text=SAMSUNG' },
     4: { name: '린넨 셔츠', price: 49000, thumb: 'https://via.placeholder.com/100x100?text=Shirt' },
     8: { name: '클린 코드', price: 33000, thumb: 'https://via.placeholder.com/100x100?text=Book' }
   };
