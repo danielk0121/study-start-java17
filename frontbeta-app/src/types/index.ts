@@ -1,4 +1,4 @@
-export type MemberRole = 'BUYER' | 'MANAGER';
+export type MemberRole = 'BUYER' | 'SELLER';
 
 export interface Member {
   id: number;
@@ -20,7 +20,9 @@ export interface Product {
   price: number;
   stock: number;
   category: string;
-  brandName: string;
+  sellerId: number;
+  sellerName: string;
+  brandName?: string;
   brandThumbnailUrl?: string;
   thumbnailUrl1?: string;
   thumbnailUrl2?: string;

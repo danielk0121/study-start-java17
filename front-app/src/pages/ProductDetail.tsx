@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Product } from '../types';
 import { useIsMobile } from '../hooks/useIsMobile';
@@ -20,6 +20,7 @@ function ProductDetail() {
       {
         id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', brandName: '애플',
         brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
+        sellerId: 1, sellerName: '애플공식몰',
         thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1',
         thumbnailUrl2: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+2',
         thumbnailUrl3: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+3',
@@ -28,8 +29,8 @@ function ProductDetail() {
         detailUrl3: 'https://via.placeholder.com/800x600?text=MacBook+Detail+3',
         salesCount: 15
       },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
-      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 }
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', sellerId: 1, sellerName: '애플공식몰', salesCount: 42 },
+      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', sellerId: 2, sellerName: '로지텍코리아', salesCount: 120 }
     ];
 
     const found = mockProducts.find(p => p.id === Number(id));
@@ -108,13 +109,21 @@ function ProductDetail() {
         </div>
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: '1rem', color: '#666', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ fontSize: '1rem', color: '#666', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {product.brandThumbnailUrl && (
               <img src={product.brandThumbnailUrl} alt={product.brandName} style={{ width: '30px', height: '30px', border: '1px solid #eee', objectFit: 'contain' }} />
             )}
             <span>{product.brandName} | {product.category}</span>
             <small style={{ color: '#999', fontFamily: 'monospace' }}>(ID: {product.id.toString().padStart(8, '0')})</small>
           </div>
+          {product.sellerId && product.sellerName && (
+            <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.5rem' }}>
+              판매자:{' '}
+              <Link to={`/seller/${product.sellerId}`} style={{ color: '#333', textDecoration: 'underline' }}>
+                {product.sellerName}
+              </Link>
+            </div>
+          )}
           <h1 style={{ margin: '0 0 1.5rem 0', fontSize: isMobile ? '1.6rem' : '2.5rem' }}>{product.name}</h1>
 
           <div style={{ borderTop: '2px solid #000', borderBottom: '1px solid #eee', padding: '1.5rem 0', marginBottom: '2rem' }}>

@@ -14,6 +14,7 @@ import AddressManagement from './pages/AddressManagement';
 import ProductSalesList from './pages/ProductSalesList';
 import BrandList from './pages/BrandList';
 import ProductDetail from './pages/ProductDetail';
+import SellerStore from './pages/SellerStore';
 import type { Member } from './types';
 import { useIsMobile } from './hooks/useIsMobile';
 
@@ -56,9 +57,9 @@ function App() {
                 padding: '0.1rem 0.4rem',
                 border: '1px solid #ccc',
                 fontSize: '0.75rem',
-                color: currentUser.role === 'MANAGER' ? '#d00' : '#333'
+                color: '#333'
               }}>
-                {currentUser.role === 'MANAGER' ? 'ADMIN' : 'USER'}
+                {currentUser.role === 'MANAGER' ? 'SELLER' : 'USER'}
               </span>
               <span>{currentUser.name}</span>
               <button onClick={handleLogout} style={{ padding: '0.2rem 0.4rem', cursor: 'pointer', fontSize: '0.75rem' }}>로그아웃</button>
@@ -68,8 +69,8 @@ function App() {
               <Link to="/login" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>로그인</Link>
               <Link to="/register" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>회원가입</Link>
               <span style={{ color: '#ccc' }}>|</span>
-              <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00', whiteSpace: 'nowrap' }}>관리자로그인</Link>
-              <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00', whiteSpace: 'nowrap' }}>관리자가입</Link>
+              <Link to="/manager/login" style={{ textDecoration: 'none', color: '#d00', whiteSpace: 'nowrap' }}>판매자로그인</Link>
+              <Link to="/manager/register" style={{ textDecoration: 'none', color: '#d00', whiteSpace: 'nowrap' }}>판매자가입</Link>
             </>
           )}
         </div>
@@ -84,7 +85,7 @@ function App() {
         }}>
           <div style={{ flex: 1 }}></div>
           <Link to="/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(B)</Link>
-          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#d00' }}>내정보(M)</Link>
+          <Link to="/manager/mypage" style={{ textDecoration: 'none', color: '#333' }}>내정보(S)</Link>
           <span style={{ color: '#ccc' }}>|</span>
         </div>
 
@@ -101,6 +102,7 @@ function App() {
           <Link to="/" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품목록</Link>
           <Link to="/product/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>상품상세(S)</Link>
           <Link to="/brands" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>브랜드관</Link>
+          <Link to="/seller/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>판매자스토어(S)</Link>
           <Link to="/cart" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>장바구니</Link>
         </div>
 
@@ -116,7 +118,7 @@ function App() {
           <Link to="/orders" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문목록</Link>
           <Link to="/order/1" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>주문상세(S)</Link>
           <Link to="/addresses" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>배송지관리</Link>
-          <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#d00', fontWeight: 'bold', whiteSpace: 'nowrap' }}>판매내역(M)</Link>
+          <Link to="/manager/sales" style={{ textDecoration: 'none', color: '#333', whiteSpace: 'nowrap' }}>판매내역(S)</Link>
         </div>
       </nav>
 
@@ -136,7 +138,7 @@ function App() {
           <Route path="/manager/register" element={<ManagerRegister />} />
           <Route path="/manager/mypage" element={<ManagerMyPage />} />
           <Route path="/manager/sales" element={<ProductSalesList />} />
-
+          <Route path="/seller/:sellerId" element={<SellerStore />} />
         </Routes>
       </main>
     </Router>

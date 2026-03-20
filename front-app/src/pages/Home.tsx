@@ -16,23 +16,23 @@ function Home() {
   useEffect(() => {
     // TODO: 백엔드 API 연동 (GET /products)
     const mockProducts: Product[] = [
-      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A',
+      { id: 1, name: '[Apple] 맥북 프로 14인치 M3 Pro 실버', price: 2990000, stock: 10, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', sellerId: 1, sellerName: '애플공식몰',
         thumbnailUrl1: 'https://via.placeholder.com/400x400?text=MacBook+Thumb+1', salesCount: 15
       },
-      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', salesCount: 42 },
-      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 120 },
-      { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', brandName: '유니클로', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=U', salesCount: 85 },
-      { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', brandName: '자라', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=Z', salesCount: 60 },
-      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', brandName: 'CJ', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=C', salesCount: 350 },
-      { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', brandName: '스타벅스', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 210 },
-      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', brandName: '피어슨', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=P', salesCount: 95 },
-      { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, stock: 45, category: '도서', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 78 },
-      { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', brandName: '무지', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=M', salesCount: 45 },
-      { id: 11, name: '[Samsung] Galaxy S24 Ultra 512GB 블랙', price: 1150000, stock: 30, category: '전자기기', brandName: '삼성', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 33 },
-      { id: 12, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', brandName: '소니', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', salesCount: 18 },
-      { id: 13, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', brandName: '나이키', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=N', salesCount: 112 },
-      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', salesCount: 54 },
-      { id: 15, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', brandName: '레고', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', salesCount: 29 }
+      { id: 2, name: '[Apple] 아이폰 15 Pro 256GB 내추럴 티타늄', price: 1550000, stock: 25, category: '전자기기', brandName: '애플', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=A', sellerId: 1, sellerName: '애플공식몰', salesCount: 42 },
+      { id: 3, name: '[Logitech] MX Keys Mini 무선 기계식 키보드', price: 89000, stock: 50, category: '전자기기', brandName: '로지텍', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', sellerId: 2, sellerName: '로지텍코리아', salesCount: 120 },
+      { id: 4, name: '[Uniqlo] 프리미엄 리넨 셔츠 (긴팔) 화이트 L', price: 49000, stock: 100, category: '의류', brandName: '유니클로', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=U', sellerId: 3, sellerName: '패션브랜드샵', salesCount: 85 },
+      { id: 5, name: '[Zara] 슬림핏 스트레치 데님 팬츠 다크 블루', price: 79000, stock: 80, category: '의류', brandName: '자라', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=Z', sellerId: 3, sellerName: '패션브랜드샵', salesCount: 60 },
+      { id: 6, name: '[CJ] 서귀포 프리미엄 고당도 제주 감귤 2kg', price: 15000, stock: 200, category: '식품', brandName: 'CJ', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=C', sellerId: 4, sellerName: '푸드마켓', salesCount: 350 },
+      { id: 7, name: '[Starbucks] 하우스 블렌드 유기농 원두 500g', price: 22000, stock: 150, category: '식품', brandName: '스타벅스', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', sellerId: 4, sellerName: '푸드마켓', salesCount: 210 },
+      { id: 8, name: '[Pearson] 클린 코드: 애자일 소프트웨어 장인 정신', price: 33000, stock: 60, category: '도서', brandName: '피어슨', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=P', sellerId: 5, sellerName: '북스토어', salesCount: 95 },
+      { id: 9, name: '[OReilly] 자바 ORM 표준 JPA 프로그래밍 가이드', price: 38000, stock: 45, category: '도서', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', sellerId: 5, sellerName: '북스토어', salesCount: 78 },
+      { id: 10, name: '[Muji] 스테인리스 보온 보냉 텀블러 500ml', price: 25000, stock: 120, category: '기타', brandName: '무지', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=M', sellerId: 6, sellerName: '라이프스타일샵', salesCount: 45 },
+      { id: 11, name: '[Samsung] Galaxy S24 Ultra 512GB 블랙', price: 1150000, stock: 30, category: '전자기기', brandName: '삼성', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', sellerId: 6, sellerName: '라이프스타일샵', salesCount: 33 },
+      { id: 12, name: '[Sony] WH-1000XM5 노이즈 캔슬링 헤드폰', price: 450000, stock: 20, category: '전자기기', brandName: '소니', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=S', sellerId: 6, sellerName: '라이프스타일샵', salesCount: 18 },
+      { id: 13, name: '[Nike] Air Max 97 OG 실버 불렛 2024', price: 199000, stock: 50, category: '의류', brandName: '나이키', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=N', sellerId: 6, sellerName: '라이프스타일샵', salesCount: 112 },
+      { id: 14, name: '[OReilly] Designing Data-Intensive Applications', price: 45000, stock: 100, category: '도서', brandName: '오라일리', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=O', sellerId: 5, sellerName: '북스토어', salesCount: 54 },
+      { id: 15, name: '[LEGO] Star Wars 밀레니엄 팔콘 컬렉션', price: 210000, stock: 5, category: '기타', brandName: '레고', brandThumbnailUrl: 'https://via.placeholder.com/30x30?text=L', sellerId: 6, sellerName: '라이프스타일샵', salesCount: 29 }
     ];
 
     // 검색 필터링
@@ -115,6 +115,13 @@ function Home() {
                 <span style={{ fontSize: '0.75rem', color: '#555', fontWeight: 600 }}>{product.brandName}</span>
               </div>
               <div style={{ fontSize: '0.72rem', color: '#888', paddingLeft: '20px' }}>{product.category}</div>
+              {product.sellerId && product.sellerName && (
+                <div style={{ fontSize: '0.72rem', paddingLeft: '20px', marginTop: '0.1rem' }}>
+                  <Link to={`/seller/${product.sellerId}`} style={{ color: '#333', textDecoration: 'none' }}>
+                    {product.sellerName}
+                  </Link>
+                </div>
+              )}
             </div>
             <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: '#000' }}>
               <h3 style={{
