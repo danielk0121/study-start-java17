@@ -22,6 +22,8 @@ export interface Product {
   category: string;
   brandName: string;
   brandThumbnailUrl?: string;
+  sellerId?: number;
+  sellerName?: string;
   thumbnailUrl1?: string;
   thumbnailUrl2?: string;
   thumbnailUrl3?: string;
