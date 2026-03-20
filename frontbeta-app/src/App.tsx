@@ -31,7 +31,7 @@ function ScrollToTopAndBg() {
     
     // 판매자 스토어 배경색 분기
     if (pathname.includes('/seller/2')) {
-      document.body.style.backgroundColor = '#f0f7ff'; // 옅은 파란색 (공식)
+      document.body.style.backgroundColor = '#bbddff'; // 채도 높은 옅은 파란색 (공식)
     } else if (pathname.includes('/seller/4')) {
       document.body.style.backgroundColor = '#f0fff0'; // 옅은 초록색 (일반)
     } else if (pathname.includes('/seller/')) {
