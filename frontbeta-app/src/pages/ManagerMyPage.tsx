@@ -14,7 +14,8 @@ function ManagerMyPage() {
     role: 'SELLER',
     storeName: '먹거리세상',
     businessNumber: '123-45-67890',
-    logoEmoji: '🍎'
+    logoEmoji: '🍎',
+    description: '신선하고 건강한 먹거리를 제공하는 일반 판매 상점입니다.'
   };
 
   return (
@@ -51,6 +52,10 @@ function ManagerMyPage() {
             <span style={{ width: '120px', color: '#666' }}>사업자번호</span>
             <span>{sellerInfo.businessNumber}</span>
           </div>
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>상점 설명</span>
+            <span style={{ fontSize: '0.9rem' }}>{sellerInfo.description}</span>
+          </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginTop: '2rem' }}>
@@ -60,8 +65,11 @@ function ManagerMyPage() {
           </div>
         </div>
 
-        <button style={{ marginTop: '2rem', padding: '0.8rem', width: '100%', border: '1px solid #d00', color: '#d00', backgroundColor: '#fff', cursor: 'pointer' }}>
-          판매자 설정 변경
+        <button 
+          onClick={() => navigate('/manager/mypage/edit')}
+          style={{ marginTop: '2rem', padding: '0.8rem', width: '100%', border: '1px solid #d00', color: '#d00', backgroundColor: '#fff', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          판매자 정보 수정 (SELLER)
         </button>
       </div>
     </div>

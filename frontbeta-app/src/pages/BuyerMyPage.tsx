@@ -46,8 +46,11 @@ function BuyerMyPage() {
           </div>
         </div>
 
-        <button style={{ marginTop: '2rem', padding: '0.8rem', width: '100%', border: '1px solid #000', backgroundColor: '#fff', cursor: 'pointer' }}>
-          회원 정보 수정
+        <button 
+          onClick={() => navigate('/mypage/edit')}
+          style={{ marginTop: '2rem', padding: '0.8rem', width: '100%', border: '1px solid #000', backgroundColor: '#fff', cursor: 'pointer', fontWeight: 'bold' }}
+        >
+          회원 정보 수정 (BUYER)
         </button>
       </div>
     </div>
