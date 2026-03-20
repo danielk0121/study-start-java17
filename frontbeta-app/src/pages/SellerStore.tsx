@@ -68,11 +68,12 @@ function SellerStore() {
   if (!storeInfo) return null;
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#fffef0', minHeight: '100vh', margin: '-2rem', padding: '2rem' }}>
       {/* 상점 헤더 */}
       <div style={{ 
         padding: '2rem', 
         border: '1px solid #000', 
+        backgroundColor: '#fff',
         marginBottom: '2rem', 
         display: 'flex', 
         flexDirection: isMobile ? 'column' : 'row',
