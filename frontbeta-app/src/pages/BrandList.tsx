@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 interface BrandProduct {
@@ -203,16 +204,22 @@ function BrandList() {
                 paddingBottom: '0.5rem'
               }}>
                 {brand.products.slice(0, 10).map(product => (
-                  <div key={product.id} style={{
-                    flexShrink: 0,
-                    width: '260px',
-                    padding: '1rem',
-                    border: '1px solid #eee',
-                    borderRadius: '4px',
-                    display: 'flex',
-                    gap: '1rem',
-                    alignItems: 'center'
-                  }}>
+                  <Link 
+                    key={product.id} 
+                    to={`/product/${product.id}`}
+                    style={{
+                      flexShrink: 0,
+                      width: '260px',
+                      padding: '1rem',
+                      border: '1px solid #eee',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      gap: '1rem',
+                      alignItems: 'center',
+                      textDecoration: 'none',
+                      color: 'inherit'
+                    }}
+                  >
                     <div style={{
                       width: '60px', height: '60px', flexShrink: 0, backgroundColor: '#f0f0f0',
                       display: 'flex', alignItems: 'center', justifyContent: 'center'
@@ -228,7 +235,7 @@ function BrandList() {
                       <div style={{ fontWeight: 'bold', marginBottom: '0.2rem', fontSize: '0.9rem', wordBreak: 'break-word' }}>{product.name}</div>
                       <div style={{ color: '#d00', fontSize: '0.85rem' }}>{product.price.toLocaleString()}원</div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
