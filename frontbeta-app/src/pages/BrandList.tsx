@@ -31,50 +31,50 @@ function BrandList() {
     const allBrands: BrandSummary[] = [
       {
         id: 1, name: '애플', productCount: 2,
-        thumbnailUrl: '/assets/sample/brand-apple.png',
+        thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-apple.png`,
         products: [
-          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: '/assets/sample/macbook.jpg' },
-          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: '/assets/sample/iphone.jpg' }
+          { id: 1, name: '맥북 프로 14인치', price: 2990000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/macbook.jpg` },
+          { id: 2, name: '아이폰 15 Pro', price: 1550000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/iphone.jpg` }
         ]
       },
       {
         id: 2, name: '삼성', productCount: 2,
-        thumbnailUrl: '/assets/sample/brand-samsung.png',
+        thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-samsung.png`,
         products: [
-          { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: '/assets/sample/galaxy.jpg' },
-          { id: 22, name: 'Galaxy Watch 6', price: 320000, thumbnailUrl: '/assets/sample/galaxy.jpg' }
+          { id: 11, name: 'Galaxy S24', price: 1150000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.jpg` },
+          { id: 22, name: 'Galaxy Watch 6', price: 320000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/galaxy.jpg` }
         ]
       },
       {
         id: 3, name: '소니', productCount: 2,
-        thumbnailUrl: '/assets/sample/brand-sony.png',
+        thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-sony.png`,
         products: [
-          { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: '/assets/sample/sony.jpg' },
-          { id: 23, name: 'PlayStation 5', price: 620000, thumbnailUrl: '/assets/sample/sony.jpg' }
+          { id: 12, name: 'WH-1000XM5', price: 450000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/sony.jpg` },
+          { id: 23, name: 'PlayStation 5', price: 620000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/sony.jpg` }
         ]
       },
       {
         id: 6, name: '나이키', productCount: 2,
-        thumbnailUrl: '/assets/sample/brand-nike.png',
+        thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-nike.png`,
         products: [
-          { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: '/assets/sample/nike.jpg' },
-          { id: 24, name: 'Jordan 1 Retro', price: 239000, thumbnailUrl: '/assets/sample/nike.jpg' }
+          { id: 13, name: 'Air Max 97', price: 199000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/nike.jpg` },
+          { id: 24, name: 'Jordan 1 Retro', price: 239000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/nike.jpg` }
         ]
       },
       {
         id: 12, name: '코카콜라', productCount: 2,
-        thumbnailUrl: '/assets/sample/brand-cj.png',
+        thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-cj.png`,
         products: [
-          { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: '/assets/sample/tangerine.jpg' },
-          { id: 26, name: 'Sprite 1.5L', price: 3000, thumbnailUrl: '/assets/sample/tangerine.jpg' }
+          { id: 19, name: 'Coke Zero 500ml', price: 2000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tangerine.jpg` },
+          { id: 26, name: 'Sprite 1.5L', price: 3000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/tangerine.jpg` }
         ]
       },
       {
         id: 16, name: '오라일리', productCount: 2,
-        thumbnailUrl: '/assets/sample/brand-oreilly.png',
+        thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/brand-oreilly.png`,
         products: [
-          { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: '/assets/sample/book-ddia.jpg' },
-          { id: 38, name: 'Python Crash Course', price: 38000, thumbnailUrl: '/assets/sample/book-jpa.jpg' }
+          { id: 18, name: 'Designing Data-Intensive Applications', price: 45000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-ddia.jpg` },
+          { id: 38, name: 'Python Crash Course', price: 38000, thumbnailUrl: `${import.meta.env.BASE_URL}assets/sample/book-jpa.jpg` }
         ]
       }
     ];
