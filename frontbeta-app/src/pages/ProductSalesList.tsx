@@ -160,11 +160,13 @@ function ProductSalesList() {
           ) : (
             filteredSales.map(item => (
               <div key={item.id} style={{ border: '1px solid #eee', borderRadius: '8px', padding: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
-                  <div>
-                    <div style={{ fontWeight: 'bold', fontSize: '1rem' }}>{item.orderNo}</div>
-                    <small style={{ color: '#999' }}>ID: {item.id} | 구매자ID: <span style={{ fontFamily: 'monospace' }}>{item.buyerId.toString().padStart(8, '0')}</span> | {new Date(item.soldAt).toLocaleString()}</small>
+                <div style={{ marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+                  <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.25rem' }}>{item.orderNo}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.25rem' }}>
+                    주문ID: <span style={{ fontFamily: 'monospace' }}>{item.id.toString().padStart(8, '0')}</span>, 
+                    구매자ID: <span style={{ fontFamily: 'monospace' }}>{item.buyerId.toString().padStart(8, '0')}</span>
                   </div>
+                  <div style={{ fontSize: '0.8rem', color: '#999' }}>{new Date(item.soldAt).toLocaleString()}</div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -194,40 +196,40 @@ function ProductSalesList() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '2px solid #000' }}>
-                <th style={{ textAlign: 'left', padding: '1rem' }}>주문번호</th>
-                <th style={{ textAlign: 'left', padding: '1rem' }}>구매자ID</th>
-                <th style={{ textAlign: 'left', padding: '1rem' }}>상품ID</th>
-                <th style={{ textAlign: 'left', padding: '1rem' }}>상품명</th>
+                <th style={{ textAlign: 'left', padding: '1rem' }}>주문 상세 정보</th>
+                <th style={{ textAlign: 'left', padding: '1rem' }}>상품 정보</th>
                 <th style={{ textAlign: 'center', padding: '1rem' }}>수량</th>
                 <th style={{ textAlign: 'right', padding: '1rem' }}>판매금액</th>
-                <th style={{ textAlign: 'right', padding: '1rem' }}>판매일시</th>
               </tr>
             </thead>
             <tbody>
               {filteredSales.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
+                  <td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>조건에 맞는 판매 내역이 없습니다.</td>
                 </tr>
               ) : (
                 filteredSales.map(item => (
                   <tr key={item.id} style={{ borderBottom: '1px solid #eee' }}>
-                    <td style={{ padding: '1rem', fontWeight: 'bold' }}>{item.orderNo}</td>
-                    <td style={{ padding: '1rem', fontFamily: 'monospace', color: '#666' }}>{item.buyerId.toString().padStart(8, '0')}</td>
                     <td style={{ padding: '1rem' }}>
-                      <Link to={`/product/${item.productId}`} style={{ color: '#999', fontFamily: 'monospace', textDecoration: 'underline' }}>
-                        {item.productId.toString().padStart(8, '0')}
-                      </Link>
+                      <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>{item.orderNo}</div>
+                      <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.25rem' }}>
+                        주문ID: <span style={{ fontFamily: 'monospace' }}>{item.id.toString().padStart(8, '0')}</span>, 
+                        구매자ID: <span style={{ fontFamily: 'monospace' }}>{item.buyerId.toString().padStart(8, '0')}</span>
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#999' }}>
+                        {new Date(item.soldAt).toLocaleString()}
+                      </div>
                     </td>
                     <td style={{ padding: '1rem' }}>
-                      <Link to={`/product/${item.productId}`} style={{ color: '#000', textDecoration: 'underline' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#999', fontFamily: 'monospace', marginBottom: '0.2rem' }}>
+                        ID: <Link to={`/product/${item.productId}`} style={{ color: 'inherit', textDecoration: 'underline' }}>{item.productId.toString().padStart(8, '0')}</Link>
+                      </div>
+                      <Link to={`/product/${item.productId}`} style={{ color: '#000', textDecoration: 'underline', fontWeight: 'bold' }}>
                         {item.productName}
                       </Link>
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'center' }}>{item.quantity}</td>
-                    <td style={{ padding: '1rem', textAlign: 'right' }}>{item.totalPrice.toLocaleString()}원</td>
-                    <td style={{ padding: '1rem', textAlign: 'right' }}>
-                      {new Date(item.soldAt).toLocaleString()}
-                    </td>
+                    <td style={{ padding: '1rem', textAlign: 'right', fontWeight: 'bold' }}>{item.totalPrice.toLocaleString()}원</td>
                   </tr>
                 ))
               )}
