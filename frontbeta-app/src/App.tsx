@@ -30,8 +30,8 @@ function ScrollToTopAndBg() {
     window.scrollTo(0, 0);
     
     // 판매자 스토어 배경색 분기
-    if (pathname.includes('/seller/2')) {
-      document.body.style.backgroundColor = '#f5f0e6'; // 옅은 갈색 (공식)
+    if (pathname.includes('/seller/1') || pathname.includes('/seller/2')) {
+      document.body.style.backgroundColor = '#f5f0e6'; // 옅은 갈색 (공식: 애플, 삼성)
     } else if (pathname.includes('/seller/4')) {
       document.body.style.backgroundColor = '#f0fff0'; // 옅은 초록색 (일반)
     } else if (pathname.includes('/seller/')) {
