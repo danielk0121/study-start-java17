@@ -25,6 +25,7 @@ function ManagerLogin() {
           value={email} 
           onChange={e => setEmail(e.target.value)} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="password" 
@@ -32,8 +33,9 @@ function ManagerLogin() {
           value={password} 
           onChange={e => setPassword(e.target.value)} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
-        <button type="submit" style={{ backgroundColor: '#d00', color: 'white', border: 'none', padding: '0.7rem', cursor: 'pointer' }}>
+        <button type="submit" style={{ backgroundColor: '#d00', color: 'white', border: 'none', padding: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
           관리자 로그인
         </button>
       </form>

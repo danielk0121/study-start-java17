@@ -27,6 +27,7 @@ function Register() {
           value={formData.email} 
           onChange={e => setFormData({...formData, email: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="text" 
@@ -34,6 +35,7 @@ function Register() {
           value={formData.name} 
           onChange={e => setFormData({...formData, name: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
         <input 
           type="password" 
@@ -41,8 +43,9 @@ function Register() {
           value={formData.password} 
           onChange={e => setFormData({...formData, password: e.target.value})} 
           required 
+          style={{ padding: '0.8rem', border: '1px solid #ccc' }}
         />
-        <button type="submit">가입하기</button>
+        <button type="submit" style={{ padding: '1rem', border: 'none', backgroundColor: '#000', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>가입하기</button>
       </form>
     </div>
   );
