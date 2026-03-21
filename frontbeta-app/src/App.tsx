@@ -16,6 +16,7 @@ import BrandList from './pages/BrandList';
 import CategoryList from './pages/CategoryList';
 import ProductDetail from './pages/ProductDetail';
 import SellerStore from './pages/SellerStore';
+import SellerList from './pages/SellerList';
 import EditProfileBuyer from './pages/EditProfileBuyer';
 import EditProfileSeller from './pages/EditProfileSeller';
 import { useIsMobile } from './hooks/useIsMobile';
@@ -135,9 +136,11 @@ function App() {
           </div>
         </div>
 
-        {/* 4행: 판매자 및 판매관리 (판매자스토어(공식), 판매자스토어(일반), 판매내역(S)) */}
+        {/* 4행: 판매자 및 판매관리 (판매자목록, 판매자스토어(공식), 판매자스토어(일반), 판매내역(S)) */}
         <div style={rowContainerStyle}>
           <div style={menuGroupStyle}>
+            <Link to="/sellers" style={{ ...navLinkStyle, fontWeight: 'bold' }}>판매자목록</Link>
+            <span style={{ color: '#ccc' }}>|</span>
             <Link to="/seller/2" style={navLinkStyle}>판매자스토어(공식)</Link>
             <Link to="/seller/4" style={navLinkStyle}>판매자스토어(일반)</Link>
             <Link to="/manager/sales" style={{ ...navLinkStyle, color: '#d00', fontWeight: 'bold' }}>판매내역(S)</Link>
@@ -161,6 +164,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/categories" element={<CategoryList />} />
           <Route path="/brands" element={<BrandList />} />
+          <Route path="/sellers" element={<SellerList />} />
           <Route path="/seller/:id" element={<SellerStore />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
