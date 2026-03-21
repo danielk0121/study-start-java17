@@ -12,6 +12,7 @@ function ManagerMyPage() {
     id: 8001,
     name: '김판매',
     email: 'seller@example.com',
+    phone: '010-9876-5432',
     role: 'SELLER',
     storeName: '먹거리세상',
     businessNumber: '123-45-67890',
@@ -44,6 +45,10 @@ function ManagerMyPage() {
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>이메일</span>
             <span>{sellerInfo.email}</span>
+          </div>
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>연락처</span>
+            <span>{sellerInfo.phone}</span>
           </div>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>권한</span>
