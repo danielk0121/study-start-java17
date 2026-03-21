@@ -179,16 +179,18 @@ function Home() {
               <div style={{ fontSize: '0.75rem', color: '#999', marginBottom: '0.4rem', fontFamily: 'monospace' }}>
                 ID: {product.id.toString().padStart(8, '0')}
               </div>
-              <div style={{
-                width: '100%', height: '150px', backgroundColor: '#f0f0f0', marginBottom: '1rem',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee'
-              }}>
-                {product.thumbnailUrl1 ? (
-                  <img src={product.thumbnailUrl1} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <span style={{ color: '#ccc', fontSize: '0.8rem' }}>No Image</span>
-                )}
-              </div>
+              <Link to={`/product/${product.id}`} style={{ display: 'block', textDecoration: 'none' }}>
+                <div style={{
+                  width: '100%', height: '150px', backgroundColor: '#f0f0f0', marginBottom: '1rem',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #eee', cursor: 'pointer'
+                }}>
+                  {product.thumbnailUrl1 ? (
+                    <img src={product.thumbnailUrl1} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <span style={{ color: '#ccc', fontSize: '0.8rem' }}>No Image</span>
+                  )}
+                </div>
+              </Link>
               <div style={{ marginBottom: '0.5rem' }}>
                 <div style={{ fontSize: '0.72rem', color: '#888', marginBottom: '0.2rem', fontWeight: 500 }}>
                   판매자: <Link to={`/seller/${product.sellerId}`} style={{ color: 'inherit', textDecoration: 'underline' }}>

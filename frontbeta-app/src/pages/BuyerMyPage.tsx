@@ -12,6 +12,7 @@ function BuyerMyPage() {
     id: 1001,
     name: '김철수',
     email: 'chulsu@example.com',
+    phone: '010-1234-5678',
     role: 'BUYER',
     addressCount: 2,
     orderCount: 5
@@ -33,6 +34,10 @@ function BuyerMyPage() {
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>이메일</span>
             <span>{userInfo.email}</span>
+          </div>
+          <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
+            <span style={{ width: '120px', color: '#666' }}>연락처</span>
+            <span>{userInfo.phone}</span>
           </div>
           <div style={{ display: 'flex', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>
             <span style={{ width: '120px', color: '#666' }}>권한</span>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -69,6 +69,16 @@ function ScrollToTopAndBg() {
  */
 function App() {
   const isMobile = useIsMobile();
+  const [menuOpen, setMenuOpen] = useState<boolean>(() => {
+    var saved = localStorage.getItem('navMenuOpen');
+    return saved === 'true';
+  });
+
+  const toggleMenu = () => {
+    var next = !menuOpen;
+    setMenuOpen(next);
+    localStorage.setItem('navMenuOpen', String(next));
+  };
 
   const navLinkStyle: React.CSSProperties = {
     textDecoration: 'underline',
@@ -100,12 +110,18 @@ function App() {
         fontFamily: 'sans-serif',
         fontSize: isMobile ? '0.75rem' : '0.85rem',
       }}>
-        {/* 1행: 로고(좌) + 인증 관련(우) (로그인, 회원가입, 판매자로그인, 판매자가입) */}
+        {/* 1행: 로고(좌) + 토글 버튼 + 인증 관련(우) */}
         <div style={rowContainerStyle}>
           <Link to="/" style={{ ...navLinkStyle, display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#000', fontWeight: 'bold' }}>
             <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="S" style={{ width: '16px', height: '16px' }} />
             SHOP
           </Link>
+          <button
+            onClick={toggleMenu}
+            style={{ marginLeft: '0.75rem', padding: isMobile ? '0.2rem 0.5rem' : '0.2rem 0.6rem', border: '1px solid #bbb', backgroundColor: '#fff', cursor: 'pointer', fontSize: isMobile ? '0.7rem' : '0.8rem', whiteSpace: 'nowrap' }}
+          >
+            {menuOpen ? '메뉴 접기 ▲' : '메뉴 펼치기 ▼'}
+          </button>
           <div style={menuGroupStyle}>
             <Link to="/login" style={navLinkStyle}>로그인</Link>
             <Link to="/register" style={navLinkStyle}>회원가입</Link>
@@ -115,47 +131,51 @@ function App() {
           </div>
         </div>
 
-        {/* 2행: 정보 관리 (내정보(B), 정보수정(B), 내정보(S), 정보수정(S)) */}
-        <div style={rowContainerStyle}>
-          <div style={menuGroupStyle}>
-            <Link to="/mypage" style={navLinkStyle}>내정보(B)</Link>
-            <Link to="/mypage/edit" style={navLinkStyle}>정보수정(B)</Link>
-            <span style={{ color: '#ccc' }}>|</span>
-            <Link to="/manager/mypage" style={{ ...navLinkStyle, color: '#d00' }}>내정보(S)</Link>
-            <Link to="/manager/mypage/edit" style={{ ...navLinkStyle, color: '#d00' }}>정보수정(S)</Link>
-          </div>
-        </div>
+        {menuOpen && (
+          <>
+            {/* 2행: 정보 관리 (내정보(B), 정보수정(B), 내정보(S), 정보수정(S)) */}
+            <div style={rowContainerStyle}>
+              <div style={menuGroupStyle}>
+                <Link to="/mypage" style={navLinkStyle}>내정보(B)</Link>
+                <Link to="/mypage/edit" style={navLinkStyle}>정보수정(B)</Link>
+                <span style={{ color: '#ccc' }}>|</span>
+                <Link to="/manager/mypage" style={{ ...navLinkStyle, color: '#d00' }}>내정보(S)</Link>
+                <Link to="/manager/mypage/edit" style={{ ...navLinkStyle, color: '#d00' }}>정보수정(S)</Link>
+              </div>
+            </div>
 
-        {/* 3행: 상품 및 전시 (상품목록, 상품상세, 카테고리관, 브랜드관) */}
-        <div style={rowContainerStyle}>
-          <div style={menuGroupStyle}>
-            <Link to="/" style={navLinkStyle}>상품목록</Link>
-            <Link to="/product/1" style={navLinkStyle}>상품상세</Link>
-            <Link to="/categories" style={navLinkStyle}>카테고리관</Link>
-            <Link to="/brands" style={navLinkStyle}>브랜드관</Link>
-          </div>
-        </div>
+            {/* 3행: 상품 및 전시 (상품목록, 상품상세, 카테고리관, 브랜드관) */}
+            <div style={rowContainerStyle}>
+              <div style={menuGroupStyle}>
+                <Link to="/" style={navLinkStyle}>상품목록</Link>
+                <Link to="/product/1" style={navLinkStyle}>상품상세</Link>
+                <Link to="/categories" style={navLinkStyle}>카테고리관</Link>
+                <Link to="/brands" style={navLinkStyle}>브랜드관</Link>
+              </div>
+            </div>
 
-        {/* 4행: 판매자 및 판매관리 (판매자목록, 판매자스토어(공식), 판매자스토어(일반), 판매내역(S)) */}
-        <div style={rowContainerStyle}>
-          <div style={menuGroupStyle}>
-            <Link to="/sellers" style={{ ...navLinkStyle, fontWeight: 'bold' }}>판매자목록</Link>
-            <span style={{ color: '#ccc' }}>|</span>
-            <Link to="/seller/2" style={navLinkStyle}>판매자스토어(공식)</Link>
-            <Link to="/seller/4" style={navLinkStyle}>판매자스토어(일반)</Link>
-            <Link to="/manager/sales" style={{ ...navLinkStyle, color: '#d00', fontWeight: 'bold' }}>판매내역(S)</Link>
-          </div>
-        </div>
+            {/* 4행: 판매자 및 판매관리 (판매자목록, 판매자스토어(공식), 판매자스토어(일반), 판매내역(S)) */}
+            <div style={rowContainerStyle}>
+              <div style={menuGroupStyle}>
+                <Link to="/sellers" style={{ ...navLinkStyle, fontWeight: 'bold' }}>판매자목록</Link>
+                <span style={{ color: '#ccc' }}>|</span>
+                <Link to="/seller/2" style={navLinkStyle}>판매자스토어(공식)</Link>
+                <Link to="/seller/4" style={navLinkStyle}>판매자스토어(일반)</Link>
+                <Link to="/manager/sales" style={{ ...navLinkStyle, color: '#d00', fontWeight: 'bold' }}>판매내역(S)</Link>
+              </div>
+            </div>
 
-        {/* 5행: 구매 및 주문 관리 (장바구니, 주문목록, 주문상세, 배송지관리) */}
-        <div style={{ ...rowContainerStyle, borderBottom: 'none' }}>
-          <div style={menuGroupStyle}>
-            <Link to="/cart" style={navLinkStyle}>장바구니</Link>
-            <Link to="/orders" style={navLinkStyle}>주문목록</Link>
-            <Link to="/order/1" style={navLinkStyle}>주문상세</Link>
-            <Link to="/addresses" style={navLinkStyle}>배송지관리</Link>
-          </div>
-        </div>
+            {/* 5행: 구매 및 주문 관리 (장바구니, 주문목록, 주문상세, 배송지관리) */}
+            <div style={{ ...rowContainerStyle, borderBottom: 'none' }}>
+              <div style={menuGroupStyle}>
+                <Link to="/cart" style={navLinkStyle}>장바구니</Link>
+                <Link to="/orders" style={navLinkStyle}>주문목록</Link>
+                <Link to="/order/1" style={navLinkStyle}>주문상세</Link>
+                <Link to="/addresses" style={navLinkStyle}>배송지관리</Link>
+              </div>
+            </div>
+          </>
+        )}
       </nav>
 
       <main style={{ padding: isMobile ? '1rem 0.5rem' : '2rem', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>

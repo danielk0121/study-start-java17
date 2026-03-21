@@ -11,6 +11,7 @@ function EditProfileSeller() {
   const [formData, setFormData] = useState({
     name: '김판매',
     email: 'seller@example.com',
+    phone: '010-9876-5432',
     storeName: '애플공식몰',
     businessNo: '123-45-67890',
     description: '혁신적인 기술과 디자인의 애플 공식 판매 상점입니다.'
@@ -37,11 +38,20 @@ function EditProfileSeller() {
         </div>
         <div>
           <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>이메일</label>
-          <input 
-            type="email" 
-            value={formData.email} 
+          <input
+            type="email"
+            value={formData.email}
             disabled
-            style={{ width: '100%', padding: '0.8rem', border: '1px solid #eee', backgroundColor: '#f9f9f9', color: '#999' }} 
+            style={{ width: '100%', padding: '0.8rem', border: '1px solid #eee', backgroundColor: '#f9f9f9', color: '#999' }}
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>연락처</label>
+          <input
+            type="tel"
+            value={formData.phone}
+            onChange={e => setFormData({...formData, phone: e.target.value})}
+            style={{ width: '100%', padding: '0.8rem', border: '1px solid #ccc' }}
           />
         </div>
         <div style={{ borderTop: '1px solid #eee', paddingTop: '1.5rem' }}>
