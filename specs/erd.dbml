@@ -5,56 +5,78 @@
 // 회원 (member)
 // ─────────────────────────────────────────
 Table members {
-  id         bigint   [pk, increment, note: '회원 ID']
-  email      varchar  [not null, unique, note: '로그인 이메일 (max 255)']
-  name       varchar  [not null, note: '회원 이름 (max 100)']
-  role       varchar  [not null, default: 'BUYER', note: 'BUYER | MANAGER (max 20)']
-  created_at datetime [not null, default: `now()`, note: '가입 일시 (JPA Auditing 자동 관리)']
-  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
+  id                bigint   [pk, increment, note: '회원 ID']
+  email             varchar  [not null, unique, note: '로그인 이메일 (max 255)']
+  password          varchar  [not null, note: 'BCrypt 해싱된 비밀번호']
+  name              varchar  [not null, note: '회원 이름 (max 100)']
+  role              varchar  [not null, default: 'BUYER', note: 'BUYER | SELLER | MANAGER (max 20)']
+  login_fail_count  int      [not null, default: 0, note: '연속 로그인 실패 횟수 (5회 초과 시 잠금)']
+  locked_until      datetime [note: '계정 잠금 해제 예정 일시 (null이면 잠금 없음)']
+  created_at        datetime [not null, default: `now()`, note: '가입 일시 (JPA Auditing 자동 관리)']
+  updated_at        datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
+}
+
+// ─────────────────────────────────────────
+// 판매자 프로필 (seller_profiles)
+// SELLER 권한 회원의 상점 정보 (1:1)
+// ─────────────────────────────────────────
+Table seller_profiles {
+  id               bigint   [pk, increment, note: '판매자 프로필 ID']
+  member_id        bigint   [not null, unique, note: '회원 ID (SELLER 권한 회원과 1:1)']
+  store_name       varchar  [not null, note: '상점 이름 (max 100)']
+  store_logo_url   varchar  [note: '상점 로고 이미지 URL']
+  store_description varchar [note: '상점 설명']
+  business_number  varchar  [note: '사업자 번호 (max 20)']
+  created_at       datetime [not null, default: `now()`, note: '등록 일시']
+  updated_at       datetime [not null, default: `now()`, note: '수정 일시']
 }
 
 // ─────────────────────────────────────────
 // 배송지 (shipping_address)
 // ─────────────────────────────────────────
 Table shipping_addresses {
-  id         bigint   [pk, increment, note: '배송지 ID']
-  member_id  bigint   [not null, note: '회원 ID']
-  nickname   varchar  [not null, note: '배송지 별명 (예: 집, 회사)']
-  address    varchar  [not null, note: '상세 주소']
-  zip_code   varchar  [not null, note: '우편번호']
-  created_at datetime [not null, default: `now()`, note: '등록 일시']
-  updated_at datetime [not null, default: `now()`, note: '수정 일시']
+  id           bigint   [pk, increment, note: '배송지 ID']
+  member_id    bigint   [not null, note: '회원 ID']
+  nickname     varchar  [not null, note: '배송지 별명 (예: 집, 회사)']
+  address      varchar  [not null, note: '상세 주소']
+  zip_code     varchar  [not null, note: '우편번호']
+  phone_number varchar  [note: '수령인 연락처']
+  is_default   boolean  [not null, default: false, note: '기본 배송지 여부']
+  created_at   datetime [not null, default: `now()`, note: '등록 일시']
+  updated_at   datetime [not null, default: `now()`, note: '수정 일시']
 }
 
 // ─────────────────────────────────────────
 // 브랜드 (brand)
 // ─────────────────────────────────────────
 Table brands {
-  id         bigint   [pk, increment, note: '브랜드 ID']
-  name       varchar  [not null, unique, note: '브랜드명 (max 255)']
-  thumbnail_url varchar [note: '브랜드 썸네일 이미지']
-  created_at datetime [not null, default: `now()`, note: '등록 일시']
-  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시']
+  id            bigint   [pk, increment, note: '브랜드 ID']
+  name          varchar  [not null, unique, note: '브랜드명 — 한글 우선 (max 255)']
+  thumbnail_url varchar  [note: '브랜드 썸네일 이미지']
+  created_at    datetime [not null, default: `now()`, note: '등록 일시']
+  updated_at    datetime [not null, default: `now()`, note: '최종 수정 일시']
 }
 
 // ─────────────────────────────────────────
 // 상품 (product)
 // ─────────────────────────────────────────
 Table products {
-  id         bigint   [pk, increment, note: '상품 ID']
-  brand_id   bigint   [not null, note: '소속 브랜드']
-  name       varchar  [not null, note: '상품명 (max 255)']
-  price      decimal  [not null, note: '가격 (0 이상, precision 15,2)']
-  stock      int      [not null, default: 0, note: '재고 수량 (0 이상)']
-  category   varchar  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC (max 50)']
-  thumbnail_url_1 varchar [note: '썸네일 이미지 1']
-  thumbnail_url_2 varchar [note: '썸네일 이미지 2']
-  thumbnail_url_3 varchar [note: '썸네일 이미지 3']
-  detail_url_1    varchar [note: '상세 이미지 1']
-  detail_url_2    varchar [note: '상세 이미지 2']
-  detail_url_3    varchar [note: '상세 이미지 3']
-  created_at datetime [not null, default: `now()`, note: '등록 일시 (JPA Auditing 자동 관리)']
-  updated_at datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
+  id              bigint   [pk, increment, note: '상품 ID']
+  seller_id       bigint   [not null, note: '판매자 회원 ID (BR_PROD_02)']
+  brand_id        bigint   [note: '소속 브랜드 ID — null 허용 (BR_PROD_03: 브랜드 없는 상품 등록 가능)']
+  name            varchar  [not null, note: '상품명 (max 255)']
+  price           decimal  [not null, note: '가격 (0 이상, precision 15,2)']
+  stock           int      [not null, default: 0, note: '재고 수량 (0 이상)']
+  sales_count     int      [not null, default: 0, note: '누적 판매 수량 (인기 지표)']
+  category        varchar  [not null, note: 'ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC (max 50)']
+  thumbnail_url_1 varchar  [note: '썸네일 이미지 1 (대표)']
+  thumbnail_url_2 varchar  [note: '썸네일 이미지 2']
+  thumbnail_url_3 varchar  [note: '썸네일 이미지 3']
+  detail_url_1    varchar  [note: '상세 이미지 1']
+  detail_url_2    varchar  [note: '상세 이미지 2']
+  detail_url_3    varchar  [note: '상세 이미지 3']
+  created_at      datetime [not null, default: `now()`, note: '등록 일시 (JPA Auditing 자동 관리)']
+  updated_at      datetime [not null, default: `now()`, note: '최종 수정 일시 (JPA Auditing 자동 관리)']
 }
 
 // ─────────────────────────────────────────
@@ -73,15 +95,18 @@ Table cart_items {
 // 주문 (orders)
 // ─────────────────────────────────────────
 Table orders {
-  id                bigint   [pk, increment, note: '주문 ID']
-  order_no          varchar  [not null, unique, note: '주문번호 (yyMMddHHmmssNNN)']
-  member_id         bigint   [not null, note: '주문 회원']
-  shipping_address  varchar  [not null, note: '배송지 주소 (생성 시점 복사)']
-  shipping_zip_code varchar  [not null, note: '배송지 우편번호 (생성 시점 복사)']
-  shipping_cost     decimal  [not null, note: '배송비 (2000 이상 3000 이하, 주문 생성 시 결정 후 불변)']
-  status            varchar  [not null, default: 'PENDING', note: 'PENDING | CONFIRMED | CANCELLED (max 20)']
-  created_at        datetime [not null, default: `now()`, note: '주문 일시 (JPA Auditing 자동 관리)']
-  updated_at        datetime [not null, default: `now()`, note: '최종 수정 일시 — 취소 시 갱신 (JPA Auditing 자동 관리)']
+  id                       bigint   [pk, increment, note: '주문 ID']
+  order_no                 varchar  [not null, unique, note: '주문번호 (yyMMddHHmmssNNN)']
+  member_id                bigint   [not null, note: '주문 회원']
+  shipping_nickname        varchar  [note: '배송지 별명 스냅샷 (생성 시점 복사)']
+  shipping_recipient_name  varchar  [not null, note: '수령인 이름 스냅샷 (생성 시점 복사)']
+  shipping_phone_number    varchar  [note: '수령인 연락처 스냅샷 (생성 시점 복사)']
+  shipping_address         varchar  [not null, note: '배송지 주소 스냅샷 (생성 시점 복사)']
+  shipping_zip_code        varchar  [not null, note: '배송지 우편번호 스냅샷 (생성 시점 복사)']
+  shipping_cost            decimal  [not null, note: '배송비 (2000 이상 3000 이하, 주문 생성 시 결정 후 불변)']
+  status                   varchar  [not null, default: 'PENDING', note: 'PENDING | CONFIRMED | CANCELLED (max 20)']
+  created_at               datetime [not null, default: `now()`, note: '주문 일시 (JPA Auditing 자동 관리)']
+  updated_at               datetime [not null, default: `now()`, note: '최종 수정 일시 — 취소 시 갱신 (JPA Auditing 자동 관리)']
 }
 
 // ─────────────────────────────────────────
@@ -91,6 +116,8 @@ Table order_items {
   id         bigint   [pk, increment, note: '주문 항목 ID']
   order_id   bigint   [not null, note: '소속 주문']
   product_id bigint   [not null, note: '주문 상품']
+  seller_id  bigint   [not null, note: '판매자 회원 ID (주문 시점 스냅샷 — 판매 통계 조회용)']
+  price      decimal  [not null, note: '주문 시점 단가 스냅샷 (precision 15,2)']
   quantity   int      [not null, note: '주문 수량 (1 이상)']
 }
 
@@ -121,13 +148,16 @@ Table order_events {
 // ─────────────────────────────────────────
 // 관계 정의
 // ─────────────────────────────────────────
-Ref: shipping_addresses.member_id > members.id // 회원 : 배송지 = 1 : N
-Ref: cart_items.member_id         > members.id // 회원 : 장바구니항목 = 1 : N
-Ref: cart_items.product_id        > products.id // 상품 : 장바구니항목 = 1 : N
-Ref: brands.id                    < products.brand_id // 브랜드 : 상품 = 1 : N
-Ref: orders.member_id             > members.id    // 회원 : 주문 = 1 : N
-Ref: order_items.order_id         > orders.id     // 주문 : 주문항목 = 1 : N
-Ref: order_items.product_id       > products.id   // 상품 : 주문항목 = 1 : N
-Ref: order_status_histories.order_id > orders.id  // 주문 : 주문상태이력 = 1 : N
-Ref: order_events.member_id       > members.id    // 회원 : 주문이벤트 = 1 : N
-Ref: order_events.product_id      > products.id   // 상품 : 주문이벤트 = 1 : N
+Ref: seller_profiles.member_id        > members.id           // 회원 : 판매자프로필 = 1 : 1
+Ref: shipping_addresses.member_id     > members.id           // 회원 : 배송지 = 1 : N
+Ref: cart_items.member_id             > members.id           // 회원 : 장바구니항목 = 1 : N
+Ref: cart_items.product_id            > products.id          // 상품 : 장바구니항목 = 1 : N
+Ref: products.seller_id               > members.id           // 회원(판매자) : 상품 = 1 : N
+Ref: products.brand_id                > brands.id            // 브랜드 : 상품 = 1 : N
+Ref: orders.member_id                 > members.id           // 회원 : 주문 = 1 : N
+Ref: order_items.order_id             > orders.id            // 주문 : 주문항목 = 1 : N
+Ref: order_items.product_id           > products.id          // 상품 : 주문항목 = 1 : N
+Ref: order_items.seller_id            > members.id           // 회원(판매자) : 주문항목 = 1 : N
+Ref: order_status_histories.order_id  > orders.id            // 주문 : 주문상태이력 = 1 : N
+Ref: order_events.member_id           > members.id           // 회원 : 주문이벤트 = 1 : N
+Ref: order_events.product_id          > products.id          // 상품 : 주문이벤트 = 1 : N
