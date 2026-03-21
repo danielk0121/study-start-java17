@@ -118,9 +118,9 @@ function App() {
           </Link>
           <button
             onClick={toggleMenu}
-            style={{ marginLeft: '0.75rem', padding: isMobile ? '0.2rem 0.5rem' : '0.2rem 0.6rem', border: '1px solid #bbb', backgroundColor: '#fff', cursor: 'pointer', fontSize: isMobile ? '0.7rem' : '0.8rem', whiteSpace: 'nowrap' }}
+            style={{ marginLeft: '0.5rem', padding: '0.2rem 0.4rem', border: '1px solid #bbb', backgroundColor: '#fff', cursor: 'pointer', fontSize: isMobile ? '0.75rem' : '0.85rem', lineHeight: 1, flexShrink: 0 }}
           >
-            {menuOpen ? '메뉴 접기 ▲' : '메뉴 펼치기 ▼'}
+            {menuOpen ? '▲' : '▼'}
           </button>
           <div style={menuGroupStyle}>
             <Link to="/login" style={navLinkStyle}>로그인</Link>
