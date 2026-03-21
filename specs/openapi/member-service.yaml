@@ -1,103 +1,125 @@
 openapi: 3.0.1
 info:
   title: Member Service API
-  description: 회원 관리, 상품 관리 및 배송지 관리 API 명세
-  version: 0.0.3
+  description: 회원·배송지·브랜드·상품·판매자상점 관리 API 명세
+  version: 0.1.0
 servers:
 - url: http://localhost:8080
+
 paths:
-  /members:
+  # ──────────────────────────────────────────
+  # 회원 (members)
+  # ──────────────────────────────────────────
+  /members/me:
     get:
       tags:
       - members
-      operationId: members-find-all
+      operationId: members-me
+      summary: 내 정보 조회 (UC_MEM_01, UC_MEM_02, UC_MEM_03)
+      description: |
+        BUYER: 배송지 수, 주문 건수 요약 포함.
+        SELLER: 판매자 프로필(상점명, 사업자번호) 포함.
+      security:
+      - bearerAuth: []
       responses:
         "200":
-          description: "200"
+          description: 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MemberResponse'
-    post:
-      tags:
-      - members
-      operationId: members-join
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MemberJoinRequest'
-      responses:
-        "200":
-          description: "200"
+                $ref: '#/components/schemas/MemberDetailResponse'
+        "401":
+          description: 인증 필요
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MemberResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+
   /members/{id}:
     get:
       tags:
       - members
       operationId: members-find-by-id
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: "200"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MemberResponse'
-    put:
-      tags:
-      - members
-      operationId: members-update
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MemberUpdateRequest'
-      responses:
-        "200":
-          description: "200"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MemberResponse'
-    delete:
-      tags:
-      - members
-      operationId: members-delete
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: "204"
-  /members/{id}/addresses:
-    get:
-      tags:
-      - addresses
-      summary: 회원의 배송지 목록 조회 (본인 또는 ADMIN 권한 필요)
+      summary: 회원 단건 조회
       parameters:
       - name: id
         in: path
         required: true
         schema:
           type: integer
+          format: int64
+      security:
+      - bearerAuth: []
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberDetailResponse'
+    put:
+      tags:
+      - members
+      operationId: members-update
+      summary: 회원 정보 수정 (본인)
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberUpdateRequest'
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberDetailResponse'
+    delete:
+      tags:
+      - members
+      operationId: members-delete
+      summary: 회원 탈퇴
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
+      responses:
+        "204":
+          description: 성공
+
+  # ──────────────────────────────────────────
+  # 배송지 (shipping addresses)
+  # ──────────────────────────────────────────
+  /members/{id}/addresses:
+    get:
+      tags:
+      - addresses
+      operationId: addresses-find-all
+      summary: 배송지 목록 조회 (UC_SHIP_02, BUYER 권한)
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       responses:
         "200":
           description: 성공
@@ -110,42 +132,54 @@ paths:
     post:
       tags:
       - addresses
-      summary: 배송지 신규 등록 (BUYER 권한 필요)
+      operationId: addresses-create
+      summary: 배송지 등록 (UC_SHIP_01, BUYER 권한)
       parameters:
       - name: id
         in: path
         required: true
         schema:
           type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AddressRequest'
       responses:
-        "200":
+        "201":
           description: 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddressResponse'
+
   /members/{id}/addresses/{addressId}:
     put:
       tags:
       - addresses
-      summary: 배송지 정보 수정 (BUYER 권한 필요)
+      operationId: addresses-update
+      summary: 배송지 수정 (UC_SHIP_03, BUYER 권한)
       parameters:
       - name: id
         in: path
         required: true
         schema:
           type: integer
+          format: int64
       - name: addressId
         in: path
         required: true
         schema:
           type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -160,64 +194,162 @@ paths:
     delete:
       tags:
       - addresses
-      summary: 배송지 삭제 (BUYER 권한 필요)
+      operationId: addresses-delete
+      summary: 배송지 삭제 (UC_SHIP_03, BUYER 권한)
       parameters:
       - name: id
         in: path
         required: true
         schema:
           type: integer
+          format: int64
       - name: addressId
         in: path
         required: true
         schema:
           type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       responses:
         "204":
           description: 성공
+
+  # ──────────────────────────────────────────
+  # 브랜드 (brands)
+  # ──────────────────────────────────────────
+  /brands:
+    get:
+      tags:
+      - brands
+      operationId: brands-find-all
+      summary: 공식 브랜드 목록 조회 (UC_BRAND_01)
+      description: 인증 불필요. 플랫폼이 관리하는 공식 브랜드 목록 반환.
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BrandResponse'
+
+  /brands/{brandId}/products:
+    get:
+      tags:
+      - brands
+      operationId: brands-products
+      summary: 브랜드별 상품 목록 조회 (UC_BRAND_02)
+      parameters:
+      - name: brandId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPage'
+
+  # ──────────────────────────────────────────
+  # 상품 (products)
+  # ──────────────────────────────────────────
   /products:
     get:
       tags:
       - products
       operationId: products-find-all
+      summary: 상품 목록 조회 (UC_PROD_01, UC_PROD_02, UC_PROD_03)
+      parameters:
+      - name: keyword
+        in: query
+        description: 상품명·브랜드명·판매자명·카테고리 키워드 검색 (UC_PROD_03)
+        schema:
+          type: string
+      - name: category
+        in: query
+        description: "카테고리 필터 (ELECTRONICS | CLOTHING | FOOD | BOOKS | ETC)"
+        schema:
+          type: string
+      - name: brandId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: sellerId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
       responses:
         "200":
-          description: "200"
+          description: 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductResponse'
+                $ref: '#/components/schemas/ProductPage'
     post:
       tags:
       - products
-      summary: 상품 신규 등록 (MANAGER 권한 필요)
       operationId: products-register
+      summary: 상품 등록 (UC_AUTH_07, SELLER 권한)
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductRegisterRequest'
       responses:
-        "200":
-          description: "200"
+        "201":
+          description: 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductResponse'
+
   /products/{id}:
     get:
       tags:
       - products
       operationId: products-find-by-id
+      summary: 상품 상세 조회 (UC_PROD_04, UC_PROD_05)
       parameters:
       - name: id
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
       responses:
         "200":
-          description: "200"
+          description: 성공
           content:
             application/json:
               schema:
@@ -225,22 +357,26 @@ paths:
     put:
       tags:
       - products
-      summary: 상품 정보 수정 (MANAGER 권한 필요)
       operationId: products-update
+      summary: 상품 정보 수정 (SELLER 권한 — 본인 상품만)
       parameters:
       - name: id
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ProductUpdateRequest'
       responses:
         "200":
-          description: "200"
+          description: 성공
           content:
             application/json:
               schema:
@@ -248,70 +384,274 @@ paths:
     delete:
       tags:
       - products
-      summary: 상품 삭제 (MANAGER 권한 필요)
       operationId: products-delete
+      summary: 상품 삭제 (SELLER 권한 — 본인 상품만)
       parameters:
       - name: id
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       responses:
         "204":
-          description: "204"
+          description: 성공
+
+  # ──────────────────────────────────────────
+  # 판매자 상점 (seller store)
+  # ──────────────────────────────────────────
+  /sellers:
+    get:
+      tags:
+      - sellers
+      operationId: sellers-find-all
+      summary: 판매자 목록 조회
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SellerSummaryResponse'
+
+  /sellers/{sellerId}/store:
+    get:
+      tags:
+      - sellers
+      operationId: sellers-store-get
+      summary: 판매자 상점 정보 조회 (UC_STORE_02)
+      parameters:
+      - name: sellerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SellerStoreResponse'
+    put:
+      tags:
+      - sellers
+      operationId: sellers-store-update
+      summary: 판매자 상점 정보 수정 (UC_STORE_01, SELLER 권한 — 본인만)
+      parameters:
+      - name: sellerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SellerStoreUpdateRequest'
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SellerStoreResponse'
+
+  /sellers/{sellerId}/products:
+    get:
+      tags:
+      - sellers
+      operationId: sellers-products
+      summary: 판매자 상품 목록 조회 (UC_STORE_02, UC_STORE_03)
+      parameters:
+      - name: sellerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: keyword
+        in: query
+        description: 상점 내 상품 키워드 검색 (UC_STORE_03)
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPage'
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
+    # ── 회원 ──
+    MemberDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [BUYER, SELLER, MANAGER]
+        sellerProfile:
+          description: SELLER 권한 회원에게만 포함 (UC_MEM_03)
+          $ref: '#/components/schemas/SellerProfileSummary'
+        addressCount:
+          type: integer
+          description: 등록된 배송지 수 (BUYER에게만 포함, UC_MEM_02)
+        orderCount:
+          type: integer
+          description: 총 주문 건수 (BUYER에게만 포함, UC_MEM_02)
+        createdAt:
+          type: string
+          format: date-time
+
     MemberUpdateRequest:
       type: object
       properties:
         name:
           type: string
-    MemberResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: number
-          email:
-            type: string
-          name:
-            type: string
-          role:
-            type: string
-    MemberJoinRequest:
+
+    SellerProfileSummary:
       type: object
       properties:
-        name:
+        storeName:
           type: string
-        email:
+        businessNumber:
           type: string
-        adminCode:
-          type: string
-          description: 상품 관리자(MANAGER) 가입 시 필요한 인증 코드 (선택)
+
+    # ── 배송지 ──
     AddressRequest:
       type: object
+      required:
+      - nickname
+      - address
+      - zipCode
       properties:
         nickname:
           type: string
-          description: 배송지 별명
+          description: 배송지 별명 (예: 집, 회사)
         address:
           type: string
           description: 상세 주소
         zipCode:
           type: string
           description: 우편번호
+        phoneNumber:
+          type: string
+          description: 수령인 연락처
+        isDefault:
+          type: boolean
+          default: false
+          description: 기본 배송지 여부
+
     AddressResponse:
       type: object
       properties:
         id:
           type: integer
+          format: int64
         nickname:
           type: string
         address:
           type: string
         zipCode:
           type: string
+        phoneNumber:
+          type: string
+        isDefault:
+          type: boolean
+
+    # ── 브랜드 ──
+    BrandResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          description: 브랜드명 (한글 우선, BR_BRAND_01)
+        thumbnailUrl:
+          type: string
+
+    # ── 상품 ──
+    ProductRegisterRequest:
+      type: object
+      required:
+      - name
+      - price
+      - stock
+      - category
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+        category:
+          type: string
+          enum: [ELECTRONICS, CLOTHING, FOOD, BOOKS, ETC]
+        brandId:
+          type: integer
+          format: int64
+          description: 브랜드 ID (선택 — BR_PROD_03)
+        thumbnailUrl1:
+          type: string
+        thumbnailUrl2:
+          type: string
+        thumbnailUrl3:
+          type: string
+        detailUrl1:
+          type: string
+        detailUrl2:
+          type: string
+        detailUrl3:
+          type: string
+
     ProductUpdateRequest:
       type: object
       properties:
@@ -320,36 +660,157 @@ components:
         price:
           type: number
         stock:
-          type: number
+          type: integer
         category:
           type: string
+          enum: [ELECTRONICS, CLOTHING, FOOD, BOOKS, ETC]
         brandId:
-          type: number
-    ProductRegisterRequest:
-      type: object
-      properties:
-        name:
+          type: integer
+          format: int64
+          description: 브랜드 ID (선택 — BR_PROD_03)
+        thumbnailUrl1:
           type: string
-        price:
-          type: number
-        stock:
-          type: number
-        category:
+        thumbnailUrl2:
           type: string
-        brandId:
-          type: number
+        thumbnailUrl3:
+          type: string
+        detailUrl1:
+          type: string
+        detailUrl2:
+          type: string
+        detailUrl3:
+          type: string
+
     ProductResponse:
       type: object
       properties:
         id:
-          type: number
+          type: integer
+          format: int64
         name:
           type: string
         price:
           type: number
         stock:
-          type: number
+          type: integer
+        salesCount:
+          type: integer
+          description: 누적 판매 수량 (UC_PROD_02, UC_PROD_05)
         category:
           type: string
+        sellerId:
+          type: integer
+          format: int64
+        sellerName:
+          type: string
+          description: 판매자 상점명 (UC_PROD_02)
+        brandId:
+          type: integer
+          format: int64
+          nullable: true
         brandName:
           type: string
+          nullable: true
+        brandThumbnailUrl:
+          type: string
+          nullable: true
+        thumbnailUrl1:
+          type: string
+          nullable: true
+          description: 대표 썸네일 (UC_PROD_02)
+        thumbnailUrl2:
+          type: string
+          nullable: true
+        thumbnailUrl3:
+          type: string
+          nullable: true
+        detailUrl1:
+          type: string
+          nullable: true
+          description: 상세 이미지 (UC_PROD_05)
+        detailUrl2:
+          type: string
+          nullable: true
+        detailUrl3:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    ProductPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+
+    # ── 판매자 상점 ──
+    SellerSummaryResponse:
+      type: object
+      properties:
+        sellerId:
+          type: integer
+          format: int64
+        storeName:
+          type: string
+        storeLogoUrl:
+          type: string
+          nullable: true
+
+    SellerStoreResponse:
+      type: object
+      properties:
+        sellerId:
+          type: integer
+          format: int64
+        storeName:
+          type: string
+        storeLogoUrl:
+          type: string
+          nullable: true
+        storeDescription:
+          type: string
+          nullable: true
+        businessNumber:
+          type: string
+          nullable: true
+
+    SellerStoreUpdateRequest:
+      type: object
+      properties:
+        storeName:
+          type: string
+        storeLogoUrl:
+          type: string
+        storeDescription:
+          type: string
+
+    # ── 공통 ──
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        traceId:
+          type: string
+          description: Sleuth traceId
