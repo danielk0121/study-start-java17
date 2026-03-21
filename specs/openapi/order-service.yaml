@@ -1,95 +1,140 @@
 openapi: 3.0.1
 info:
   title: Order Service API
-  description: 주문 관리 및 장바구니 관리 API 명세
-  version: 0.0.3
+  description: 주문·장바구니·판매 통계 관리 API 명세
+  version: 0.1.0
 servers:
 - url: http://localhost:8081
+
 paths:
+  # ──────────────────────────────────────────
+  # 주문 (orders)
+  # ──────────────────────────────────────────
   /orders:
     get:
       tags:
       - orders
-      summary: 주문 목록 조회 (본인 또는 ADMIN 권한 필요)
       operationId: orders-find-all
+      summary: 내 주문 목록 조회 (UC_ORD_04, UC_ORD_05, UC_ORD_06)
+      parameters:
+      - name: keyword
+        in: query
+        description: 상품명 키워드 검색 (UC_ORD_06)
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      security:
+      - bearerAuth: []
       responses:
         "200":
-          description: "200"
+          description: 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderResponse'
+                $ref: '#/components/schemas/OrderPage'
     post:
       tags:
       - orders
-      summary: 주문 생성 (BUYER 권한 필요)
       operationId: orders-place
+      summary: 주문 생성 (UC_ORD_01, BUYER 권한)
+      description: |
+        주문번호(orderNo)는 'yyMMddHHmmssNNN' 형식으로 서버에서 자동 생성 (UC_ORD_02).
+        배송비는 2,000~3,000원 범위에서 서버가 결정 후 불변 저장 (UC_ORD_11).
+        주문 성공 시 해당 상품들의 재고 감소 (UC_PROD_06) 및 장바구니 자동 제거 (UC_CART_05).
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/OrderPlaceRequest'
       responses:
-        "200":
-          description: "200"
+        "201":
+          description: 주문 생성 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderResponse'
+                $ref: '#/components/schemas/OrderDetailResponse'
+        "409":
+          description: 재고 부족 (UC_PROD_06)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /orders/{id}:
     get:
       tags:
       - orders
       operationId: orders-find-by-id
+      summary: 주문 상세 조회 (UC_ORD_09, UC_ORD_10)
       parameters:
       - name: id
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       responses:
         "200":
-          description: "200"
+          description: 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderResponse'
-    delete:
-      tags:
-      - orders
-      operationId: orders-delete
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: "204"
+                $ref: '#/components/schemas/OrderDetailResponse'
+
   /orders/{id}/cancel:
     patch:
       tags:
       - orders
       operationId: orders-cancel
+      summary: 주문 취소 (UC_ORD_07 — PENDING 상태만 가능)
       parameters:
       - name: id
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       responses:
         "200":
-          description: "200"
+          description: 취소 성공
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderResponse'
+                $ref: '#/components/schemas/OrderDetailResponse'
+        "409":
+          description: 취소 불가 상태 (CONFIRMED 또는 CANCELLED)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ──────────────────────────────────────────
+  # 장바구니 (cart)
+  # ──────────────────────────────────────────
   /carts/me:
     get:
       tags:
       - cart
-      summary: 내 장바구니 조회 (BUYER 권한 필요)
+      operationId: carts-find
+      summary: 내 장바구니 조회 (UC_CART_02, BUYER 권한)
+      security:
+      - bearerAuth: []
       responses:
         "200":
           description: 성공
@@ -100,16 +145,24 @@ paths:
     delete:
       tags:
       - cart
+      operationId: carts-clear
       summary: 장바구니 전체 비우기
+      security:
+      - bearerAuth: []
       responses:
         "204":
           description: 성공
+
   /carts/me/items:
     post:
       tags:
       - cart
-      summary: 장바구니 상품 추가
+      operationId: carts-add-item
+      summary: 장바구니 상품 추가 (UC_CART_01, BUYER 권한)
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -121,106 +174,356 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CartResponse'
+
   /carts/me/items/{productId}:
     patch:
       tags:
       - cart
-      summary: 장바구니 상품 수량 수정
+      operationId: carts-update-item
+      summary: 장바구니 상품 수량 수정 (UC_CART_03)
       parameters:
       - name: productId
         in: path
         required: true
         schema:
           type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
+              required:
+              - quantity
               properties:
                 quantity:
                   type: integer
+                  minimum: 1
       responses:
         "200":
           description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
     delete:
       tags:
       - cart
-      summary: 장바구니 특정 상품 삭제
+      operationId: carts-remove-item
+      summary: 장바구니 특정 상품 삭제 (UC_CART_04)
       parameters:
       - name: productId
         in: path
         required: true
         schema:
           type: integer
+          format: int64
+      security:
+      - bearerAuth: []
       responses:
         "204":
           description: 성공
+
+  # ──────────────────────────────────────────
+  # 판매 통계 (sales statistics)
+  # ──────────────────────────────────────────
+  /sellers/{sellerId}/sales:
+    get:
+      tags:
+      - sales
+      operationId: sales-find-all
+      summary: 판매 내역 조회 (UC_STAT_01, UC_STAT_02, UC_STAT_03, SELLER 권한)
+      parameters:
+      - name: sellerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: keyword
+        in: query
+        description: 상품명 키워드 검색 (UC_STAT_03)
+        schema:
+          type: string
+      - name: fromDate
+        in: query
+        description: 판매일시 시작 (UC_STAT_03, ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: 판매일시 종료 (UC_STAT_03, ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: minAmount
+        in: query
+        description: 판매 금액 최솟값 (UC_STAT_03)
+        schema:
+          type: number
+      - name: maxAmount
+        in: query
+        description: 판매 금액 최댓값 (UC_STAT_03)
+        schema:
+          type: number
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      security:
+      - bearerAuth: []
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesPage'
+
+  /sellers/{sellerId}/sales/summary:
+    get:
+      tags:
+      - sales
+      operationId: sales-summary
+      summary: 매출 요약 조회 (UC_STAT_04, SELLER 권한)
+      parameters:
+      - name: sellerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: fromDate
+        in: query
+        description: 집계 시작일 (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: toDate
+        in: query
+        description: 집계 종료일 (ISO 8601)
+        schema:
+          type: string
+          format: date
+      security:
+      - bearerAuth: []
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesSummaryResponse'
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
-    OrderResponse:
+    # ── 주문 ──
+    OrderPlaceRequest:
       type: object
+      required:
+      - addressId
+      - items
       properties:
-        id:
-          type: number
-        memberId:
-          type: number
+        addressId:
+          type: integer
+          format: int64
+          description: 배송지 ID (생성 시점 정보를 주문에 스냅샷으로 복사)
         items:
           type: array
+          minItems: 1
           items:
-            type: object
-            properties:
-              productId:
-                type: number
-              quantity:
-                type: number
+            $ref: '#/components/schemas/OrderItemRequest'
+
+    OrderItemRequest:
+      type: object
+      required:
+      - productId
+      - quantity
+      properties:
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          minimum: 1
+
+    OrderSummaryResponse:
+      type: object
+      description: 주문 목록 항목 (UC_ORD_05)
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderNo:
+          type: string
+          description: "주문번호 (yyMMddHHmmssNNN, UC_ORD_02)"
         status:
           type: string
+          enum: [PENDING, CONFIRMED, CANCELLED]
+        shippingNickname:
+          type: string
+          nullable: true
+          description: 배송지 별명 스냅샷
+        shippingAddress:
+          type: string
+          description: 배송지 주소 스냅샷
+        representativeItem:
+          description: 대표 상품 (UC_ORD_05)
+          $ref: '#/components/schemas/OrderItemSummary'
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderDetailResponse:
+      type: object
+      description: 주문 상세 (UC_ORD_09, UC_ORD_10)
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderNo:
+          type: string
+        status:
+          type: string
+          enum: [PENDING, CONFIRMED, CANCELLED]
+        shippingNickname:
+          type: string
+          nullable: true
+        shippingRecipientName:
+          type: string
+          description: 수령인 이름 스냅샷
+        shippingPhoneNumber:
+          type: string
+          nullable: true
+          description: 수령인 연락처 스냅샷
         shippingAddress:
           type: string
         shippingZipCode:
           type: string
-        createdAt:
-          type: string
-    OrderPlaceRequest:
-      type: object
-      properties:
-        memberId:
+        shippingCost:
           type: number
-        addressId:
-          type: number
+          description: "배송비 (2,000~3,000원, UC_ORD_11)"
         items:
           type: array
           items:
-            type: object
-            properties:
-              productId:
-                type: number
-              quantity:
-                type: number
-    CartItemRequest:
+            $ref: '#/components/schemas/OrderItemDetail'
+        itemTotal:
+          type: number
+          description: 상품 금액 합계
+        totalAmount:
+          type: number
+          description: 최종 결제 금액 (상품 합계 + 배송비, UC_ORD_12)
+        statusHistory:
+          type: array
+          description: 주문 상태 타임라인 (UC_ORD_10)
+          items:
+            $ref: '#/components/schemas/OrderStatusHistory'
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderItemSummary:
       type: object
       properties:
         productId:
-          type: number
+          type: integer
+          format: int64
+        productName:
+          type: string
         quantity:
           type: integer
-    CartResponse:
+        thumbnailUrl:
+          type: string
+          nullable: true
+        sellerName:
+          type: string
+
+    OrderItemDetail:
       type: object
       properties:
-        memberId:
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        quantity:
+          type: integer
+        price:
           type: number
-        items:
+          description: 주문 시점 단가 스냅샷
+        itemTotal:
+          type: number
+          description: 수량 * 단가
+        sellerName:
+          type: string
+          description: 판매자 상점명
+
+    OrderStatusHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum: [PENDING, CONFIRMED, CANCELLED]
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderPage:
+      type: object
+      properties:
+        content:
           type: array
           items:
-            $ref: '#/components/schemas/CartItemDetail'
-        totalPrice:
-          type: number
+            $ref: '#/components/schemas/OrderSummaryResponse'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+
+    # ── 장바구니 ──
+    CartItemRequest:
+      type: object
+      required:
+      - productId
+      - quantity
+      properties:
+        productId:
+          type: integer
+          format: int64
+        quantity:
+          type: integer
+          minimum: 1
+
     CartItemDetail:
       type: object
       properties:
         productId:
-          type: number
+          type: integer
+          format: int64
         productName:
           type: string
         price:
@@ -229,3 +532,98 @@ components:
           type: integer
         itemTotal:
           type: number
+        thumbnailUrl:
+          type: string
+          nullable: true
+        sellerName:
+          type: string
+          description: 판매자 상점명 (UC_CART_02)
+
+    CartResponse:
+      type: object
+      properties:
+        memberId:
+          type: integer
+          format: int64
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItemDetail'
+        totalPrice:
+          type: number
+          description: 상품 금액 합계 (배송비 미포함, UC_ORD_12)
+
+    # ── 판매 통계 ──
+    SalesItemResponse:
+      type: object
+      description: 판매 내역 항목 (UC_STAT_02)
+      properties:
+        orderNo:
+          type: string
+        soldAt:
+          type: string
+          format: date-time
+          description: 판매 일시
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        quantity:
+          type: integer
+        amount:
+          type: number
+          description: 판매 금액 (단가 * 수량)
+
+    SalesPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesItemResponse'
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+
+    SalesSummaryResponse:
+      type: object
+      description: 매출 요약 (UC_STAT_04)
+      properties:
+        totalAmount:
+          type: number
+          description: 기간 총 판매 금액
+        totalQuantity:
+          type: integer
+          description: 기간 총 판매 수량
+        fromDate:
+          type: string
+          format: date
+        toDate:
+          type: string
+          format: date
+
+    # ── 공통 ──
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        traceId:
+          type: string
+          description: Sleuth traceId

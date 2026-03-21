@@ -2,37 +2,152 @@ openapi: 3.0.1
 info:
   title: Auth Service API
   description: 인증 및 인가 관리 API 명세
-  version: 0.0.1
+  version: 0.1.0
 servers:
 - url: http://localhost:8082
 paths:
+  /auth/register:
+    post:
+      tags:
+      - auth
+      operationId: register
+      summary: 회원가입 (UC_AUTH_01)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        "201":
+          description: 회원가입 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        "400":
+          description: 유효성 오류 (이메일 중복 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /auth/login:
     post:
       tags:
       - auth
       operationId: login
-      summary: 로그인 및 토큰 발급
+      summary: 로그인 및 토큰 발급 (UC_AUTH_02)
+      description: |
+        로그인 5회 연속 실패 시 10분 잠금 (UC_AUTH_03).
+        잠금 상태일 경우 423 응답과 함께 lockedUntil 필드를 반환한다 (UC_AUTH_04).
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginRequest'
       responses:
         "200":
-          description: 성공
+          description: 로그인 성공
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TokenResponse'
+        "401":
+          description: 이메일 또는 비밀번호 불일치
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "423":
+          description: 계정 잠금 (5회 연속 실패)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginLockedResponse'
+
+  /auth/refresh:
+    post:
+      tags:
+      - auth
+      operationId: refresh
+      summary: Access Token 재발급
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        "200":
+          description: 재발급 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        "401":
+          description: Refresh Token 만료 또는 유효하지 않음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
-    LoginRequest:
+    RegisterRequest:
       type: object
+      required:
+      - email
+      - password
+      - name
       properties:
         email:
           type: string
+          format: email
+          description: 로그인 이메일
         password:
           type: string
+          description: 비밀번호 (서버에서 BCrypt 해싱 저장)
+        name:
+          type: string
+          description: 회원 이름
+        role:
+          type: string
+          enum: [BUYER, SELLER]
+          default: BUYER
+          description: 가입 역할 (기본값 BUYER). MANAGER 가입은 adminCode 필수.
+        adminCode:
+          type: string
+          description: MANAGER 권한 가입 시 필요한 관리자 인증 코드 (선택)
+
+    RegisterResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 회원 ID
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [BUYER, SELLER, MANAGER]
+
+    LoginRequest:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
     TokenResponse:
       type: object
       properties:
@@ -40,3 +155,47 @@ components:
           type: string
         refreshToken:
           type: string
+        memberId:
+          type: integer
+          format: int64
+        role:
+          type: string
+          enum: [BUYER, SELLER, MANAGER]
+
+    LoginLockedResponse:
+      type: object
+      description: 계정 잠금 응답 (UC_AUTH_03, UC_AUTH_04)
+      properties:
+        message:
+          type: string
+          example: "로그인 5회 연속 실패로 계정이 잠겼습니다."
+        lockedUntil:
+          type: string
+          format: date-time
+          description: 잠금 해제 예정 일시
+
+    RefreshRequest:
+      type: object
+      required:
+      - refreshToken
+      properties:
+        refreshToken:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        traceId:
+          type: string
+          description: Sleuth traceId

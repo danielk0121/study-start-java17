@@ -1,27 +1,151 @@
 openapi: 3.0.1
 info:
   title: BFF (Backend For Frontend) API
-  description: 프론트엔드 대응을 위한 통합/조합 API 명세
-  version: 0.0.1
+  description: 프론트엔드 대응을 위한 통합·조합 API 명세
+  version: 0.1.0
 servers:
 - url: http://localhost:8000
+
 paths:
-  /api/v1/dashboard:
+  /api/v1/me:
     get:
       tags:
-      - dashboard
-      summary: 사용자 대시보드 정보 통합 조회
+      - bff
+      operationId: bff-me
+      summary: 내 정보 통합 조회 (회원 + 요약 정보)
+      description: |
+        BUYER: 배송지 수, 최근 주문 목록 포함.
+        SELLER: 판매자 프로필(상점명, 사업자번호) 포함.
+      security:
+      - bearerAuth: []
       responses:
         "200":
           description: 성공
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/MeDashboardResponse'
+
+  /api/v1/home:
+    get:
+      tags:
+      - bff
+      operationId: bff-home
+      summary: 홈 화면 데이터 통합 조회 (상품 목록 + 브랜드 목록)
+      parameters:
+      - name: keyword
+        in: query
+        schema:
+          type: string
+      - name: category
+        in: query
+        schema:
+          type: string
+      - name: brandId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: sellerId
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          default: 20
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HomeResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    MeDashboardResponse:
+      type: object
+      properties:
+        member:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            email:
+              type: string
+            name:
+              type: string
+            role:
+              type: string
+              enum: [BUYER, SELLER, MANAGER]
+        sellerProfile:
+          description: SELLER 권한일 때만 포함
+          type: object
+          nullable: true
+          properties:
+            storeName:
+              type: string
+            businessNumber:
+              type: string
+        addressCount:
+          type: integer
+          description: 등록된 배송지 수 (BUYER일 때만 포함)
+          nullable: true
+        recentOrders:
+          description: 최근 주문 목록 (BUYER일 때만 포함)
+          type: array
+          nullable: true
+          items:
+            type: object
+            properties:
+              orderNo:
+                type: string
+              status:
+                type: string
+              createdAt:
+                type: string
+                format: date-time
+
+    HomeResponse:
+      type: object
+      properties:
+        brands:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+              name:
+                type: string
+              thumbnailUrl:
+                type: string
+                nullable: true
+        products:
+          type: object
+          properties:
+            content:
+              type: array
+              items:
                 type: object
-                properties:
-                  member:
-                    type: object
-                  recentOrders:
-                    type: array
-                    items:
-                      type: object
+            totalElements:
+              type: integer
+              format: int64
+            totalPages:
+              type: integer
